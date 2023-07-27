@@ -1,0 +1,183 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { isNotEqual } from '../diff';
+
+let _id = 0;
+export const newId = () => (_id++).toString();
+export const useId = () => useInit(() => newId());
+
+const _stores: Record<
+  string,
+  { data: any; rebuilds: Record<string, () => void> }
+> = {};
+
+export const store = {
+  get<T = any>(key: string): T | undefined {
+    return _stores[key]?.data;
+  },
+  set(key: string, data: any) {
+    if (_stores[key]) {
+      if (isNotEqual(_stores[key].data, data)) {
+        _stores[key].data = data;
+        Object.values(_stores[key].rebuilds).forEach(rebuild => rebuild());
+      }
+    } else {
+      _stores[key] = {
+        data: data,
+        rebuilds: {},
+      };
+    }
+  },
+  _addRebuildCallback(key: string, id: string, rebuild: () => void) {
+    if (_stores[key]) {
+      _stores[key].rebuilds[id] = rebuild;
+    } else {
+      _stores[key] = {
+        data: undefined,
+        rebuilds: {
+          [id]: rebuild,
+        },
+      };
+    }
+  },
+  _removeRebuildCallback(key: string, id: string) {
+    if (_stores[key]) {
+      delete _stores[key].rebuilds[id];
+    }
+  },
+};
+
+export const useInit = <T>(fn: () => T, deps?: any[]): T => {
+  const ref = useRef<any>({
+    result: 404,
+    deps: undefined,
+  });
+  if (ref.current.result === 404 || isNotEqual(ref.current.deps, deps)) {
+    ref.current.result = fn();
+    ref.current.deps = deps;
+  }
+
+  return ref.current.result;
+};
+
+export const useDispose = (fn: () => void) => {
+  useEffect(() => {
+    return fn;
+  }, []);
+};
+
+export const useRebuild = () => {
+  const [flag, setFlag] = useState(false);
+
+  return useCallback(() => {
+    setFlag(!flag);
+  }, [flag]);
+};
+
+export const useStore = <T = any>(
+  key: string,
+  data?: any,
+  filter?: (state: T | undefined) => any,
+): [T | undefined, (newData: T | undefined) => void, () => T | undefined] => {
+  const ref = useRef({
+    id: newId(),
+    rebuild: undefined as any,
+  });
+  const currentData = () => [
+    store.get(key),
+    newData => {
+      store.set(key, newData);
+    },
+    () => store.get(key),
+  ];
+
+  const _rebuild = useRebuild();
+  ref.current.rebuild = _rebuild;
+  const memoFilterRef = useMemoFilter({
+    filter,
+    currentData,
+    currentFilterData: () => store.get(key),
+    immediately: false,
+    onChange: () => {
+      ref.current.rebuild();
+    },
+  });
+  const rebuild = useCallback(() => {
+    memoFilterRef.current.onChange();
+  }, []);
+
+  useInit(() => {
+    if (data) {
+      store.set(key, data);
+    }
+  });
+
+  useInit(() => {
+    store._addRebuildCallback(key, ref.current.id, rebuild);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      store._removeRebuildCallback(key, ref.current.id);
+    };
+  }, []);
+
+  return memoFilterRef.current.data ?? currentData();
+};
+
+export const useMemoFilter = <Q = any, F = Q>(props: {
+  currentData?: () => Q | undefined;
+  onChange?: (oldData: Q | undefined, newData: Q | undefined) => void;
+  currentFilterData: () => F | undefined;
+  filter?: (state: F | undefined) => any;
+  immediately?: boolean;
+}) => {
+  const {
+    currentData,
+    currentFilterData,
+    filter,
+    onChange,
+    immediately = true,
+  } = props;
+  const ref = useRef({
+    inited: false,
+    data: undefined as any,
+    filterOld: undefined as any,
+    onChange: undefined as any,
+  });
+  if (!ref.current.inited) {
+    ref.current.data = currentData?.();
+    ref.current.inited = true;
+  }
+  ref.current.onChange = () => {
+    const _currentFilterData = currentFilterData();
+    const oldData = ref.current.filterOld;
+    const newData = filter?.(_currentFilterData as any);
+    ref.current.filterOld = newData;
+    if (!filter || isNotEqual(oldData, newData)) {
+      const _currentData = currentData?.();
+      onChange?.(ref.current.data, _currentData);
+      ref.current.data = _currentData;
+    }
+  };
+  if (immediately) {
+    ref.current.onChange();
+  }
+
+  return ref;
+};
+
+export const useConsumer = <T = any>(
+  key: string,
+  filter?: (state: T | undefined) => any,
+) => useStore(key, undefined, filter);
+
+export const useProvider = <T>(key: string, data: T | undefined) => {
+  useInit(() => {
+    if (!_stores[key]) {
+      // only init once
+      store.set(key, data);
+    }
+  }, []);
+};
