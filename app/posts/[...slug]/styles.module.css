@@ -1,3 +1,16 @@
+.page {
+  max-width: 680px;
+  margin: 0 auto !important;
+  padding: 40px;
+  background: #fafafa;
+}
+
+@media (max-width: 1024px) {
+  .page {
+    padding: 20px;
+  }
+}
+
 .title {
   font-size: 36px !important;
 }

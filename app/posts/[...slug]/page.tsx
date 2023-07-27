@@ -53,12 +53,12 @@ export default async function PostPage({ params }: PostProps) {
     idx + 1 > allPostsSorted.length - 1 ? undefined : allPostsSorted[idx + 1];
 
   return (
-    <article className="markdown-body">
+    <main className={styles.page}>
       <h1 className={styles.title}>{post.title}</h1>
       <p className={styles.date}>{post.date}</p>
       <MDXBody>{post.body.code}</MDXBody>
       <PostFooter previous={previous} next={next} />
-    </article>
+    </main>
   );
 }
 
