@@ -6,14 +6,12 @@ import './highlight.css';
 import type { MDXComponents } from 'mdx/types';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
-import { ImageZoom } from '@/src/components/Image/ImageZoom';
-
 import { BannerImage } from '../Image/BannerImage';
 import { BaseImage } from '../Image/BaseImage';
 
 const components: MDXComponents = {
   img: ({ src, alt }) => {
-    return <BaseImage src={src} alt={alt} zoomable />;
+    return <BaseImage src={src} alt={alt} />;
   },
   BannerImage,
 };
@@ -30,7 +28,6 @@ export function MDXBody(props: { children: string }) {
       }}
     >
       <Component components={components as any} />
-      <ImageZoom />
     </article>
   );
 }

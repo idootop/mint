@@ -5,11 +5,10 @@ import { isNotEmpty } from '@/core/utils/is';
 interface ImageProps {
   src?: string;
   alt?: string;
-  zoomable?: boolean;
 }
 
 export const BaseImage = (props: ImageProps) => {
-  const { src, alt, zoomable } = props;
+  const { src, alt } = props;
 
   return (
     <span
@@ -20,7 +19,7 @@ export const BaseImage = (props: ImageProps) => {
         alignItems: 'center',
       }}
     >
-      <img src={src} alt={alt} data-zoomable={zoomable} />
+      <img src={src} alt={alt} />
       {isNotEmpty(alt) && (
         <span
           style={{
