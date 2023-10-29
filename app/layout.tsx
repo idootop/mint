@@ -1,15 +1,22 @@
 import '@/src/styles/reset.css';
 import '@/src/styles/global.css';
 
+import { Metadata, Viewport } from 'next';
+
 import { Footer } from './footer';
 import { Header } from './header';
 
-export const metadata = {
+export const metadata: Metadata = {
   referrer: 'no-referrer',
-  title: 'Next typescript template',
-  description: 'A simple next typescript template',
-  viewport:
-    'width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no',
+  title: 'Mint',
+  description: '薄荷的花语是：永不消逝的爱 ❤️ ',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
