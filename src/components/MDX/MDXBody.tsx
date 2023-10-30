@@ -1,7 +1,7 @@
 // Markdown
 import 'github-markdown-css/github-markdown-light.css';
-import './markdown.css';
-import './highlight.css';
+import './markdown.module.css';
+import './highlight.module.css';
 
 import type { MDXComponents } from 'mdx/types';
 import { useMDXComponent } from 'next-contentlayer/hooks';

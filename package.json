@@ -8,9 +8,9 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "dev": "next dev",
-    "build": "next build",
-    "preview": "next build && http-server out",
+    "dev": "contentlayer build && next dev",
+    "build": "contentlayer build && next build",
+    "preview": "npm run build && http-server out",
     "deploy": "vercel deploy --prod"
   },
   "dependencies": {

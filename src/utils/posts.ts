@@ -6,6 +6,17 @@ export interface YearPosts {
   posts: Post[];
 }
 
+export interface PostProps {
+  params: {
+    slug: string[];
+  };
+}
+
+export async function getPostFromParams(params: PostProps['params']) {
+  const slug = params?.slug?.join('/');
+  return allPosts.find(post => post.slugAsParams === slug);
+}
+
 export const allPostsSorted = allPosts.sort((a, b) => {
   return b.date.localeCompare(a.date, undefined, {
     numeric: true,
@@ -29,3 +40,16 @@ const getPostsGroupByYear = () => {
 };
 
 export const allPostsByYear = getPostsGroupByYear();
+
+export const getPreNextPost = (post: Post) => {
+  const idx = allPostsSorted.indexOf(post);
+  const previous = idx - 1 < 0 ? undefined : allPostsSorted[idx - 1];
+  const next =
+    idx + 1 > allPostsSorted.length - 1 ? undefined : allPostsSorted[idx + 1];
+  return {
+    idx,
+    next,
+    previous,
+    total: allPostsSorted.length,
+  };
+};

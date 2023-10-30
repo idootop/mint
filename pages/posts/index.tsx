@@ -2,14 +2,23 @@ import { Post } from 'contentlayer/generated';
 import Link from 'next/link';
 
 import { Column, Expand, Row } from '@/core/components/Flex';
+import { allPostsByYear, YearPosts } from '@/src/utils/posts';
 
-import { allPostsByYear, YearPosts } from './allPostsByYear';
 import styles from './styles.module.css';
 
-export default async function Page() {
+export async function getStaticProps() {
+  const posts = allPostsByYear;
+  return {
+    props: {
+      posts,
+    },
+  };
+}
+
+export default function Page({ posts }) {
   return (
     <Column className={styles.page}>
-      {allPostsByYear.map(e => {
+      {posts.map(e => {
         return <YearPost key={e.year} year={e.year} posts={e.posts} />;
       })}
     </Column>
