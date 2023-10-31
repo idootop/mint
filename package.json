@@ -39,7 +39,7 @@
     "lint-staged": "^13.2.2",
     "next-contentlayer": "^0.3.4",
     "prettier": "^2.8.8",
-    "rehype-highlight": "^6.0.0",
+    "rehype-prism-plus": "^1.6.3",
     "remark-gfm": "^3.0.1",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",

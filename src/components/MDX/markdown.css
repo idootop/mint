@@ -176,9 +176,6 @@
 .markdown-body del code {
   text-decoration: inherit;
 }
-.markdown-body pre code {
-  background-color: transparent;
-}
 .markdown-body ol {
   padding-left: 1.2em;
 }
@@ -253,4 +250,9 @@
 }
 #markdown .task-list-item {
   list-style: none;
+}
+.markdown-body pre code {
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
 }

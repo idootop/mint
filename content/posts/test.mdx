@@ -62,7 +62,7 @@ _italicized text_
 
 ### Image
 
-![Linux](https://images.pexels.com/photos/2049422/pexels-photo-2049422.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)
+![Linux](https://www.kernel.org/theme/images/logos/tux.png)
 
 ## Extended Syntax
 
@@ -77,16 +77,17 @@ These elements extend the basic syntax by adding additional features. Not all Ma
 
 ### Fenced Code Block
 
-```typescript
+```diff-typescript {18-22} showLineNumbers
+// Hello
 export const deepClone = <T>(obj: T): T => {
   if (obj === null || typeof obj !== 'object') {
-    return obj;
++    return obj;
   }
 
   if (Array.isArray(obj)) {
     const copy: any[] = [];
     obj.forEach((item, index) => {
-      copy[index] = deepClone(item);
+-      copy[index] = deepClone(item);
     });
 
     return copy as unknown as T;

@@ -3,8 +3,13 @@ import {
   defineDocumentType,
   makeSource,
 } from 'contentlayer/source-files';
-import rehypeHighlight from 'rehype-highlight';
+import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
+
+const mdxConfig = {
+  remarkPlugins: [remarkGfm],
+  rehypePlugins: [rehypePrism],
+};
 
 const baseComputedFields: ComputedFields = {
   slug: {
@@ -71,8 +76,5 @@ export const Post = defineDocumentType(() => ({
 export default makeSource({
   contentDirPath: './content',
   documentTypes: [Page, Post],
-  mdx: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypeHighlight],
-  },
+  mdx: mdxConfig,
 });

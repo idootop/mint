@@ -1,5 +1,6 @@
 // Markdown
 import './markdown.css';
+import './prism.css';
 import './highlight.css';
 
 import type { MDXComponents } from 'mdx/types';

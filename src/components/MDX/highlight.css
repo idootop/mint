@@ -1,104 +1,32 @@
-.hljs {
+.code-line {
   display: block;
-  overflow-x: auto;
-  color: #cdd9e5 !important;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-left: 4px solid rgba(0, 0, 0, 0); /* Set placeholder for highlight accent border color to transparent */
 }
 
-.hljs-comment,
-.hljs-punctuation {
-  color: #8ddb8c;
+.code-line.inserted {
+  background-color: rgba(16, 185, 129, 0.5); /* Set inserted line (+) color */
 }
 
-.hljs-attr,
-.hljs-attribute,
-.hljs-meta,
-.hljs-selector-attr,
-.hljs-selector-class,
-.hljs-selector-id {
-  color: #6cb6ff;
+.code-line.deleted {
+  background-color: rgba(239, 68, 68, 0.5); /* Set deleted line (-) color */
 }
 
-.hljs-variable,
-.hljs-literal,
-.hljs-number,
-.hljs-doctag {
-  color: #f69d50;
+.highlight-line {
+  margin-left: -16px;
+  margin-right: -16px;
+  background-color: rgba(55, 65, 81, 0.8); /* Set highlight bg color */
 }
 
-.hljs-params {
-  color: #cdd9e5;
-}
-
-.hljs-function {
-  color: #dcbdfb;
-}
-
-.hljs-class,
-.hljs-tag,
-.hljs-title,
-.hljs-built_in {
-  color: #f69d50;
-}
-
-.hljs-keyword,
-.hljs-type,
-.hljs-builtin-name,
-.hljs-meta-keyword,
-.hljs-template-tag,
-.hljs-template-variable {
-  color: #f47067;
-}
-
-.hljs-string,
-.hljs-undefined {
-  color: #96d0ff;
-}
-
-.hljs-regexp {
-  color: #96d0ff;
-}
-
-.hljs-symbol {
-  color: #6cb6ff;
-}
-
-.hljs-bullet {
-  color: #f69d50;
-}
-
-.hljs-section {
-  color: #6cb6ff;
-  font-weight: bold;
-}
-
-.hljs-quote,
-.hljs-name,
-.hljs-selector-tag,
-.hljs-selector-pseudo {
-  color: #8ddb8c;
-}
-
-.hljs-emphasis {
-  color: #f69d50;
-  font-style: italic;
-}
-
-.hljs-strong {
-  color: #f69d50;
-  font-weight: bold;
-}
-
-.hljs-deletion {
-  color: #ff938a;
-  background-color: #78191b;
-}
-
-.hljs-addition {
-  color: #8ddb8c;
-  background-color: #113417;
-}
-
-.hljs-link {
-  color: #96d0ff;
-  font-style: underline;
+.line-number::before {
+  display: inline-block;
+  width: 1rem;
+  text-align: right;
+  margin-right: 16px;
+  margin-left: -8px;
+  color: rgb(156, 163, 175); /* Line number color */
+  content: attr(line);
 }
