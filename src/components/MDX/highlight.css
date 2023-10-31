@@ -1,14 +1,12 @@
 .hljs {
   display: block;
   overflow-x: auto;
-  padding: 0.5em;
-  color: #cdd9e5;
-  background: #22272e;
+  color: #cdd9e5 !important;
 }
 
 .hljs-comment,
 .hljs-punctuation {
-  color: #768390;
+  color: #8ddb8c;
 }
 
 .hljs-attr,
@@ -39,7 +37,7 @@
 .hljs-tag,
 .hljs-title,
 .hljs-built_in {
-  color: #8ddb8c;
+  color: #f69d50;
 }
 
 .hljs-keyword,
