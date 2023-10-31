@@ -1,0 +1,39 @@
+.card {
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: #061726;
+  margin-bottom: 16px;
+  overflow-x: scroll;
+  width: min-content;
+  border: 0.5px solid rgba(166, 166, 166, 0.5);
+}
+
+.header {
+  gap: 8px;
+  margin-bottom: 4px;
+  position: sticky;
+  left: 0;
+}
+
+.red {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #fe5f57;
+}
+
+.yellow {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #febb2e;
+}
+
+.green {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #2bc840;
+}
