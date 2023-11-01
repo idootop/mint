@@ -4,20 +4,16 @@ import './prism.css';
 import './highlight.css';
 
 import type { MDXComponents } from 'mdx/types';
-import Link from 'next/link';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
 import { CodeCard } from '../Code/CodeCard';
 import { BannerImage } from '../Image/BannerImage';
 import { BaseImage } from '../Image/BaseImage';
+import { LinkExternal } from './LinkExternal';
 
 const components: MDXComponents = {
-  a: ({ href, children }) => {
-    return (
-      <Link href={href ?? '#'} target="_blank">
-        {children}
-      </Link>
-    );
+  a: props => {
+    return <LinkExternal {...props} />;
   },
   img: ({ src, alt }) => {
     return <BaseImage src={src} alt={alt} />;

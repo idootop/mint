@@ -153,22 +153,6 @@ export const formatDate = (date: Date, fmt = 'yyyy-MM-dd hh:mm:ss'): string => {
   return result;
 };
 
-export const hexWithOpacity = (hexValue: string, opacity = 1) => {
-  const rgx = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  const hex = hexValue.replace(rgx, (m, r, g, b) => {
-    return r + r + g + g + b + b;
-  });
-  const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  if (!rgb) {
-    return hexValue;
-  }
-  const r = parseInt(rgb[1], 16);
-  const g = parseInt(rgb[2], 16);
-  const b = parseInt(rgb[3], 16);
-
-  return `rgba(${r},${g},${b},${opacity})`;
-};
-
 export const deepClone = <T>(obj: T): T => {
   if (obj === null || typeof obj !== 'object') {
     return obj;

@@ -1,11 +1,11 @@
 .card {
   margin: 0 auto;
   max-width: 100%;
-  padding: 12px;
+  padding: 12px 0;
   border-radius: 8px;
   background: #061726;
   margin-bottom: 16px;
-  overflow-x: scroll;
+  overflow-x: auto;
   width: min-content;
   border: 0.5px solid rgba(166, 166, 166, 0.5);
 }
@@ -14,7 +14,7 @@
   gap: 8px;
   margin-bottom: 8px;
   position: sticky;
-  left: 0;
+  left: 12px;
 }
 
 .red {

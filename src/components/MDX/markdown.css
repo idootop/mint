@@ -5,22 +5,6 @@
   line-height: 1.5;
   word-wrap: break-word;
 }
-.markdown-body ::selection {
-  color: #000;
-  background: #f9d077;
-}
-.markdown-body ::-moz-selection {
-  color: #000;
-  background: #f9d077;
-}
-.markdown-body pre ::selection {
-  color: #000;
-  background: #6d5eea;
-}
-.markdown-body pre ::-moz-selection {
-  color: #000;
-  background: #6d5eea;
-}
 .markdown-body::before {
   display: table;
   content: '';
@@ -177,7 +161,7 @@
   text-decoration: inherit;
 }
 .markdown-body ol {
-  padding-left: 1.2em;
+  padding-left: 1.3em;
 }
 .markdown-body ul {
   padding-left: 1em;
