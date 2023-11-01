@@ -1,14 +1,8 @@
 .page {
   max-width: 680px;
-  margin: 0 auto !important;
-  padding: 40px;
+  margin: 0 auto;
+  padding: 20px;
   background: #fafafa;
-}
-
-@media (max-width: 1024px) {
-  .page {
-    padding: 20px;
-  }
 }
 
 .title {
@@ -25,7 +19,6 @@
   .title {
     font-size: 28px !important;
   }
-
   .date {
     font-size: 14px !important;
   }

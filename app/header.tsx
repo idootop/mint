@@ -17,6 +17,8 @@ export const Header = () => {
         alignItems: 'center',
         padding: '20px',
         width: '100%',
+        margin: '0 auto',
+        maxWidth: '680px',
       }}
     >
       <Link href="/">
@@ -57,7 +59,7 @@ const HearLink = (props: { href: string; children: any }) => {
       href={href}
       style={{
         fontSize: '16px',
-        color: active ? 'rgba(0, 0, 0, 0.3)' : undefined,
+        color: !active ? 'rgba(0, 0, 0, 0.3)' : undefined,
         fontWeight: active ? '500' : undefined,
       }}
     >

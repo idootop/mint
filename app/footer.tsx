@@ -12,7 +12,7 @@ export const Footer = () => {
         color: 'rgba(0, 0, 0, 0.4)',
       }}
     >
-      © {new Date().getFullYear()} Del
+      © {new Date().getFullYear()} 乂乂又又. All rights reserved.
     </footer>
   );
 };
