@@ -19,7 +19,7 @@ export const viewport: Viewport = {
   userScalable: false,
 };
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }) {
   return (
     <html lang="zh-CN">
       <body>

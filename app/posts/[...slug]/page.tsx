@@ -5,58 +5,31 @@ import Link from 'next/link';
 import { Column } from '@/core/components/Flex';
 import { MDXBody } from '@/src/components/MDX/MDXBody';
 
-import { allPostsSorted } from '../allPostsByYear';
+import { getNextPost, getPost, PostProps } from '../allPostsByYear';
 import styles from './styles.module.css';
 
-interface PostProps {
-  params: {
-    slug: string[];
-  };
-}
-
-async function getPostFromParams(params: PostProps['params']) {
-  const slug = params?.slug?.join('/');
-  return allPosts.find(post => post.slugAsParams === slug);
-}
-
-export async function generateMetadata({
-  params,
-}: PostProps): Promise<Metadata> {
-  const post = await getPostFromParams(params);
-
-  if (!post) {
-    return {};
-  }
-
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getPost(params);
   return {
-    title: post.title,
-    description: post.description,
+    title: post?.title,
+    description: post?.description,
   };
 }
 
-export async function generateStaticParams(): Promise<PostProps['params'][]> {
+export async function generateStaticParams() {
   return allPosts.map(post => ({
     slug: post.slugAsParams.split('/'),
   }));
 }
 
-export default async function PostPage({ params }: PostProps) {
-  const post = await getPostFromParams(params);
-
-  if (!post) {
-    return '404';
-  }
-
-  const idx = allPostsSorted.indexOf(post);
-  const previous = idx - 1 < 0 ? undefined : allPostsSorted[idx - 1];
-  const next =
-    idx + 1 > allPostsSorted.length - 1 ? undefined : allPostsSorted[idx + 1];
+export default function PostPage({ params }: PostProps) {
+  const { post, previous, next } = getNextPost(params);
 
   return (
     <main className={styles.page}>
-      <h1 className={styles.title}>{post.title}</h1>
-      <p className={styles.date}>{post.date}</p>
-      <MDXBody>{post.body.code}</MDXBody>
+      <h1 className={styles.title}>{post!.title}</h1>
+      <p className={styles.date}>{post!.date}</p>
+      <MDXBody>{post!.body.code}</MDXBody>
       <PostFooter previous={previous} next={next} />
     </main>
   );

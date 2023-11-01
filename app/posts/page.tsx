@@ -6,7 +6,7 @@ import { Column, Expand, Row } from '@/core/components/Flex';
 import { allPostsByYear, YearPosts } from './allPostsByYear';
 import styles from './styles.module.css';
 
-export default async function Page() {
+export default function Page() {
   return (
     <Column className={styles.page}>
       {allPostsByYear.map(e => {

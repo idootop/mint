@@ -29,3 +29,23 @@ const getPostsGroupByYear = () => {
 };
 
 export const allPostsByYear = getPostsGroupByYear();
+
+export interface PostProps {
+  params: {
+    slug: string[];
+  };
+}
+
+export function getPost(params: PostProps['params']) {
+  const slug = params?.slug?.join('/');
+  return allPosts.find(post => post.slugAsParams === slug);
+}
+
+export function getNextPost(params: PostProps['params']) {
+  const post = getPost(params);
+  const idx = allPostsSorted.indexOf(post as any);
+  const previous = idx - 1 < 0 ? undefined : allPostsSorted[idx - 1];
+  const next =
+    idx + 1 > allPostsSorted.length - 1 ? undefined : allPostsSorted[idx + 1];
+  return { idx, total: allPostsSorted.length, post, next, previous };
+}
