@@ -236,7 +236,9 @@
   list-style: none;
 }
 .markdown-body pre code {
+  border-radius: 0 !important;
   padding: 0 !important;
   margin: 0 !important;
+  color: #cdd9e5 !important;
   background-color: transparent !important;
 }
