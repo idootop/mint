@@ -16,6 +16,7 @@ export const BaseImage = (props: ImageProps) => {
     <>
       <img src={src} alt={alt} className={styles.center_image} />
       {isNotEmpty(alt) && <span className={styles.center_label}>{alt}</span>}
+      <p />
     </>
   );
 };
