@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 
 import { Expand } from '@/core/components/Flex';
 
+import { kPageMaxWidth, kPagePadding } from './sizes';
 import styles from './styles.module.css';
 
 export const Header = () => {
@@ -15,10 +16,11 @@ export const Header = () => {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        padding: '20px',
+        justifyContent: 'center',
         width: '100%',
         margin: '0 auto',
-        maxWidth: '680px',
+        padding: kPagePadding,
+        maxWidth: kPageMaxWidth,
       }}
     >
       <Link href="/">

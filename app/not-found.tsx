@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import { Column } from '@/core/components/Flex';
 
+import { kBodyHeight } from './sizes';
 import styles from './styles.module.css';
 
 export default function NotFound() {
@@ -13,7 +14,7 @@ export default function NotFound() {
         textDecoration: 'none',
       }}
     >
-      <Column style={{ height: '80vh', justifyContent: 'center' }}>
+      <Column style={{ height: kBodyHeight, justifyContent: 'center' }}>
         <p
           className={styles.shake}
           style={{

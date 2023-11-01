@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { Center } from '@/core/components/Flex';
 
+import { kBodyHeight } from './sizes';
 import styles from './styles.module.css';
 
 export default function ErrorPage({
@@ -20,7 +21,7 @@ export default function ErrorPage({
   return (
     <Center
       style={{
-        height: '80vh',
+        height: kBodyHeight,
         color: '#000',
         textDecoration: 'none',
       }}

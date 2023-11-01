@@ -8,7 +8,7 @@ import { Header } from './header';
 
 export const metadata: Metadata = {
   referrer: 'no-referrer',
-  title: 'Mint',
+  title: '乂乂又又',
   description: '薄荷的花语是：永不消逝的爱 ❤️ ',
 };
 
