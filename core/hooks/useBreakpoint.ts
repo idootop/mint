@@ -3,9 +3,6 @@ import { useEffect } from 'react';
 import { store, useConsumer } from '../utils/store/useStore';
 
 const _getBreakpoint = () => {
-  if (typeof document === 'undefined') {
-    return {};
-  }
   const width = document.body.clientWidth;
   if (width < 576) {
     return { isXS: true, isMobile: true };
@@ -55,9 +52,11 @@ const initScreenReSizeListener = () => {
 };
 
 export const useBreakpoint = (): DeviceSize => {
+  // 要先等 useConsumer 注册 rebuild 回调
+  const [breakpoint] = useConsumer(kScreenReSizeListenerKey);
   useEffect(() => {
+    // 然后再初始化 store 的值，触发 client 端更新
     initScreenReSizeListener();
   }, []);
-  const [breakpoint] = useConsumer(kScreenReSizeListenerKey);
   return breakpoint ?? {};
 };
