@@ -28,13 +28,7 @@ export function MDXBody(props: { children: string }) {
   const { children } = props;
   const Component = useMDXComponent(children);
   return (
-    <article
-      id="markdown"
-      className="markdown-body"
-      style={{
-        padding: '24px 0',
-      }}
-    >
+    <article className="markdown-body">
       <Component components={components as any} />
     </article>
   );

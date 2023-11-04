@@ -4,6 +4,7 @@
   font-size: 16px;
   line-height: 1.5;
   word-wrap: break-word;
+  padding: 24px 0;
 }
 .markdown-body::before {
   display: table;
@@ -20,12 +21,14 @@
 .markdown-body > *:last-child {
   margin-bottom: 0 !important;
 }
-#markdown a {
+.markdown-body a {
   text-decoration: none;
-  color: #2f6eeb;
+  color: #2f6eeb !important;
 }
-#markdown p a:active,
-#markdown p a:hover {
+.markdown-body a:active,
+.markdown-body a:hover,
+.markdown-body p a:visited {
+  color: #2f6eeb !important;
   text-decoration: underline !important;
 }
 .markdown-body a:not([href]) {
@@ -229,10 +232,10 @@
   padding: 0 16px;
   margin-bottom: 16px;
 }
-#markdown .contains-task-list {
+.markdown-body .contains-task-list {
   padding-left: 0;
 }
-#markdown .task-list-item {
+.markdown-body .task-list-item {
   list-style: none;
 }
 .markdown-body pre code {
