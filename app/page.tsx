@@ -9,13 +9,13 @@ import { Background3D } from '../src/components/Background3D';
 import styles from './styles.module.css';
 
 export default function Index() {
-  const { isMobile } = useBreakpoint();
+  const { isMobile, isReady } = useBreakpoint();
   const bodyHeight = isMobile
     ? `calc(100vh - ${kHeaderHeight}px)`
     : kBodyHeight;
   const domain = useLocation()?.hostname?.replace('www.', '');
   return (
-    <Background3D isMobile={isMobile}>
+    <Background3D isMobile={isMobile} isReady={isReady}>
       <Center height={bodyHeight}>
         <h1
           className={styles.shake}

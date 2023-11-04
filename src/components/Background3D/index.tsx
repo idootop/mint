@@ -17,7 +17,7 @@ const easing = x => Math.sqrt(1 - Math.pow(x - 1, 2));
 const randomZ = depth =>
   -1 * Math.round(easing(THREE.MathUtils.randFloatSpread(1)) * depth);
 
-export function Background3D({ isMobile, children }) {
+export function Background3D({ children, isMobile, isReady }) {
   const count = isMobile ? 40 : 100;
   const depth = isMobile ? 50 : 50;
   const speed = isMobile ? 2 : 2;
@@ -48,7 +48,7 @@ export function Background3D({ isMobile, children }) {
         </Canvas>
       </Position>
       <Position bottom="0" width="100%">
-        <Cite isMobile={isMobile} />
+        {isReady && <Cite isMobile={isMobile} />}
       </Position>
     </Stack>
   );

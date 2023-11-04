@@ -27,6 +27,7 @@ const _getBreakpoint = () => {
 };
 
 interface DeviceSize {
+  isReady: boolean;
   isMobile: boolean;
   isPC: boolean;
   isPad: boolean;
@@ -51,12 +52,12 @@ const initScreenReSizeListener = () => {
   }
 };
 
-export const useBreakpoint = (): DeviceSize => {
+export const useBreakpoint = (): Partial<DeviceSize> => {
   // 要先等 useConsumer 注册 rebuild 回调
   const [breakpoint] = useConsumer(kScreenReSizeListenerKey);
   useEffect(() => {
     // 然后再初始化 store 的值，触发 client 端更新
     initScreenReSizeListener();
   }, []);
-  return breakpoint ?? {};
+  return breakpoint ? { ...breakpoint, isReady: true } : { isReady: false };
 };
