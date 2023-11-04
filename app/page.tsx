@@ -13,7 +13,7 @@ export default function Index() {
   const bodyHeight = isMobile
     ? `calc(100vh - ${kHeaderHeight}px)`
     : kBodyHeight;
-  const domain = useLocation()?.hostname?.replace('wwww.', '');
+  const domain = useLocation()?.hostname?.replace('www.', '');
   return (
     <Background3D isMobile={isMobile}>
       <Center height={bodyHeight}>
