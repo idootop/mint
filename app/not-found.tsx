@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 import { Column } from '@/core/components/Flex';
+import { kBodyHeight } from '@/src/components/Layouts/sizes';
 
-import { kBodyHeight } from './sizes';
 import styles from './styles.module.css';
 
 export default function NotFound() {

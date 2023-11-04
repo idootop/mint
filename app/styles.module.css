@@ -1,16 +1,3 @@
-.link {
-  color: #000;
-}
-
-.link + .link {
-  margin-left: 24px;
-}
-
-.link:hover {
-  color: rgba(0, 0, 0, 1) !important;
-  font-weight: 500;
-}
-
 @keyframes shake {
   0% {
     transform: translate(1px, 1px) rotate(0deg);

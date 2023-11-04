@@ -3,8 +3,8 @@ import '@/src/styles/global.css';
 
 import { Metadata, Viewport } from 'next';
 
-import { Footer } from './footer';
-import { Header } from './header';
+import { Footer } from '@/src/components/Layouts/footer';
+import { Header } from '@/src/components/Layouts/header';
 
 export const metadata: Metadata = {
   referrer: 'no-referrer',
