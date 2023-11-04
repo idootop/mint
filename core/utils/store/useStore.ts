@@ -80,6 +80,7 @@ export const useStore = <T = any>(
   data?: any,
   filter?: (state: T | undefined) => any,
 ): [T | undefined, (newData: T | undefined) => void, () => T | undefined] => {
+  useProvider(key, data);
   const ref = useRef({
     id: newId(),
     rebuild: undefined as any,
@@ -91,7 +92,6 @@ export const useStore = <T = any>(
     },
     () => store.get(key),
   ];
-
   const _rebuild = useRebuild();
   ref.current.rebuild = _rebuild;
   const memoFilterRef = useMemoFilter({
@@ -106,23 +106,12 @@ export const useStore = <T = any>(
   const rebuild = useCallback(() => {
     memoFilterRef.current.onChange();
   }, []);
-
-  useInit(() => {
-    if (data) {
-      store.set(key, data);
-    }
-  });
-
-  useInit(() => {
-    store._addRebuildCallback(key, ref.current.id, rebuild);
-  }, []);
-
   useEffect(() => {
+    store._addRebuildCallback(key, ref.current.id, rebuild);
     return () => {
       store._removeRebuildCallback(key, ref.current.id);
     };
   }, []);
-
   return memoFilterRef.current.data ?? currentData();
 };
 
@@ -176,7 +165,6 @@ export const useConsumer = <T = any>(
 export const useProvider = <T>(key: string, data: T | undefined) => {
   useInit(() => {
     if (!_stores[key]) {
-      // only init once
       store.set(key, data);
     }
   }, []);
