@@ -1,4 +1,5 @@
-import { isBrowser } from '../utils/is';
+import { useEffect } from 'react';
+
 import { store, useConsumer } from '../utils/store/useStore';
 
 const _getBreakpoint = () => {
@@ -44,7 +45,7 @@ interface DeviceSize {
 const kScreenReSizeListenerKey = 'kScreenReSizeListenerKey';
 let _initScreenReSizeListener = false;
 const initScreenReSizeListener = () => {
-  if (!_initScreenReSizeListener && isBrowser()) {
+  if (!_initScreenReSizeListener) {
     store.set(kScreenReSizeListenerKey, _getBreakpoint());
     window.addEventListener('resize', () => {
       store.set(kScreenReSizeListenerKey, _getBreakpoint());
@@ -54,7 +55,9 @@ const initScreenReSizeListener = () => {
 };
 
 export const useBreakpoint = (): DeviceSize => {
-  initScreenReSizeListener();
+  useEffect(() => {
+    initScreenReSizeListener();
+  }, []);
   const [breakpoint] = useConsumer(kScreenReSizeListenerKey);
   return breakpoint ?? {};
 };
