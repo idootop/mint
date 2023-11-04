@@ -5,7 +5,7 @@ import { useBreakpoint } from '@/core/hooks/useBreakpoint';
 import { useLocation } from '@/core/hooks/useLocation';
 import { kBodyHeight, kHeaderHeight } from '@/src/components/Layouts/sizes';
 
-import { Background3D } from './home/Background3D';
+import { Background3D } from '../src/components/Background3D';
 import styles from './styles.module.css';
 
 export default function Index() {
