@@ -44,10 +44,10 @@ const kScreenReSizeListenerKey = 'kScreenReSizeListenerKey';
 let _initScreenReSizeListener = false;
 const initScreenReSizeListener = () => {
   if (!_initScreenReSizeListener) {
-    // only init once
-    setInterval(() => {
+    store.set(kScreenReSizeListenerKey, _getBreakpoint());
+    window.addEventListener('resize', () => {
       store.set(kScreenReSizeListenerKey, _getBreakpoint());
-    }, 100);
+    });
     _initScreenReSizeListener = true;
   }
 };
@@ -55,6 +55,5 @@ const initScreenReSizeListener = () => {
 export const useBreakpoint = (): DeviceSize => {
   initScreenReSizeListener();
   const [breakpoint] = useConsumer(kScreenReSizeListenerKey);
-
   return breakpoint ?? {};
 };
