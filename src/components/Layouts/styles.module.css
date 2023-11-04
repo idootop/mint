@@ -1,0 +1,12 @@
+.link {
+  color: #000;
+}
+
+.link + .link {
+  margin-left: 24px;
+}
+
+.link:hover {
+  color: rgba(0, 0, 0, 1) !important;
+  font-weight: 500;
+}
