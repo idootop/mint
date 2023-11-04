@@ -1,0 +1,19 @@
+.poly_pizza {
+  width: 100%;
+  color: #666;
+  opacity: 0.5;
+  white-space: pre;
+  padding: 20px;
+  font-size: 10px;
+  justify-content: end;
+}
+
+.poly_pizza a {
+  color: #666;
+}
+
+.poly_pizza_mobile {
+  padding: 10px;
+  font-size: 8px;
+  justify-content: center;
+}
