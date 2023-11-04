@@ -5,7 +5,6 @@ import { isArray } from '../utils/is';
 export interface BaseProps {
   // 基础属性
   id?: string;
-  key?: any;
   ref?: any;
   className?: string | string[];
   children?: ReactNode;
@@ -23,7 +22,6 @@ export type BoxProps = CSSProperties & BaseProps;
 export const getBoxProps = (props: BoxProps) => {
   const {
     id,
-    key: _,
     ref: __,
     children: ___,
     className: _class,
