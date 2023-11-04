@@ -1,10 +1,11 @@
 {
-  "name": "next-typescript-template",
+  "name": "mint",
+  "description": "薄荷的花语是：永不消逝的爱 ❤️",
   "version": "1.0.0",
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "scripts": {
     "prepare": "husky install",

@@ -1,3 +1,3 @@
-# Next blog template
+# Mint
 
-⚡️ A simple next blog template.
+薄荷的花语是：永不消逝的爱 ❤️
