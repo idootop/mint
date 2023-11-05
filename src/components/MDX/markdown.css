@@ -52,10 +52,9 @@
   border-top: 1px solid #ddd;
 }
 .markdown-body blockquote {
-  padding: 12px !important;
+  padding: 8px 12px;
   color: #6a737d;
   border-left: 4px solid #d1d7dd;
-  background-color: #fff;
 }
 .markdown-body blockquote > :first-child {
   margin-top: 0;
