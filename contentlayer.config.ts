@@ -1,14 +1,33 @@
 import {
   ComputedFields,
   defineDocumentType,
+  FieldDefs,
   makeSource,
 } from 'contentlayer/source-files';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
+import {
+  processCoverImage,
+  rehypeImageProcess,
+} from './scripts/rehype-image-process';
+
 const mdxConfig = {
   remarkPlugins: [remarkGfm],
-  rehypePlugins: [rehypePrism],
+  rehypePlugins: [rehypePrism, rehypeImageProcess],
+};
+
+const baseFields: FieldDefs = {
+  title: {
+    type: 'string',
+    required: true,
+  },
+  description: {
+    type: 'string',
+  },
+  cover: {
+    type: 'string',
+  },
 };
 
 const baseComputedFields: ComputedFields = {
@@ -24,6 +43,10 @@ const baseComputedFields: ComputedFields = {
     type: 'string',
     resolve: doc => doc.description ?? doc.title,
   },
+  cover: {
+    type: 'string',
+    resolve: doc => processCoverImage(doc.cover),
+  },
 };
 
 export const Page = defineDocumentType(() => ({
@@ -31,13 +54,7 @@ export const Page = defineDocumentType(() => ({
   filePathPattern: `pages/**/*.mdx`,
   contentType: 'mdx',
   fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    description: {
-      type: 'string',
-    },
+    ...baseFields,
   },
   computedFields: {
     ...baseComputedFields,
@@ -49,13 +66,7 @@ export const Post = defineDocumentType(() => ({
   filePathPattern: `posts/**/*.mdx`,
   contentType: 'mdx',
   fields: {
-    title: {
-      type: 'string',
-      required: true,
-    },
-    description: {
-      type: 'string',
-    },
+    ...baseFields,
     date: {
       type: 'string',
       required: true,

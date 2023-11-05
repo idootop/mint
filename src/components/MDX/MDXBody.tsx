@@ -12,16 +12,12 @@ import { BaseImage } from '../Image/BaseImage';
 import { LinkExternal } from './LinkExternal';
 
 const components: MDXComponents = {
-  a: props => {
-    return <LinkExternal {...props} />;
-  },
-  img: ({ src, alt }) => {
-    return <BaseImage src={src} alt={alt} />;
-  },
+  a: LinkExternal,
+  img: BaseImage,
+  BannerImage,
   pre: ({ children }) => {
     return <CodeCard>{children}</CodeCard>;
   },
-  BannerImage,
 };
 
 export function MDXBody(props: { children: string }) {
