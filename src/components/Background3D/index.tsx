@@ -41,7 +41,7 @@ export function Background3D({ children, isMobile, isReady }) {
         width="100%"
         height="100%"
         opacity={loaded ? 1 : 0}
-        className="ease500"
+        transition="all 500ms ease"
       >
         <Canvas
           gl={{ preserveDrawingBuffer: true }}
@@ -69,7 +69,7 @@ export function Background3D({ children, isMobile, isReady }) {
         bottom="0"
         width="100%"
         opacity={loaded ? 1 : 0}
-        className="ease500"
+        transition="all 500ms ease"
       >
         {isReady && loaded && <Cite isMobile={isMobile} />}
       </Position>

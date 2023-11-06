@@ -7,8 +7,8 @@ import type { MDXComponents } from 'mdx/types';
 import { useMDXComponent } from 'next-contentlayer/hooks';
 
 import { CodeCard } from '../Code/CodeCard';
-import { BannerImage } from '../Image/BannerImage';
-import { BaseImage } from '../Image/BaseImage';
+import { BannerImage } from '../Images/BannerImage';
+import { BaseImage } from '../Images/BaseImage';
 import { LinkExternal } from './LinkExternal';
 
 const components: MDXComponents = {

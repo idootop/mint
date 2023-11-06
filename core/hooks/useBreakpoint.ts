@@ -59,5 +59,7 @@ export const useBreakpoint = (): Partial<DeviceSize> => {
     // 然后再初始化 store 的值，触发 client 端更新
     initScreenReSizeListener();
   }, []);
-  return breakpoint ? { ...breakpoint, isReady: true } : { isReady: false };
+  return breakpoint
+    ? { ...breakpoint, isReady: true }
+    : { isMobile: true, isReady: false }; // 默认移动端（优先）
 };

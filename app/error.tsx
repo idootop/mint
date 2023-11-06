@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { Center } from '@/core/components/Flex';
 import { kBodyHeight } from '@/src/components/Layouts/sizes';
+import { CardText } from '@/src/components/Texts/CardText';
 
 import styles from './styles.module.css';
 
@@ -28,15 +29,15 @@ export default function ErrorPage({
       onClick={() => reset()}
       cursor="pointer"
     >
-      <p
+      <CardText
         className={styles.shake}
         style={{
-          fontSize: '64px',
+          fontSize: '32px',
           marginBottom: '12px',
         }}
       >
-        ❌
-      </p>
+        Error
+      </CardText>
       <p>出错了，点击重试</p>
     </Center>
   );
