@@ -1,14 +1,15 @@
 'use client';
 
-import { Detailed } from '@react-three/drei';
+import { Detailed, useProgress } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 import { Row } from '@/core/components/Flex';
 import { Stack } from '@/core/components/Stack';
 import { Position } from '@/core/components/Stack/position';
 import { range } from '@/core/utils/base';
+import { useStore } from '@/core/utils/store/useStore';
 
 import { LargeRock } from './Rock';
 import styles from './styles.module.css';
@@ -17,14 +18,31 @@ const easing = x => Math.sqrt(1 - Math.pow(x - 1, 2));
 const randomZ = depth =>
   -1 * Math.round(easing(THREE.MathUtils.randFloatSpread(1)) * depth);
 
+export const kBackground3DLoadedKey = 'kBackground3DLoaded';
+
 export function Background3D({ children, isMobile, isReady }) {
   const count = isMobile ? 40 : 100;
   const depth = isMobile ? 50 : 50;
   const speed = isMobile ? 2 : 2;
+  const { active } = useProgress();
+  const [loaded, setLoaded] = useStore('kBackground3DLoaded');
+  useEffect(() => {
+    if (active && !loaded) {
+      setTimeout(() => {
+        setLoaded(true);
+      }, 100);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
   return (
     <Stack>
       {children}
-      <Position width="100%" height="100%">
+      <Position
+        width="100%"
+        height="100%"
+        opacity={loaded ? 1 : 0}
+        className="ease500"
+      >
         <Canvas
           gl={{ preserveDrawingBuffer: true }}
           dpr={[2, 3]}
@@ -47,8 +65,13 @@ export function Background3D({ children, isMobile, isReady }) {
           ))}
         </Canvas>
       </Position>
-      <Position bottom="0" width="100%">
-        {isReady && <Cite isMobile={isMobile} />}
+      <Position
+        bottom="0"
+        width="100%"
+        opacity={loaded ? 1 : 0}
+        className="ease500"
+      >
+        {isReady && loaded && <Cite isMobile={isMobile} />}
       </Position>
     </Stack>
   );
