@@ -3,45 +3,43 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Expand } from '@/core/components/Flex';
+import { Expand, Row } from '@/core/components/Flex';
 
 import { IconGithub, IconLogo } from '../Icons';
-import { kPageMaxWidth, kPagePadding } from './sizes';
+import { kHeaderHeight, kPageMaxWidth, kPagePadding } from './sizes';
 import styles from './styles.module.css';
 
 export const Header = () => {
   return (
-    <header
-      style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100%',
-        margin: '0 auto',
-        padding: kPagePadding,
-        maxWidth: kPageMaxWidth,
-      }}
-    >
-      <Link href="/">
-        <IconLogo
-          style={{
-            borderRadius: '50%',
-          }}
-        />
-      </Link>
-      <Expand width="100%" alignItems="center" justifyContent="center">
-        <LinkItem href="/">首页</LinkItem>
-        <LinkItem href="/posts">博客</LinkItem>
-        <LinkItem href="/about">关于</LinkItem>
-      </Expand>
-      <Link
-        className={styles.github}
-        href="https://github.com/idootop"
-        target="_blank"
+    <header className={styles.header}>
+      <Row
+        style={{
+          margin: '0 auto',
+          padding: `0 ${kPagePadding}px`,
+          height: kHeaderHeight,
+          maxWidth: kPageMaxWidth,
+        }}
       >
-        <IconGithub />
-      </Link>
+        <Link href="/">
+          <IconLogo
+            style={{
+              borderRadius: '50%',
+            }}
+          />
+        </Link>
+        <Expand width="100%" alignItems="center" justifyContent="center">
+          <LinkItem href="/">首页</LinkItem>
+          <LinkItem href="/posts">博客</LinkItem>
+          <LinkItem href="/about">关于</LinkItem>
+        </Expand>
+        <Link
+          className={styles.github}
+          href="https://github.com/idootop"
+          target="_blank"
+        >
+          <IconGithub />
+        </Link>
+      </Row>
     </header>
   );
 };

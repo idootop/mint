@@ -1,4 +1,4 @@
-import { kPageMaxWidth, kPagePadding } from './sizes';
+import { kFooterHeight, kPageMaxWidth } from './sizes';
 
 export const Footer = () => {
   return (
@@ -10,8 +10,8 @@ export const Footer = () => {
         justifyContent: 'center',
         width: '100%',
         margin: '0 auto',
-        padding: kPagePadding,
         maxWidth: kPageMaxWidth,
+        height: kFooterHeight,
         fontSize: '14px',
         color: 'rgba(0, 0, 0, 0.4)',
       }}

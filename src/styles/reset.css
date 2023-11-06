@@ -13,11 +13,6 @@
   margin: 0;
 }
 
-html,
-body {
-  height: 100%;
-}
-
 * {
   line-height: calc(1em + 0.5rem);
 }
