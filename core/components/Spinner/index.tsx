@@ -31,7 +31,7 @@ export const Spinner = (props?: SpinnerProps) => {
   };
   const boxProps = getBoxProps({
     ...props,
-    ...{ style, className: styles.spinner },
+    ...{ style, className: styles.spinner, background: 'transparent' },
   });
 
   const [inited, setInited] = useState(delay ? false : true);
