@@ -2,7 +2,7 @@
 
 import { Detailed, useProgress } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import * as THREE from 'three';
 
 import { Row } from '@/core/components/Flex';
@@ -24,16 +24,13 @@ export function Background3D({ children, isMobile, isReady }) {
   const count = isMobile ? 40 : 100;
   const depth = isMobile ? 50 : 50;
   const speed = isMobile ? 2 : 2;
-  const { active } = useProgress();
+  const { active: loading } = useProgress();
   const [loaded, setLoaded] = useStore('kBackground3DLoaded');
-  useEffect(() => {
-    if (active && !loaded) {
-      setTimeout(() => {
-        setLoaded(true);
-      }, 100);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
+  if (!loading && !loaded) {
+    setTimeout(() => {
+      setLoaded(true);
+    }, 100);
+  }
   return (
     <Stack>
       {children}

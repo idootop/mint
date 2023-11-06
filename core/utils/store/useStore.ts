@@ -3,50 +3,64 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { isNotEqual } from '../diff';
 
-let _id = 0;
-export const newId = () => (_id++).toString();
-export const useId = () => useInit(() => newId());
-
-const _stores: Record<
+type GlobalStates = Record<
   string,
   { data: any; rebuilds: Record<string, () => void> }
-> = {};
+>;
 
-export const store = {
+class GlobalStore {
+  _id = 0;
+  newId = () => (this._id++).toString();
+  useId = () => useInit(() => this.newId());
+
+  __stores: GlobalStates = {};
+
+  get _stores(): GlobalStates {
+    if (typeof window === 'undefined') {
+      return this.__stores;
+    }
+    if (!window['__global_states__']) {
+      window['__global_states__'] = this.__stores;
+    }
+    return window['__global_states__'];
+  }
+
   get<T = any>(key: string): T | undefined {
-    return _stores[key]?.data;
-  },
+    return this._stores[key]?.data;
+  }
   set(key: string, data: any) {
-    if (_stores[key]) {
-      if (isNotEqual(_stores[key].data, data)) {
-        _stores[key].data = data;
-        Object.values(_stores[key].rebuilds).forEach(rebuild => rebuild());
+    if (this._stores[key]) {
+      if (isNotEqual(this._stores[key].data, data)) {
+        this._stores[key].data = data;
+        Object.values(this._stores[key].rebuilds).forEach(rebuild => rebuild());
       }
     } else {
-      _stores[key] = {
+      this._stores[key] = {
         data: data,
         rebuilds: {},
       };
     }
-  },
+  }
   _addRebuildCallback(key: string, id: string, rebuild: () => void) {
-    if (_stores[key]) {
-      _stores[key].rebuilds[id] = rebuild;
+    if (this._stores[key]) {
+      this._stores[key].rebuilds[id] = rebuild;
     } else {
-      _stores[key] = {
+      this._stores[key] = {
         data: undefined,
         rebuilds: {
           [id]: rebuild,
         },
       };
     }
-  },
+  }
   _removeRebuildCallback(key: string, id: string) {
-    if (_stores[key]) {
-      delete _stores[key].rebuilds[id];
+    if (this._stores[key]) {
+      delete this._stores[key].rebuilds[id];
     }
-  },
-};
+  }
+}
+
+export const store = new GlobalStore();
 
 export const useInit = <T>(fn: () => T, deps?: any[]): T => {
   const ref = useRef<any>({
@@ -82,7 +96,7 @@ export const useStore = <T = any>(
 ): [T | undefined, (newData: T | undefined) => void, () => T | undefined] => {
   useProvider(key, data);
   const ref = useRef({
-    id: newId(),
+    id: store.newId(),
     rebuild: undefined as any,
   });
   const currentData = () => [
@@ -164,7 +178,7 @@ export const useConsumer = <T = any>(
 
 export const useProvider = <T>(key: string, data: T | undefined) => {
   useInit(() => {
-    if (!_stores[key]) {
+    if (!store._stores[key]) {
       store.set(key, data);
     }
   }, []);
