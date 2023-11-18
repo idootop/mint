@@ -13,7 +13,7 @@
 }
 
 .highlight-line {
-  background-color: rgba(55, 65, 81, 0.8); 
+  background-color: rgba(55, 65, 81, 0.5); 
 }
 
 .line-number::before {
