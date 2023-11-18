@@ -1,10 +1,11 @@
 'use client';
 
+import { useXState } from 'xsta';
+
 import { Center } from '@/core/components/Flex';
 import { Spinner } from '@/core/components/Spinner';
 import { useBreakpoint } from '@/core/hooks/useBreakpoint';
 import { useLocation } from '@/core/hooks/useLocation';
-import { useStore } from '@/core/utils/store/useStore';
 import { kHeaderHeight } from '@/src/components/Layouts/sizes';
 import { CardText } from '@/src/components/Texts/CardText';
 
@@ -17,7 +18,7 @@ import styles from './styles.module.css';
 export default function Index() {
   const { isMobile, isReady } = useBreakpoint();
   const domain = useLocation()?.hostname?.replace('www.', '');
-  const [loaded] = useStore(kBackground3DLoadedKey);
+  const [loaded] = useXState(kBackground3DLoadedKey);
   // 等待页面加载完毕后，再改变页面高度
   const bodyHeight = `calc(100vh - ${kHeaderHeight}px)`;
   return (

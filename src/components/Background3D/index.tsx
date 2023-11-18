@@ -4,12 +4,12 @@ import { Detailed, useProgress } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
 import * as THREE from 'three';
+import { useXState } from 'xsta';
 
 import { Row } from '@/core/components/Flex';
 import { Stack } from '@/core/components/Stack';
 import { Position } from '@/core/components/Stack/position';
 import { range } from '@/core/utils/base';
-import { useStore } from '@/core/utils/store/useStore';
 
 import { LargeRock } from './Rock';
 import styles from './styles.module.css';
@@ -25,7 +25,7 @@ export function Background3D({ children, isMobile, isReady }) {
   const depth = isMobile ? 50 : 50;
   const speed = isMobile ? 2 : 2;
   const { active: loading } = useProgress();
-  const [loaded, setLoaded] = useStore('kBackground3DLoaded');
+  const [loaded, setLoaded] = useXState('kBackground3DLoaded');
   if (!loading && !loaded) {
     setTimeout(() => {
       setLoaded(true);

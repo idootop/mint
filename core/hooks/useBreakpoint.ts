@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-
-import { store, useConsumer } from '../utils/store/useStore';
+import { useXState, XSta } from 'xsta';
 
 const _getBreakpoint = () => {
   const width = document.body.clientWidth;
@@ -44,17 +43,17 @@ const kScreenReSizeListenerKey = 'kScreenReSizeListenerKey';
 let _initScreenReSizeListener = false;
 const initScreenReSizeListener = () => {
   if (!_initScreenReSizeListener) {
-    store.set(kScreenReSizeListenerKey, _getBreakpoint());
+    XSta.set(kScreenReSizeListenerKey, _getBreakpoint());
     window.addEventListener('resize', () => {
-      store.set(kScreenReSizeListenerKey, _getBreakpoint());
+      XSta.set(kScreenReSizeListenerKey, _getBreakpoint());
     });
     _initScreenReSizeListener = true;
   }
 };
 
 export const useBreakpoint = (): Partial<DeviceSize> => {
-  // 要先等 useConsumer 注册 rebuild 回调
-  const [breakpoint] = useConsumer(kScreenReSizeListenerKey);
+  // 要先等 useXState 注册 rebuild 回调
+  const [breakpoint] = useXState(kScreenReSizeListenerKey);
   useEffect(() => {
     // 然后再初始化 store 的值，触发 client 端更新
     initScreenReSizeListener();

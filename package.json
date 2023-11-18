@@ -1,6 +1,6 @@
 {
   "name": "mint",
-  "description": "薄荷的花语是：永不消逝的爱 ❤️",
+  "description": "薄荷的花语是：永不消逝的爱",
   "version": "1.0.0",
   "private": true,
   "type": "module",
@@ -20,7 +20,8 @@
     "next": "^14.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.158.0"
+    "three": "^0.158.0",
+    "xsta": "^1.0.2"
   },
   "devDependencies": {
     "@mdx-js/loader": "^2.3.0",
