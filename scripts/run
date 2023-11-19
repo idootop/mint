@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+for i in "$@"; do
+    if ! [ -n "$command_" ] ; then
+        command_=$i
+    else
+        if ! [ -n "$commands_" ] ; then
+            commands_=($i)
+        else
+            commands_+=($i)
+        fi
+    fi
+done
+
+if [ -n "$command_" ] ; then
+    node --experimental-specifier-resolution=node \
+        --loader ./scripts/esm-loader.js \
+        -r tsconfig-paths/register \
+        -r ./scripts/disable-experimental-warning.cjs \
+        ${command_} ${commands_[*]}
+fi

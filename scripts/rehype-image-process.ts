@@ -7,7 +7,29 @@ import download from 'download';
 import sharp from 'sharp';
 import { visit } from 'unist-util-visit';
 
+import { toSet } from '../core/utils/base';
+import { deleteFile, readJSON, writeJSON } from '../core/utils/io';
 import { isLocalAsset, resolveLocalPath } from '../src/utils/assets';
+
+export const kImageCachePath = '.imagecache';
+export const kPublicDir = 'public';
+export const kImageDownloadDir = 'downloads';
+export const kImageCompressionDir = 'compressions';
+
+let imageCaches;
+export const addImageCache = async (
+  checksum: string,
+  type: 'downloads' | 'compressions',
+) => {
+  if (!imageCaches) {
+    imageCaches = (await readJSON(kImageCachePath)) ?? {
+      downloads: [],
+      compressions: [],
+    };
+  }
+  imageCaches[type] = toSet([...imageCaches[type], checksum]);
+  return await writeJSON(kImageCachePath, imageCaches);
+};
 
 const kRootDir = process.cwd();
 
@@ -27,18 +49,21 @@ const isReactImage = node => {
   );
 };
 
-export const rehypeImageProcess = () => (tree, file, done) => {
-  const tasks: Promise<void>[] = [];
-  visit(tree, ['element', 'mdxJsxFlowElement'], node => {
-    if (
-      isReactImage(node) ||
-      (node.tagName === 'img' && node.properties?.src)
-    ) {
-      tasks.push(processImage(node));
-    }
-  });
-
-  Promise.all(tasks).then(() => done());
+export const rehypeImageProcess = () => {
+  deleteFile(kImageCachePath);
+  return async (tree, file, next) => {
+    const tasks: Promise<void>[] = [];
+    visit(tree, ['element', 'mdxJsxFlowElement'], node => {
+      if (
+        isReactImage(node) ||
+        (node.tagName === 'img' && node.properties?.src)
+      ) {
+        tasks.push(processImage(node));
+      }
+    });
+    await Promise.all(tasks).catch(() => undefined);
+    next();
+  };
 };
 
 const processImage = async _image => {
@@ -94,8 +119,8 @@ const processImage = async _image => {
 const compressImage = async (image, checksum) => {
   const { data, format, size } = image;
   const sharpImage = await sharp(data);
-  const targetPath = path.join('/compressions', checksum + '.webp');
-  const fullPath = path.join(kRootDir, 'public', targetPath);
+  const targetPath = path.join('/' + kImageCompressionDir, checksum + '.webp');
+  const fullPath = path.join(kRootDir, kPublicDir, targetPath);
   if (size < 100) {
     // 不需要压缩 100 KB 以下的图片
     // console.log(`✅ 图片无需压缩 ${image.properties.src}`);
@@ -129,6 +154,7 @@ const compressImage = async (image, checksum) => {
     height = m.height;
   }
   // console.log(`✅ 图片已压缩 ${fullPath}`);
+  await addImageCache(checksum, 'compressions');
   return {
     width,
     height,
@@ -145,7 +171,7 @@ const getImageData = async image => {
   if (isLocalAsset(targetPath)) {
     // 本地图片
     targetPath = resolveLocalPath(targetPath);
-    fullPath = path.join(kRootDir, 'public', targetPath);
+    fullPath = path.join(kRootDir, kPublicDir, targetPath);
     try {
       data = await readFile(fullPath);
     } catch (_) {
@@ -156,8 +182,8 @@ const getImageData = async image => {
     // 网络图片
     checksum = await hashSha256(targetPath);
     // 无论原始图片是什么格式，一律使用 .webp 扩展名（方便预览图片内容）
-    targetPath = path.join('/downloads', checksum + '.webp');
-    fullPath = path.join(kRootDir, 'public', targetPath);
+    targetPath = path.join('/' + kImageDownloadDir, checksum + '.webp');
+    fullPath = path.join(kRootDir, kPublicDir, targetPath);
     if (!existsSync(fullPath)) {
       // 下载图片到本地
       console.log(`🔥 开始下载图片 ${image.properties.src}`);
@@ -182,6 +208,7 @@ const getImageData = async image => {
     } else {
       data = await readFile(fullPath);
     }
+    await addImageCache(checksum, 'downloads');
   }
   return {
     data,

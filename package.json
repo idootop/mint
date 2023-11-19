@@ -9,8 +9,9 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "dev": "contentlayer build && next dev",
-    "build": "contentlayer build && next build",
+    "compile": "contentlayer build --clearCache && ./scripts/run scripts/remove-unused-image.ts",
+    "dev": "pnpm compile && next dev",
+    "build": "pnpm compile && next build",
     "preview": "pnpm build && http-server out -c-1",
     "deploy": "vercel deploy --prod"
   },
