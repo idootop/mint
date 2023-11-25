@@ -17,7 +17,7 @@ export default function NotFound() {
     >
       <Column style={{ height: kBodyHeight, justifyContent: 'center' }}>
         <CardText
-          className={styles.shake}
+          className={styles.breathing}
           style={{
             fontSize: '32px',
             marginBottom: '12px',

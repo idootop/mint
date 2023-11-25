@@ -25,7 +25,7 @@ export default function Index() {
     <Background3D isMobile={isMobile} isReady={isReady}>
       <Center height={bodyHeight}>
         <CardText
-          className={styles.shake}
+          className={styles.breathing}
           style={{
             opacity: loaded ? 1 : 0,
             width: loaded ? 'auto' : 0,

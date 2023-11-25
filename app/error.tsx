@@ -30,7 +30,7 @@ export default function ErrorPage({
       cursor="pointer"
     >
       <CardText
-        className={styles.shake}
+        className={styles.breathing}
         style={{
           fontSize: '32px',
           marginBottom: '12px',

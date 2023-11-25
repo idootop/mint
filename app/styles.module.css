@@ -37,3 +37,19 @@
   backface-visibility: hidden;
   perspective: 1000px;
 }
+
+@keyframes breathe {
+  0% {
+    box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.3);
+  }
+  100% {
+    box-shadow: 0px 10px 10px 0px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.breathing {
+  animation: breathe 3s infinite;
+}
