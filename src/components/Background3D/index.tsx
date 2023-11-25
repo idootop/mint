@@ -80,7 +80,7 @@ function Model({ index, z, speed = 2 }) {
   const { width, height } = viewport.getCurrentViewport(camera, [0, 0, z]);
 
   const randomX = () => THREE.MathUtils.randFloatSpread(1 * width);
-  const randomY = () => THREE.MathUtils.randFloatSpread(2 * height);
+  const randomY = () => THREE.MathUtils.randFloatSpread(3 * height);
 
   const [data] = useState({
     x: randomX(),
@@ -99,9 +99,9 @@ function Model({ index, z, speed = 2 }) {
         data.z, // z 坐标不变
       );
     }
-    if (data.y > height) {
+    if (data.y > 1.5 * height) {
       // 飞出屏幕顶部，重新回到底部
-      data.y = -height;
+      data.y = 1.5 * -height;
       data.x = randomX(); // 随机 x 坐标
     }
     ref.current.rotation.set(
