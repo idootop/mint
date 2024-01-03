@@ -13,7 +13,7 @@
     "dev": "pnpm compile && next dev",
     "build": "pnpm compile && next build",
     "preview": "pnpm build && http-server out -c-1",
-    "deploy": "vercel deploy --prod"
+    "deploy": "coscli sync out/ cos://mint/ -r -c .cos.yaml"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.10",

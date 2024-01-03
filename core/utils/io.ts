@@ -5,6 +5,8 @@ import { jsonDecode, jsonEncode } from './base';
 
 export const kRoot = process.cwd();
 
+export const kEnvs = process.env as any;
+
 export const exists = (filePath: string) => fs.existsSync(filePath);
 
 export const deleteFile = (filePath: string) => {
