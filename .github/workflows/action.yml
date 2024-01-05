@@ -1,0 +1,71 @@
+name: 'Deploy Mint'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⚡️ Checkout
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@v2
+        name: 🔥 Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: 👀 Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - uses: actions/cache@v3
+        name: ♻️ Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: ☀️ Install dependencies
+        run: pnpm install
+
+      - name: 🔥 网站构建
+        run: pnpm build
+
+      - name: 🔥 产物上传
+        env:
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+          PASSWD: ${{ secrets.PASSWD }}
+        run: |
+          echo "🔥 产物上传中..."
+          ftp -v -n $HOST <<EOF
+          user $USER $PASSWD
+          passive
+          binary
+          hash
+          cd /temp
+          lcd out
+          mput *
+          EOF
+          echo "✅ 产物上传完毕!"
+
+      - name: 🔥 网站更新
+        env:
+          WEBHOOK: ${{ secrets.WEBHOOK }}
+        run: |
+          echo "🔥 网站更新中..."
+          curl -k "$WEBHOOK"
+          sleep 3
+          echo "✅ 网站更新完毕!"
