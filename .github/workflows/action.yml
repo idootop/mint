@@ -50,14 +50,15 @@ jobs:
           PASSWD: ${{ secrets.PASSWD }}
         run: |
           echo "🔥 产物上传中..."
+          tar -czvf out.tar.gz out
           ftp -v -n $HOST <<EOF
           user $USER $PASSWD
           passive
           binary
           hash
           cd /temp
-          lcd out
-          mput *
+          put out.tar.gz
+          bye
           EOF
           echo "✅ 产物上传完毕!"
 
