@@ -28,7 +28,7 @@ export const addImageCache = async (
     };
   }
   imageCaches[type] = toSet([...imageCaches[type], checksum]);
-  return await writeJSON(kImageCachePath, imageCaches);
+  return writeJSON(kImageCachePath, imageCaches);
 };
 
 const kRootDir = process.cwd();
@@ -49,8 +49,16 @@ const isReactImage = node => {
   );
 };
 
+let isFristDelete = true;
+function deleteFileOnce() {
+  if (isFristDelete) {
+    deleteFile(kImageCachePath);
+    isFristDelete = false;
+  }
+}
+
 export const rehypeImageProcess = () => {
-  deleteFile(kImageCachePath);
+  deleteFileOnce();
   return async (tree, file, next) => {
     const tasks: Promise<void>[] = [];
     visit(tree, ['element', 'mdxJsxFlowElement'], node => {
@@ -85,7 +93,6 @@ const processImage = async _image => {
     return;
   }
   const { data, checksum, targetPath } = imgPath;
-
   const imgProps = await getImageProps(data, targetPath);
   if (!imgProps) {
     return;

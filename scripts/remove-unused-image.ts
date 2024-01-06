@@ -7,9 +7,6 @@ import {
 } from './rehype-image-process';
 
 async function main() {
-  if (process.env.RUNTIME === 'vercel') {
-    return; // 在 vercel 上部署时，无需再重复删除
-  }
   const { downloads = [], compressions = [] } =
     (await readJSON(kImageCachePath)) ?? {};
   const downloadsMap = downloads.reduce((pre, v) => {
