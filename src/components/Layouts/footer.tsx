@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { kFooterHeight, kPageMaxWidth } from './sizes';
 
 export const Footer = () => {
@@ -16,7 +18,11 @@ export const Footer = () => {
         color: 'rgba(0, 0, 0, 0.4)',
       }}
     >
-      © {new Date().getFullYear()} 乂乂又又. All rights reserved.
+      © 2017-{new Date().getFullYear()}&nbsp;
+      <Link href="/" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
+        Del.Wang
+      </Link>
+      . All rights reserved.
     </footer>
   );
 };
