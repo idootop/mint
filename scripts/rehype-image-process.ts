@@ -3,7 +3,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-import download from 'download';
+import _download from 'download';
 import sharp from 'sharp';
 import { visit } from 'unist-util-visit';
 
@@ -33,29 +33,20 @@ export const addImageCache = async (
 
 const kRootDir = process.cwd();
 
-export const processCoverImage = async cover => {
-  const res = await processImage({
+export const processImage = async (cover): Promise<{ src: string }> => {
+  if (!cover) {
+    return { src: cover };
+  }
+  const res = await _processImage({
     properties: {
       src: cover,
     },
   });
-  return res?.properties?.src ?? cover;
+  return {
+    ...res?.properties,
+    src: res?.properties?.src ?? cover,
+  };
 };
-
-const isReactImage = node => {
-  return (
-    node.type === 'mdxJsxFlowElement' &&
-    node.attributes?.some(e => e.name === 'src' && e.value)
-  );
-};
-
-let isFristDelete = true;
-function deleteFileOnce() {
-  if (isFristDelete) {
-    deleteFile(kImageCachePath);
-    isFristDelete = false;
-  }
-}
 
 export const rehypeImageProcess = () => {
   deleteFileOnce();
@@ -66,7 +57,7 @@ export const rehypeImageProcess = () => {
         isReactImage(node) ||
         (node.tagName === 'img' && node.properties?.src)
       ) {
-        tasks.push(processImage(node));
+        tasks.push(_processImage(node));
       }
     });
     await Promise.all(tasks).catch(() => undefined);
@@ -74,7 +65,7 @@ export const rehypeImageProcess = () => {
   };
 };
 
-const processImage = async _image => {
+const _processImage = async _image => {
   let image;
   if (isReactImage(_image)) {
     const srcAttribute = _image.attributes.find(
@@ -193,25 +184,12 @@ const getImageData = async image => {
     fullPath = path.join(kRootDir, kPublicDir, targetPath);
     if (!existsSync(fullPath)) {
       // 下载图片到本地
-      console.log(`🔥 开始下载图片 ${image.properties.src}`);
-      try {
-        data = await download(image.properties.src, {
-          retry: 3,
-          decompress: true,
-          followRedirect: true,
-          headers: {
-            'User-Agent':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0',
-            Referer: new URL(image.properties.src).origin,
-          },
-        });
-        await mkdir(path.dirname(fullPath), { recursive: true });
-        await writeFile(fullPath, data);
-        console.log(`✅ 图片下载成功 ${image.properties.src}`);
-      } catch (error) {
-        console.log(`❌ 图片下载失败 ${image.properties.src}\n`, error);
+      data = await download(image.properties.src);
+      if (!data) {
         return;
       }
+      await mkdir(path.dirname(fullPath), { recursive: true });
+      await writeFile(fullPath, data);
     } else {
       data = await readFile(fullPath);
     }
@@ -280,3 +258,51 @@ const checksumFile = async (filePathOrData: Buffer | string) => {
   // 获取本地文件文件 hash
   return hashSha256(filePathOrData);
 };
+
+const pendingDownloads = {
+  // id: future,
+};
+const download = async (url: string) => {
+  if (pendingDownloads[url]) {
+    return pendingDownloads[url];
+  }
+  pendingDownloads[url] = new Promise(resolve => {
+    console.log(`🔥 开始下载图片 ${url}`);
+    _download(url, {
+      retry: 3,
+      decompress: true,
+      followRedirect: true,
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0',
+        Referer: new URL(url).origin,
+      },
+    })
+      .catch(e => {
+        console.log(`❌ 图片下载失败 ${url}\n`, e);
+        resolve(undefined);
+      })
+      .then(e => {
+        if (e) {
+          resolve(e);
+          console.log(`✅ 图片下载成功 ${url}`);
+          delete pendingDownloads[url];
+        }
+      });
+  });
+};
+
+const isReactImage = node => {
+  return (
+    node.type === 'mdxJsxFlowElement' &&
+    node.attributes?.some(e => e.name === 'src' && e.value)
+  );
+};
+
+let isFristDelete = true;
+function deleteFileOnce() {
+  if (isFristDelete) {
+    deleteFile(kImageCachePath);
+    isFristDelete = false;
+  }
+}

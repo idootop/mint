@@ -8,10 +8,10 @@
   }
 }
 
-.year + .year {
+.category + .category {
   margin-top: 20px;
 }
 
-.post {
+.project {
   margin-top: 15px;
 }

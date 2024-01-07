@@ -77,6 +77,4 @@ export function isBrowser() {
   return typeof window !== 'undefined';
 }
 
-export function isDev(): boolean {
-  return process.env.NODE_ENV === 'development';
-}
+export const kIsDev = process.env.NODE_ENV === 'development';

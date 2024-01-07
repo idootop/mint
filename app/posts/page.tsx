@@ -18,6 +18,7 @@ export default function Page() {
 
 const YearPost = (props: YearPosts) => {
   const { year, posts } = props;
+  if (posts.length < 1) return;
   return (
     <Column
       className={styles.year}

@@ -8,7 +8,7 @@ import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
 import {
-  processCoverImage,
+  processImage,
   rehypeImageProcess,
 } from './scripts/rehype-image-process';
 
@@ -39,27 +39,11 @@ const baseComputedFields: ComputedFields = {
     type: 'string',
     resolve: doc => doc._raw.flattenedPath.split('/').slice(1).join('/'),
   },
-  description: {
-    type: 'string',
-    resolve: doc => doc.description ?? doc.title,
-  },
   cover: {
     type: 'string',
-    resolve: doc => processCoverImage(doc.cover),
+    resolve: async doc => (await processImage(doc.cover)).src,
   },
 };
-
-export const Page = defineDocumentType(() => ({
-  name: 'Page',
-  filePathPattern: `pages/**/*.mdx`,
-  contentType: 'mdx',
-  fields: {
-    ...baseFields,
-  },
-  computedFields: {
-    ...baseComputedFields,
-  },
-}));
 
 export const Post = defineDocumentType(() => ({
   name: 'Post',
@@ -84,8 +68,53 @@ export const Post = defineDocumentType(() => ({
   },
 }));
 
+export const Project = defineDocumentType(() => ({
+  name: 'Project',
+  filePathPattern: `projects/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    emoji: {
+      type: 'string',
+      required: true,
+    },
+    name: {
+      type: 'string',
+      required: true,
+    },
+    date: {
+      type: 'string',
+      required: true,
+    },
+    // 一句话介绍
+    description: {
+      type: 'string',
+      required: true,
+    },
+    // 封面
+    cover: {
+      type: 'string',
+    },
+    // 项目地址
+    url: {
+      type: 'string',
+    },
+    // 分类
+    category: {
+      type: 'string',
+    },
+  },
+  computedFields: {
+    ...baseComputedFields,
+    // 是否有详情页面
+    hasDetail: {
+      type: 'boolean',
+      resolve: doc => doc.body.raw.includes('#'),
+    },
+  },
+}));
+
 export default makeSource({
   contentDirPath: './content',
-  documentTypes: [Page, Post],
+  documentTypes: [Post, Project],
   mdx: mdxConfig,
 });

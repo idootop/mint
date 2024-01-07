@@ -4,15 +4,22 @@ import Link from 'next/link';
 
 import { Column } from '@/core/components/Flex';
 import { MDXBody } from '@/src/components/MDX/MDXBody';
+import { getOGMetadata } from '@/src/utils/site-metadata';
 
 import { getNextPost, getPost, PostProps } from '../allPostsByYear';
 import styles from './styles.module.css';
 
 export async function generateMetadata({ params }): Promise<Metadata> {
   const post = await getPost(params);
+  if (!post) return {};
   return {
-    title: post?.title,
-    description: post?.description,
+    title: post.title,
+    description: post.description,
+    ...(await getOGMetadata({
+      title: post.title,
+      description: post.description,
+      image: post.cover,
+    })),
   };
 }
 
@@ -27,9 +34,9 @@ export default function PostPage({ params }: PostProps) {
 
   return (
     <main className={styles.page}>
-      <h1 className={styles.title}>{post!.title}</h1>
-      <p className={styles.date}>{post!.date}</p>
-      <MDXBody>{post!.body.code}</MDXBody>
+      <h1 className={styles.title}>{post.title}</h1>
+      <p className={styles.date}>{post.date}</p>
+      <MDXBody>{post.body.code}</MDXBody>
       <PostFooter previous={previous} next={next} />
     </main>
   );

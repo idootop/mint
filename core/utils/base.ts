@@ -111,6 +111,19 @@ export function withDefault<T = any>(e: any, defaultValue: T): T {
   return isEmpty(e) ? defaultValue : e;
 }
 
+export function removeEmpty<T = any>(data: T): T {
+  if (Array.isArray(data)) {
+    return data.filter(e => e != undefined) as any;
+  }
+  const res = {} as any;
+  for (const key in data) {
+    if (data[key] != undefined) {
+      res[key] = data[key];
+    }
+  }
+  return res;
+}
+
 export const flattenChildren = (children: any) => {
   return Array.isArray(children)
     ? [].concat(

@@ -20,7 +20,7 @@ const randomZ = depth =>
 
 export const kBackground3DLoadedKey = 'kBackground3DLoaded';
 
-export function Background3D({ children, isMobile, isReady }) {
+export function Background3D({ children, isMobile, isReady, height }) {
   const count = isMobile ? 40 : 100;
   const depth = isMobile ? 50 : 50;
   const speed = isMobile ? 2 : 2;
@@ -32,7 +32,7 @@ export function Background3D({ children, isMobile, isReady }) {
     }, 100);
   }
   return (
-    <Stack>
+    <Stack height={height}>
       {children}
       <Position
         width="100%"

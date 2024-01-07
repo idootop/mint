@@ -6,6 +6,10 @@ export interface YearPosts {
   posts: Post[];
 }
 
+export function isImagePage(post: Post) {
+  return post.title === 'images';
+}
+
 export const allPostsSorted = allPosts.sort((a, b) => {
   return b.date.localeCompare(a.date, undefined, {
     numeric: true,
@@ -17,6 +21,10 @@ const getPostsGroupByYear = () => {
   const posts: YearPosts[] = [];
   let year;
   allPostsSorted.forEach(post => {
+    if (isImagePage(post)) {
+      // 去掉 images 页面
+      return;
+    }
     const _year = post.date.split('-')[0];
     if (_year !== year) {
       posts.push({ year: _year, posts: [post] });
@@ -38,14 +46,18 @@ export interface PostProps {
 
 export function getPost(params: PostProps['params']) {
   const slug = params?.slug?.join('/');
-  return allPosts.find(post => post.slugAsParams === slug);
+  return allPostsSorted.find(post => post.slugAsParams === slug);
 }
 
 export function getNextPost(params: PostProps['params']) {
-  const post = getPost(params);
-  const idx = allPostsSorted.indexOf(post as any);
-  const previous = idx - 1 < 0 ? undefined : allPostsSorted[idx - 1];
-  const next =
-    idx + 1 > allPostsSorted.length - 1 ? undefined : allPostsSorted[idx + 1];
-  return { idx, total: allPostsSorted.length, post, next, previous };
+  const all = allPostsSorted.filter(e => !isImagePage(e));
+  const post = getPost(params)!;
+  if (isImagePage(post)) {
+    // 去掉 images 页面
+    return { idx: 0, total: 0, post };
+  }
+  const idx = all.indexOf(post as any);
+  const previous = idx - 1 < 0 ? undefined : all[idx - 1];
+  const next = idx + 1 > all.length - 1 ? undefined : all[idx + 1];
+  return { idx, total: all.length, post, next, previous };
 }

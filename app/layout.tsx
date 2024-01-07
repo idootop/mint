@@ -2,16 +2,13 @@ import '@/src/styles/reset.css';
 import '@/src/styles/global.css';
 import '@/src/styles/aspect-ratio.css';
 
-import { Metadata, Viewport } from 'next';
+import { Viewport } from 'next';
 
 import { Footer } from '@/src/components/Layouts/footer';
 import { Header } from '@/src/components/Layouts/header';
+import { kSiteMetadata } from '@/src/utils/site-metadata';
 
-export const metadata: Metadata = {
-  referrer: 'no-referrer',
-  title: '乂乂又又',
-  description: '薄荷的花语是：永不消逝的爱 ❤️ ',
-};
+export const metadata = kSiteMetadata;
 
 export const viewport: Viewport = {
   width: 'device-width',

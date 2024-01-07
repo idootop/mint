@@ -1,5 +1,6 @@
 import { CSSProperties, forwardRef, MouseEventHandler, ReactNode } from 'react';
 
+import { removeEmpty } from '../utils/base';
 import { isArray } from '../utils/is';
 
 export interface BaseProps {
@@ -15,6 +16,9 @@ export interface BaseProps {
   // 增强属性
   extStyle?: CSSProperties;
   size?: string | number;
+  alt?: string;
+  placeholder?: any;
+  blurDataURL?: string;
 }
 
 export type BoxProps = CSSProperties & BaseProps;
@@ -30,6 +34,9 @@ export const getBoxProps = (props: BoxProps) => {
     extStyle = {},
     onClick,
     size,
+    alt,
+    placeholder,
+    blurDataURL,
     ...styles
   } = props ?? {};
 
@@ -40,17 +47,20 @@ export const getBoxProps = (props: BoxProps) => {
 
   const className = isArray(_class) ? (_class as any)!.join(' ') : _class;
 
-  return {
+  return removeEmpty({
     id,
     onClick,
     className,
     src,
+    alt,
+    placeholder,
+    blurDataURL,
     style: {
       ...style,
       ...styles,
       ...extStyle,
     },
-  };
+  });
 };
 
 export const Box = forwardRef((props: BoxProps, ref: any) => {

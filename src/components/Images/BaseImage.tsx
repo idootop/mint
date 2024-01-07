@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import Image from 'next/image';
-
+import { Image } from '@/core/components/Image';
 import { isNotEmpty } from '@/core/utils/is';
 import { resolveLocalPath } from '@/src/utils/assets';
 
@@ -31,12 +30,12 @@ export const BaseImage = props => {
               {...restProps}
               src={resolveLocalPath(src)}
               alt={alt}
-              width={width}
-              height={height}
+              width="100%"
+              height="100%"
             />
           </span>
         ) : (
-          <img
+          <Image
             {...restProps}
             src={resolveLocalPath(src)}
             alt={alt}

@@ -4,10 +4,15 @@ import { withContentlayer } from 'next-contentlayer';
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
-  webpack: config => {
+  webpack: (config, ctx) => {
     config.infrastructureLogging = {
       level: 'error',
     };
+    config.plugins.push(
+      new ctx.webpack.IgnorePlugin({
+        resourceRegExp: /^electron$/,
+      }),
+    );
     return config;
   },
 };

@@ -1,5 +1,5 @@
 export const isLocalAsset = (s): s is string => {
-  return s?.startsWith('/public');
+  return s?.startsWith('/public') || !s.includes('//');
 };
 
 /**
@@ -7,7 +7,9 @@ export const isLocalAsset = (s): s is string => {
  */
 export const resolveLocalPath = src => {
   if (isLocalAsset(src)) {
-    src = src.substring(7);
+    if (src.startsWith('/public')) {
+      src = src.substring(7);
+    }
   }
   return src;
 };
