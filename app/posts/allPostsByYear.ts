@@ -6,10 +6,6 @@ export interface YearPosts {
   posts: Post[];
 }
 
-export function isImagePage(post: Post) {
-  return post.title === 'images';
-}
-
 export const allPostsSorted = allPosts.sort((a, b) => {
   return b.date.localeCompare(a.date, undefined, {
     numeric: true,
@@ -21,8 +17,7 @@ const getPostsGroupByYear = () => {
   const posts: YearPosts[] = [];
   let year;
   allPostsSorted.forEach(post => {
-    if (isImagePage(post)) {
-      // 去掉 images 页面
+    if (post.hide) {
       return;
     }
     const _year = post.date.split('-')[0];
@@ -50,10 +45,9 @@ export function getPost(params: PostProps['params']) {
 }
 
 export function getNextPost(params: PostProps['params']) {
-  const all = allPostsSorted.filter(e => !isImagePage(e));
+  const all = allPostsSorted.filter(e => !e.hide);
   const post = getPost(params)!;
-  if (isImagePage(post)) {
-    // 去掉 images 页面
+  if (post.hide) {
     return { idx: 0, total: 0, post };
   }
   const idx = all.indexOf(post as any);

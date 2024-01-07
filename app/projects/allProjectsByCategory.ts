@@ -19,6 +19,9 @@ const getProjectsGroupByCategory = () => {
   const categoryProjects = {};
   const projects: CategoryProjects[] = [];
   _allProjectsSorted.forEach(project => {
+    if (project.hide) {
+      return;
+    }
     const category = project.category ?? '其他';
     if (!categoryProjects[category]) {
       categoryProjects[category] = [];
@@ -59,17 +62,17 @@ export function getProject(params: ProjectProps['params']) {
 }
 
 export function getNextProject(params: ProjectProps['params']) {
+  const all = allProjectsSorted.filter(e => !e.hide);
   const project = getProject(params)!;
-  const idx = allProjectsSortedWithDetails.indexOf(project as any);
-  const previous =
-    idx - 1 < 0 ? undefined : allProjectsSortedWithDetails[idx - 1];
-  const next =
-    idx + 1 > allProjectsSortedWithDetails.length - 1
-      ? undefined
-      : allProjectsSortedWithDetails[idx + 1];
+  if (project.hide) {
+    return { idx: 0, total: 0, project };
+  }
+  const idx = all.indexOf(project as any);
+  const previous = idx - 1 < 0 ? undefined : all[idx - 1];
+  const next = idx + 1 > all.length - 1 ? undefined : all[idx + 1];
   return {
     idx,
-    total: allProjectsSortedWithDetails.length,
+    total: all.length,
     project,
     next,
     previous,

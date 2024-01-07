@@ -28,6 +28,13 @@ const baseFields: FieldDefs = {
   cover: {
     type: 'string',
   },
+  date: {
+    type: 'string',
+    required: true,
+  },
+  hide: {
+    type: 'boolean',
+  },
 };
 
 const baseComputedFields: ComputedFields = {
@@ -51,10 +58,6 @@ export const Post = defineDocumentType(() => ({
   contentType: 'mdx',
   fields: {
     ...baseFields,
-    date: {
-      type: 'string',
-      required: true,
-    },
     update: {
       type: 'string',
     },
@@ -73,26 +76,10 @@ export const Project = defineDocumentType(() => ({
   filePathPattern: `projects/**/*.mdx`,
   contentType: 'mdx',
   fields: {
+    ...baseFields,
     emoji: {
       type: 'string',
       required: true,
-    },
-    name: {
-      type: 'string',
-      required: true,
-    },
-    date: {
-      type: 'string',
-      required: true,
-    },
-    // 一句话介绍
-    description: {
-      type: 'string',
-      required: true,
-    },
-    // 封面
-    cover: {
-      type: 'string',
     },
     // 项目地址
     url: {

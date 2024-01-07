@@ -17,10 +17,10 @@ export async function generateMetadata({ params }): Promise<Metadata> {
   const project = await getProject(params);
   if (!project) return {};
   return {
-    title: project.name,
+    title: project.title,
     description: project.description,
     ...(await getOGMetadata({
-      title: project.name,
+      title: project.title,
       description: project.description,
       image: project.cover,
     })),
@@ -38,7 +38,7 @@ export default function ProjectPage({ params }: ProjectProps) {
 
   return (
     <main className={styles.page}>
-      <h1 className={styles.title}>{project.name}</h1>
+      <h1 className={styles.title}>{project.title}</h1>
       <p className={styles.date}>{project.date}</p>
       <MDXBody>{project.body.code}</MDXBody>
       <ProjectFooter previous={previous} next={next} />
@@ -83,7 +83,7 @@ const NavItem = (props: { label: string; project: Project }) => {
       >
         {label}
       </span>
-      <Link href={project.slug}>{project.name}</Link>
+      <Link href={project.slug}>{project.title}</Link>
     </Column>
   );
 };

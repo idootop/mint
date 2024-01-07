@@ -14,7 +14,7 @@ export default function Page() {
       {allProjectsSorted.map((project, idx) => {
         return (
           <ProjectItem
-            key={project.name}
+            key={project.title}
             project={project}
             background={idx % 2 !== 0 ? '#fafbfc' : '#fff'}
           />
@@ -50,7 +50,7 @@ const ProjectItem = async (props: { project: Project; background: string }) => {
             color: '#000',
           }}
         >
-          {project.name}
+          {project.title}
         </span>
         <span
           style={{
