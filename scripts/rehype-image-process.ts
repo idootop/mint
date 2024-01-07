@@ -266,7 +266,7 @@ const download = async (url: string) => {
   if (pendingDownloads[url]) {
     return pendingDownloads[url];
   }
-  pendingDownloads[url] = new Promise(resolve => {
+  return (pendingDownloads[url] = new Promise(resolve => {
     console.log(`🔥 开始下载图片 ${url}`);
     _download(url, {
       retry: 3,
@@ -280,16 +280,15 @@ const download = async (url: string) => {
     })
       .catch(e => {
         console.log(`❌ 图片下载失败 ${url}\n`, e);
-        resolve(undefined);
       })
       .then(e => {
+        resolve(e);
         if (e) {
-          resolve(e);
           console.log(`✅ 图片下载成功 ${url}`);
           delete pendingDownloads[url];
         }
       });
-  });
+  }));
 };
 
 const isReactImage = node => {
