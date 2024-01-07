@@ -34,7 +34,7 @@ const YearPost = (props: YearPosts) => {
       <span
         style={{
           fontSize: '18px',
-          fontWeight: '400',
+          fontWeight: '600',
           color: 'rgba(0, 0, 0, 0.3)',
         }}
       >
@@ -60,9 +60,9 @@ const PostItem = (props: { post: Post }) => {
       <Row alignItems="center" width="100%">
         <Expand marginRight="10px">
           <span
+            className={styles.title}
             style={{
               fontSize: '18px',
-              fontWeight: '400',
               color: '#000',
             }}
           >
