@@ -53,9 +53,9 @@ jobs:
           tar -czvf out.tar.gz out
           ftp -v -n $HOST <<EOF
           user $USER $PASSWD
-          passive
-          binary
           hash
+          binary
+          passive
           cd /temp
           put out.tar.gz
           bye
