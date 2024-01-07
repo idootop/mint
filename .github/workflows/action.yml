@@ -51,15 +51,7 @@ jobs:
         run: |
           echo "🔥 产物上传中..."
           tar -czvf out.tar.gz out
-          ftp -v -n $HOST <<EOF
-          user $USER $PASSWD
-          hash
-          binary
-          passive
-          cd /temp
-          put out.tar.gz
-          bye
-          EOF
+          curl -u "$USER:$PASSWD" -T out.tar.gz ftp://$HOST/temp/
           echo "✅ 产物上传完毕!"
 
       - name: 🔥 网站更新
