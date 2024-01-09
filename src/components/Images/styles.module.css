@@ -13,7 +13,7 @@
   width: 100%;
   object-fit: cover;
   border-radius: 14px;
-  max-height: 618px;
+  max-height: 576px;
 }
 
 @media (max-width: 1024px) {

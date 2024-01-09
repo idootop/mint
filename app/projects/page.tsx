@@ -26,8 +26,6 @@ export default function Page() {
 
 const ProjectItem = async (props: { project: Project; background: string }) => {
   const { project, background } = props;
-  project.cover =
-    'https://framerusercontent.com/images/Lqy0klj12zZWSrVNq4F3fDozE.webp?scale-down-to=1024';
   return (
     <Link
       href={project.slug}

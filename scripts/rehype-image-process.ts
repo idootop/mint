@@ -131,8 +131,8 @@ const compressImage = async (image, checksum) => {
   }
   let width, height;
   if (!existsSync(fullPath)) {
-    const w = image.properties.width > 1024 ? 1024 : undefined;
-    const h = image.properties.height > 1024 ? 1024 : undefined;
+    const w = image.properties.width > 1280 ? 1280 : undefined;
+    const h = image.properties.height > 1280 ? 1280 : undefined;
     // 压缩图片
     const buffer = await sharpImage
       .webp({ quality: 75 })
@@ -211,7 +211,7 @@ const getImageProps = async (data, targetPath: string) => {
     return null;
   }
   return {
-    size: size / 1024, //KB
+    size: size / 1280, //KB
     data,
     format,
     properties: {

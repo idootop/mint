@@ -9,7 +9,7 @@ export const BannerImage = props => {
           {...props}
           style={{
             ...props.style,
-            maxHeight: '618px',
+            maxHeight: '576px',
           }}
         />
       </div>

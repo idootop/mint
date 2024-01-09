@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Column } from '@/core/components/Flex';
+import { processImage } from '@/scripts/rehype-image-process';
+import { BannerImage } from '@/src/components/Images/BannerImage';
 import { MDXBody } from '@/src/components/MDX/MDXBody';
 import { getOGMetadata } from '@/src/utils/site-metadata';
 
@@ -33,11 +35,17 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function ProjectPage({ params }: ProjectProps) {
+export default async function ProjectPage({ params }: ProjectProps) {
   const { project, previous, next } = getNextProject(params);
 
   return (
     <main className={styles.page}>
+      {project.cover && (
+        <BannerImage
+          {...await processImage(project.cover)}
+          marginBottom="24px"
+        />
+      )}
       <h1 className={styles.title}>{project.title}</h1>
       <p className={styles.date}>{project.date}</p>
       <MDXBody>{project.body.code}</MDXBody>
