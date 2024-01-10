@@ -1,6 +1,6 @@
 'use client';
 
-import { Detailed, useProgress } from '@react-three/drei';
+import { useProgress } from '@react-three/drei';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -9,7 +9,6 @@ import { useXState } from 'xsta';
 import { Row } from '@/core/components/Flex';
 import { Stack } from '@/core/components/Stack';
 import { Position } from '@/core/components/Stack/position';
-import { range } from '@/core/utils/base';
 
 import { LargeRock } from './Rock';
 import styles from './styles.module.css';
@@ -41,7 +40,6 @@ export function Background3D({ children, isMobile, isReady, height }) {
         transition="all 500ms ease"
       >
         <Canvas
-          gl={{ preserveDrawingBuffer: true }}
           dpr={[2, 3]}
           camera={{
             position: [0, 0, 10],
@@ -111,13 +109,7 @@ function Model({ index, z, speed = 2 }) {
     );
   });
 
-  return (
-    <Detailed ref={ref} distances={[0, 50, 100]}>
-      {range(3).map(i => (
-        <LargeRock key={i} />
-      ))}
-    </Detailed>
-  );
+  return <LargeRock ref={ref} />;
 }
 
 const Cite = ({ isMobile }) => {

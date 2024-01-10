@@ -5,7 +5,6 @@ import { useXState } from 'xsta';
 import { Center } from '@/core/components/Flex';
 import { Spinner } from '@/core/components/Spinner';
 import { useBreakpoint } from '@/core/hooks/useBreakpoint';
-import { kHeaderHeight } from '@/src/components/Layouts/sizes';
 
 import {
   Background3D,
@@ -15,7 +14,7 @@ import {
 export default function Index() {
   const { isMobile, isReady } = useBreakpoint();
   const [loaded] = useXState(kBackground3DLoadedKey);
-  const bodyHeight = `calc(100% - ${kHeaderHeight}px )`;
+  const bodyHeight = `100%`;
   return (
     <>
       <Background3D isMobile={isMobile} isReady={isReady} height={bodyHeight}>

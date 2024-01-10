@@ -10,37 +10,46 @@ import { kHeaderHeight, kPageMaxWidth, kPagePadding } from './sizes';
 import styles from './styles.module.css';
 
 export const Header = () => {
+  const currentPath = usePathname() ?? '';
+  const isHome = currentPath === '/';
   return (
-    <header className={styles.header}>
-      <Row
-        style={{
-          margin: '0 auto',
-          padding: `0 ${kPagePadding}px`,
-          height: kHeaderHeight,
-          maxWidth: kPageMaxWidth,
-        }}
-      >
-        <Link href="/">
-          <IconLogo
-            style={{
-              borderRadius: '50%',
-            }}
-          />
-        </Link>
-        <Expand width="100%" alignItems="center" justifyContent="center">
-          <LinkItem href="/projects">项目</LinkItem>
-          <LinkItem href="/posts">博客</LinkItem>
-          <LinkItem href="/about">关于</LinkItem>
-        </Expand>
-        <Link
-          className={styles.github}
-          href="https://github.com/idootop"
-          target="_blank"
+    <>
+      <header className={styles.header}>
+        <Row
+          style={{
+            margin: '0 auto',
+            padding: `0 ${kPagePadding}px`,
+            height: kHeaderHeight,
+            maxWidth: kPageMaxWidth,
+          }}
         >
-          <IconGithub />
-        </Link>
-      </Row>
-    </header>
+          <Link href="/">
+            <IconLogo
+              style={{
+                borderRadius: '50%',
+              }}
+            />
+          </Link>
+          <Expand width="100%" alignItems="center" justifyContent="center">
+            <LinkItem href="/projects">项目</LinkItem>
+            <LinkItem href="/posts">博客</LinkItem>
+            <LinkItem href="/about">关于</LinkItem>
+          </Expand>
+          <Link
+            className={styles.github}
+            href="https://github.com/idootop"
+            target="_blank"
+          >
+            <IconGithub />
+          </Link>
+        </Row>
+      </header>
+      <div
+        style={{
+          height: isHome ? 0 : kHeaderHeight,
+        }}
+      ></div>
+    </>
   );
 };
 
