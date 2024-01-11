@@ -119,8 +119,8 @@ const compressImage = async (image, checksum) => {
   const sharpImage = await sharp(data);
   const targetPath = path.join('/' + kImageCompressionDir, checksum + '.webp');
   const fullPath = path.join(kRootDir, kPublicDir, targetPath);
-  if (size < 100) {
-    // 不需要压缩 100 KB 以下的图片
+  if (size < 200) {
+    // 不需要压缩 200 KB 以下的图片
     // console.log(`✅ 图片无需压缩 ${image.properties.src}`);
     return {};
   }
