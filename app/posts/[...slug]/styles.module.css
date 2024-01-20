@@ -1,7 +1,7 @@
 .page {
   max-width: 640px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 .title {
@@ -14,10 +14,11 @@
   margin-top: 4px !important;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 960px) {
   .title {
     font-size: 28px !important;
   }
+
   .date {
     font-size: 14px !important;
   }
@@ -32,6 +33,6 @@
   text-decoration: none !important;
 }
 
-.link + .link {
+.link+.link {
   margin-top: 24px;
 }

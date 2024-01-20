@@ -53,6 +53,7 @@ const PostItem = (props: { post: Post }) => {
     <Link
       className={styles.post}
       href={post.slug}
+      target="_blank"
       style={{
         width: '100%',
       }}

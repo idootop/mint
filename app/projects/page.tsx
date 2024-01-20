@@ -29,6 +29,7 @@ const ProjectItem = async (props: { project: Project; background: string }) => {
   return (
     <Link
       href={project.slug}
+      target="_blank"
       style={{
         width: '100%',
       }}

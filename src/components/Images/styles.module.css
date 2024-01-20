@@ -6,20 +6,19 @@
 .inner {
   width: 100vw;
   margin: 0 -100%;
-  max-width: 1024px;
 }
 
 .inner img {
   width: 100%;
   object-fit: cover;
   border-radius: 14px;
-  max-height: 576px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 960px) {
   .inner {
     padding: 0;
   }
+
   .inner img {
     border-radius: 0;
   }

@@ -3,6 +3,8 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Column } from '@/core/components/Flex';
+import { processImage } from '@/scripts/rehype-image-process';
+import { BaseImage } from '@/src/components/Images/BaseImage';
 import { MDXBody } from '@/src/components/MDX/MDXBody';
 import { getOGMetadata } from '@/src/utils/site-metadata';
 
@@ -29,11 +31,12 @@ export async function generateStaticParams() {
   }));
 }
 
-export default function PostPage({ params }: PostProps) {
+export default async function PostPage({ params }: PostProps) {
   const { post, previous, next } = getNextPost(params);
 
   return (
     <main className={styles.page}>
+      {post.cover && <BaseImage {...await processImage(post.cover)} />}
       <h1 className={styles.title}>{post.title}</h1>
       <p className={styles.date}>{post.date}</p>
       <MDXBody>{post.body.code}</MDXBody>

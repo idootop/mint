@@ -40,12 +40,7 @@ export default async function ProjectPage({ params }: ProjectProps) {
 
   return (
     <main className={styles.page}>
-      {project.cover && (
-        <BannerImage
-          {...await processImage(project.cover)}
-          marginBottom="24px"
-        />
-      )}
+      {project.cover && <BannerImage {...await processImage(project.cover)} />}
       <h1 className={styles.title}>{project.title}</h1>
       <p className={styles.date}>{project.date}</p>
       <MDXBody>{project.body.code}</MDXBody>
