@@ -4,7 +4,7 @@ import './prism.css';
 import './highlight.css';
 
 import type { MDXComponents } from 'mdx/types';
-import { useMDXComponent } from 'next-contentlayer/hooks';
+import { useMDXComponent } from 'next-contentlayer2/hooks';
 
 import { CodeCard } from '../Code/CodeCard';
 import { BannerImage } from '../Images/BannerImage';

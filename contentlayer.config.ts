@@ -3,7 +3,7 @@ import {
   defineDocumentType,
   FieldDefs,
   makeSource,
-} from 'contentlayer/source-files';
+} from 'contentlayer2/source-files';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
