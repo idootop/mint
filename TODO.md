@@ -1,0 +1,3 @@
+- Github Action 添加 Nextjs/Contentlayer build cache
+- 考虑移除对 Contentlayer 的依赖，使用原生 mdx 支持（通过 page 导入 mdx）
+- 在 nextjs SSR 时，处理 image 资源（压缩，转 webp）
