@@ -1,0 +1,43 @@
+name: 'Build and Deploy'
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 初始化 PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+      - name: 初始化 Node 环境和缓存
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: '**/pnpm-lock.yaml'
+      - name: 构建网站
+        run: pnpm install && pnpm build
+      - name: 上传更新
+        env:
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USER }}
+          PASSWD: ${{ secrets.PASSWD }}
+        run: |
+          echo "🔥 更新上传中..."
+          tar -czvf out.tar.gz out
+          curl -u "$USER:$PASSWD" -T out.tar.gz ftp://$HOST/temp/
+          echo "✅ 更新上传完毕!"
+      - name: 更新网站
+        env:
+          WEBHOOK: ${{ secrets.WEBHOOK }}
+        run: |
+          echo "🔥 网站更新中..."
+          curl -k "$WEBHOOK"
+          sleep 3
+          echo "✅ 网站更新完毕!"
