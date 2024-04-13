@@ -7,8 +7,8 @@ import _download from 'download';
 import sharp from 'sharp';
 import { visit } from 'unist-util-visit';
 
-import { toSet } from '../core/utils/base';
-import { deleteFile, readJSON, writeJSON } from '../core/utils/io';
+import { toSet } from '../src/common/utils/base';
+import { deleteFile, readJSON, writeJSON } from '../src/common/utils/io';
 import { isLocalAsset, resolveLocalPath } from '../src/utils/assets';
 
 export const kImageCachePath = '.imagecache';

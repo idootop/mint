@@ -1,4 +1,16 @@
-import { withContentlayer } from 'next-contentlayer';
+import configMDX from '@next/mdx';
+import rehypePrism from 'rehype-prism-plus';
+import remarkGfm from 'remark-gfm';
+
+// import { rehypeImageProcess } from './scripts/rehype-image-process';
+
+const withMDX = configMDX({
+  extension: /\.mdx?$/,
+  options: {
+    remarkPlugins: [remarkGfm],
+    rehypePlugins: [rehypePrism],
+  },
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,4 +29,4 @@ const nextConfig = {
   },
 };
 
-export default withContentlayer(nextConfig);
+export default withMDX(nextConfig);

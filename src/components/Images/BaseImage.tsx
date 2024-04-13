@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { Image } from '@/core/components/Image';
-import { isNotEmpty } from '@/core/utils/is';
-import { resolveLocalPath } from '@/src/utils/assets';
+import { Image } from '@/common/components/Image';
+import { isNotEmpty } from '@/common/utils/is';
+import { resolveLocalPath } from '@/utils/assets';
 
 import styles from './styles.module.css';
 

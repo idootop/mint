@@ -1,4 +1,4 @@
-import { deleteFile, getFiles, readJSON } from '../core/utils/io';
+import { deleteFile, getFiles, readJSON } from '../src/common/utils/io';
 import {
   kImageCachePath,
   kImageCompressionDir,

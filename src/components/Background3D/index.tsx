@@ -6,9 +6,9 @@ import { useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useXState } from 'xsta';
 
-import { Row } from '@/core/components/Flex';
-import { Stack } from '@/core/components/Stack';
-import { Position } from '@/core/components/Stack/position';
+import { Row } from '@/common/components/Flex';
+import { Stack } from '@/common/components/Stack';
+import { Position } from '@/common/components/Stack/position';
 
 import { LargeRock } from './Rock';
 import styles from './styles.module.css';

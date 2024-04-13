@@ -1,22 +1,21 @@
-import { Post } from 'contentlayer/generated';
 import Link from 'next/link';
 
-import { Column, Expand, Row } from '@/core/components/Flex';
+import { Column, Expand, Row } from '@/common/components/Flex';
 
-import { allPostsByYear, YearPosts } from './allPostsByYear';
+import { getPostsGroupedByYear, Post, PostsGroupedByYear } from './_post';
 import styles from './styles.module.css';
 
-export default function Page() {
+export default async function Page() {
   return (
     <Column className={styles.page}>
-      {allPostsByYear.map(e => {
+      {(await getPostsGroupedByYear()).map(e => {
         return <YearPost key={e.year} year={e.year} posts={e.posts} />;
       })}
     </Column>
   );
 }
 
-const YearPost = (props: YearPosts) => {
+const YearPost = (props: PostsGroupedByYear) => {
   const { year, posts } = props;
   if (posts.length < 1) return;
   return (
@@ -41,7 +40,7 @@ const YearPost = (props: YearPosts) => {
         {year}
       </span>
       {posts.map(post => {
-        return <PostItem key={post.title} post={post} />;
+        return <PostItem key={post.path} post={post} />;
       })}
     </Column>
   );
@@ -52,8 +51,7 @@ const PostItem = (props: { post: Post }) => {
   return (
     <Link
       className={styles.post}
-      href={post.slug}
-      target="_blank"
+      href={post.path}
       style={{
         width: '100%',
       }}
@@ -77,7 +75,7 @@ const PostItem = (props: { post: Post }) => {
             color: 'rgba(0, 0, 0, 0.3)',
           }}
         >
-          {post.date.substring(5)}
+          {post.createAt.substring(5)}
         </span>
       </Row>
     </Link>

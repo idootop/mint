@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 
-import { Center } from '@/core/components/Flex';
-import { kBodyHeight } from '@/src/components/Layouts/sizes';
-import { CardText } from '@/src/components/Texts/CardText';
+import { Center } from '@/common/components/Flex';
+import { kBodyHeight } from '@/components/Layouts/sizes';
+import { CardText } from '@/components/Texts/CardText';
 
 import styles from './styles.module.css';
 

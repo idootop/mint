@@ -1,4 +1,4 @@
-import { processImage } from '@/scripts/rehype-image-process';
+import { processImage } from 'scripts/rehype-image-process';
 
 export const kSiteMetadata = {
   title: '🌱 Mint',
