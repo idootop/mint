@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { processImage } from 'scripts/rehype-image-process';
 
 import { Column } from '@/common/components/Flex';
 import { BaseImage } from '@/components/Images/BaseImage';
@@ -16,7 +15,7 @@ export async function ProjectLayout({ path, children }: any) {
 
   return (
     <main className={styles.page}>
-      {current.cover && <BaseImage {...await processImage(current.cover)} />}
+      {current.cover && <BaseImage src={current.cover} />}
       <h1 className={styles.title}>{current.title}</h1>
       <p className={styles.date}>{current.createAt}</p>
       <MDXBody>{children}</MDXBody>

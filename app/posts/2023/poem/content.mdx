@@ -1,7 +1,12 @@
 export const metadata = {
-  title: '定风波',
+  title: 'Poem',
   createAt: '2023-01-01',
 };
+
+import { jsonEncode } from '@/common/utils/base';
+import cover from './cover.png';
+
+<BaseImage src={cover.src} alt={jsonEncode(cover, { prettier: true })} />
 
 > 三月七日，沙湖道中遇雨，雨具先去，同行皆狼狈，余独不觉。已而遂晴，故作此。
 

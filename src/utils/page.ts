@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 
-import { getOGMetadata } from './site-metadata';
+import { getOGMetadata } from './metadata';
 
 export interface PageMetadata {
   /**

@@ -10,8 +10,10 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "next dev",
-    "build": "next build",
-    "preview": "http-server out -c-1"
+    "preview": "http-server out -c-1",
+    "clear-image-cache": "tsx scripts/clear-image-cache.ts",
+    "remove-unused-image": "tsx scripts/remove-unused-image.ts",
+    "build": "pnpm clear-image-cache && next build && pnpm remove-unused-image"
   },
   "dependencies": {
     "@react-three/drei": "^9.88.10",
@@ -39,9 +41,11 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
+    "https-proxy-agent": "^7.0.4",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
     "prettier": "^3.2.5",
+    "proper-lockfile": "^4.1.2",
     "rehype-prism-plus": "^2.0.0",
     "remark-gfm": "^4.0.0",
     "sharp": "^0.33.3",

@@ -6,7 +6,7 @@ import { Viewport } from 'next';
 
 import { Footer } from '@/components/Layouts/footer';
 import { Header } from '@/components/Layouts/header';
-import { kSiteMetadata } from '@/utils/site-metadata';
+import { kSiteMetadata } from '@/utils/metadata';
 
 export const metadata = kSiteMetadata;
 

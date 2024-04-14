@@ -1,10 +1,12 @@
+import cover from './cover.png';
+
 export const metadata = {
   emoji: '🐙',
   title: 'Opencord AI',
   url: 'https://www.opencord.ai',
   createAt: '2023-10',
   description: 'AI Agent-Generated Content for Social Media',
-  cover: '/public/assets/opencord-ai/cover.png',
+  cover: cover.src,
 };
 
 # 项目简介
@@ -17,33 +19,57 @@ Opencord AI 是一种新型的 AI 智能体，它能在主流社交平台上自�
 
 与传统的 AI Agent 不同，Opencord AI 的定位**并非只是辅助内容创作者的工具，而是取而代之成为内容创作者本人**，自行管理社交账户，与粉丝互动，并持续不断的创造内容来吸引流量。
 
-<BannerImage src="/public/assets/opencord-ai/post-content.png" />
+import postContent from './images/post-content.png';
+
+<BannerImage src={postContent.src} />
 
 # 幕后花絮
 
 时间回到 2022 年末，彼时国内外的顶尖 NLP 专家普遍认为，像 ChatGPT 这样的大语言模型至少需要十年的技术沉淀才可能实现。
 然而，当 ChatGPT 在 11 月 30 日正式上线时，这个假设被彻底打破，整个行业为之震惊。
 
-![2022年12月1日，关注到 ChatGPT](/public/assets/opencord-ai/chatgpt-release.webp)
+import chatgptRelease from './images/chatgpt-release.webp';
 
-![2022年12月5日，我问 ChatGPT 的第一个问题](/public/assets/opencord-ai/first-chat.webp)
+<BaseImage src={chatgptRelease.src} alt="2022年12月1日，关注到 ChatGPT" />
+
+import firstChat from './images/first-chat.webp';
+
+<BaseImage src={firstChat.src} alt="2022年12月5日，我问 ChatGPT 的第一个问题" />
 
 随后，我迅速逆向了 ChatGPT 的网页版接口，开发了首个 ChatGPT 飞书机器人，并将其接入微信公众号后台。
 
-![2022年12月5日，完成 ChatGPT 网页版接口逆向工作](/public/assets/opencord-ai/chat-api.webp)
+import chatApi from './images/chat-api.webp';
 
-![2022年12月11日，开始开发飞书 ChatGPT 机器人](/public/assets/opencord-ai/feishu-commit.webp)
+<BaseImage
+  src={chatApi.src}
+  alt="2022年12月5日，完成 ChatGPT 网页版接口逆向工作"
+/>
 
-![飞书 ChatGPT 机器人开发完毕](/public/assets/opencord-ai/feishu-bot.webp)
+import feishuCommit from './images/feishu-commit.webp';
 
-![接入 ChatGPT 到个人微信公众号](/public/assets/opencord-ai/wechat-gpt.webp)
+<BaseImage
+  src={feishuCommit.src}
+  alt="2022年12月11日，开始开发飞书 ChatGPT 机器人"
+/>
+
+import feishuBot from './images/feishu-bot.webp';
+
+<BaseImage src={feishuBot.src} alt="飞书 ChatGPT 机器人开发完毕" />
+
+import wechatGpt from './images/wechat-gpt.webp';
+
+<BaseImage src={wechatGpt.src} alt="接入 ChatGPT 到个人微信公众号" />
 
 不久后 Meta 公开了 LLaMA 的源代码，紧接着各种宣称自主研发的大型语言模型（LLM）如同春天后的竹笋般涌现。
 大型语言模型的诞生，预示着人机交互方式的彻底革新。随着 LLM 能力的不断增强，通用人工智能（AGI）的到来似乎只是时间问题。
 
-![LLMs 发展历史](/public/assets/opencord-ai/llms.png)
+import llms from './images/llms.png';
+
+<BaseImage src={llms.src} alt="LLMs 发展历史" />
 
 而 Opencord AI，正是我们在这一历史潮流中的一次尝试，它不仅见证了技术的进步，更代表了我们对未来的一个小小预言。
 在 Opencord AI 的背后，是一群充满激情和创造力的人，我们对未来充满希望，致力于将这个愿景变为现实，并且很高兴能与您共同见证这一切。
 
-![](/public/assets/opencord-ai/logo.svg)
+import logo from './images/logo.svg';
+
+<BaseImage src={logo.src} />

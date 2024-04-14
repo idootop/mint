@@ -1,14 +1,13 @@
-/* eslint-disable @next/next/no-img-element */
-
 import { Image } from '@/common/components/Image';
 import { isNotEmpty } from '@/common/utils/is';
-import { resolveLocalPath } from '@/utils/assets';
+import { resolveAssetURL } from '@/utils/assets';
+import { processImage } from '@/utils/image';
 
 import styles from './styles.module.css';
 
-const kAspectRatio: any = '--aspect-ratio';
-
-export const BaseImage = props => {
+export const BaseImage = async props => {
+  const imageData = await processImage(props.src);
+  props = { ...props, ...imageData };
   const { src, alt = '', width = 0, height = 0, ...restProps } = props;
   const aspectRatioStyle =
     height > 0
@@ -17,7 +16,7 @@ export const BaseImage = props => {
           display: 'block',
           width: `${width}px`,
           maxWidth: '100%',
-          [kAspectRatio]: width / height,
+          '--aspect-ratio': width / height,
         }
       : undefined;
 
@@ -28,7 +27,7 @@ export const BaseImage = props => {
           <span className={styles.center_image} style={aspectRatioStyle}>
             <Image
               {...restProps}
-              src={resolveLocalPath(src)}
+              src={resolveAssetURL(src)}
               alt={alt}
               width="100%"
               height="100%"
@@ -37,7 +36,7 @@ export const BaseImage = props => {
         ) : (
           <Image
             {...restProps}
-            src={resolveLocalPath(src)}
+            src={resolveAssetURL(src)}
             alt={alt}
             className={styles.center_image}
           />

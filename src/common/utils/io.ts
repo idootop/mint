@@ -1,5 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
+import { lock, unlock } from 'proper-lockfile';
 
 import { jsonDecode, jsonEncode } from './base';
 
@@ -18,7 +19,29 @@ export const deleteFile = (filePath: string) => {
   }
 };
 
-export const readFile = <T = any>(
+export const lockFile = async path => {
+  return lock(path, {
+    realpath: false,
+    retries: { retries: 100, minTimeout: 10, maxTimeout: 100 },
+  }).catch(() => {});
+};
+
+export const unlockFile = async path => {
+  return unlock(path, { realpath: false }).catch(() => {});
+};
+
+export const withLockFile = async (path: string, fn: VoidFunction) => {
+  let result;
+  try {
+    await lockFile(path);
+    result = await fn();
+  } finally {
+    await unlockFile(path);
+  }
+  return result;
+};
+
+export const readFile = async <T = any>(
   filePath: string,
   options?: fs.WriteFileOptions,
 ) => {
@@ -26,23 +49,27 @@ export const readFile = <T = any>(
   if (!fs.existsSync(dirname)) {
     return undefined;
   }
-  return new Promise<T | undefined>(resolve => {
+  const result = await new Promise<T | undefined>(resolve => {
     fs.readFile(filePath, options, (err, data) => {
       resolve(err ? undefined : (data as any));
     });
   });
+  return result;
 };
 
-export const writeFile = (
+export const writeFile = async (
   filePath: string,
-  data: string | NodeJS.ArrayBufferView,
+  data?: string | NodeJS.ArrayBufferView,
   options?: fs.WriteFileOptions,
 ) => {
+  if (!data) {
+    return false;
+  }
   const dirname = path.dirname(filePath);
   if (!fs.existsSync(dirname)) {
     fs.mkdirSync(dirname, { recursive: true });
   }
-  return new Promise<boolean>(resolve => {
+  const result = await new Promise<boolean>(resolve => {
     if (options) {
       fs.writeFile(filePath, data, options, err => {
         resolve(err ? false : true);
@@ -53,6 +80,7 @@ export const writeFile = (
       });
     }
   });
+  return result;
 };
 
 export const readString = (filePath: string) =>

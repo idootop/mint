@@ -9,6 +9,7 @@ import { LinkExternal } from '@/components/MDX/LinkExternal';
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     Image,
+    BaseImage,
     BannerImage,
     img: BaseImage,
     a: LinkExternal,

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { processImage } from 'scripts/rehype-image-process';
 
 import { Box } from '@/common/components/Box';
 import { Column } from '@/common/components/Flex';
@@ -69,12 +68,7 @@ const ProjectItem = async (props: { project: Project; background: string }) => {
         >
           {project.emoji}
         </span>
-        {project.cover && (
-          <BannerImage
-            {...await processImage(project.cover)}
-            marginTop="24px"
-          />
-        )}
+        {project.cover && <BannerImage src={project.cover} marginTop="24px" />}
       </Column>
     </Link>
   );

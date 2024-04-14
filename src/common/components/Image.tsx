@@ -69,7 +69,9 @@ export const Image = forwardRef((props: ImageProps, ref: any) => {
       boxProps.className,
       'placeholder:' + placeholder,
       'blurDataURL:' + blurDataURL,
-    ].join(' ');
+    ]
+      .filter(e => !!e)
+      .join(' ');
   }
 
   return isEmpty(src) ? (

@@ -1,4 +1,4 @@
-import { processImage } from 'scripts/rehype-image-process';
+import { processImage } from './image';
 
 export const kSiteMetadata = {
   title: '🌱 Mint',
@@ -21,7 +21,7 @@ export async function getOGMetadata(props: {
       siteName: kSiteMetadata.title,
       title,
       description: description,
-      images: image ? [{ url: (await processImage(image)).src }] : [],
+      images: image ? [{ url: (await processImage(image))?.src ?? image }] : [],
     },
   };
 }

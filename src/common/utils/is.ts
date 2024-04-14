@@ -34,11 +34,11 @@ export function isNotEmpty(e: unknown): boolean {
   return !isEmpty(e);
 }
 
-export function isNumber(e: unknown): boolean {
+export function isNumber(e: unknown): e is number {
   return typeof e === 'number' && !isNaN(e);
 }
 
-export function isString(e: unknown): boolean {
+export function isString(e: unknown): e is string {
   return typeof e === 'string';
 }
 

@@ -190,3 +190,29 @@ export const deepClone = <T>(obj: T): T => {
 
   return copy;
 };
+
+export const withRetry = async <T = any>(
+  fn: () => T,
+  options?: {
+    retry?: number;
+    isOK?: (res: T) => boolean;
+    defaultValue?: any;
+  },
+) => {
+  const {
+    retry = 3,
+    isOK = e => e != null,
+    defaultValue = undefined,
+  } = options ?? {};
+  for (let i = 0; i < retry; i++) {
+    try {
+      const res = await fn();
+      if (isOK(res)) {
+        return res;
+      }
+    } catch {
+      //
+    }
+  }
+  return defaultValue;
+};
