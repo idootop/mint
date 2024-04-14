@@ -1,17 +1,15 @@
-import { Project } from 'contentlayer/generated';
 import Link from 'next/link';
 
-import { Box } from '@/core/components/Box';
-import { Column } from '@/core/components/Flex';
-import { processImage } from '@/scripts/rehype-image-process';
-import { BannerImage } from '@/src/components/Images/BannerImage';
+import { Box } from '@/common/components/Box';
+import { Column } from '@/common/components/Flex';
+import { BannerImage } from '@/components/Images/BannerImage';
 
-import { allProjectsSorted } from './allProjectsByCategory';
+import { getProjectsSortedByCategory, Project } from './_project';
 
-export default function Page() {
+export default async function Page() {
   return (
     <Box width="100%">
-      {allProjectsSorted.map((project, idx) => {
+      {(await getProjectsSortedByCategory()).map((project, idx) => {
         return (
           <ProjectItem
             key={project.title}
@@ -28,8 +26,7 @@ const ProjectItem = async (props: { project: Project; background: string }) => {
   const { project, background } = props;
   return (
     <Link
-      href={project.slug}
-      target="_blank"
+      href={project.path}
       style={{
         width: '100%',
       }}
@@ -71,12 +68,7 @@ const ProjectItem = async (props: { project: Project; background: string }) => {
         >
           {project.emoji}
         </span>
-        {project.cover && (
-          <BannerImage
-            {...await processImage(project.cover)}
-            marginTop="24px"
-          />
-        )}
+        {project.cover && <BannerImage src={project.cover} marginTop="24px" />}
       </Column>
     </Link>
   );

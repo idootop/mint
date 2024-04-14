@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
-import { Expand, Row } from '@/core/components/Flex';
+import { Expand, Row } from '@/common/components/Flex';
 
 import { IconGithub, IconLogo } from '../Icons';
 import { kHeaderHeight, kPageMaxWidth, kPagePadding } from './sizes';

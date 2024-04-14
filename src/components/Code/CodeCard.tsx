@@ -1,4 +1,4 @@
-import { Column, Row } from '@/core/components/Flex';
+import { Column, Row } from '@/common/components/Flex';
 
 import styles from './styles.module.css';
 

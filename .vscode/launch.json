@@ -5,16 +5,8 @@
       "name": "Test.ts",
       "type": "node",
       "request": "launch",
-      "args": ["${workspaceFolder}/tests/index.ts"],
-      "runtimeArgs": [
-        "--experimental-specifier-resolution=node",
-        "--loader",
-        "./scripts/esm-loader.js",
-        "-r",
-        "tsconfig-paths/register",
-        "-r",
-        "./scripts/disable-experimental-warning.cjs"
-      ],
+      "program": "${workspaceFolder}/tests/index.ts",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/tsx",
       "cwd": "${workspaceRoot}",
       "internalConsoleOptions": "openOnSessionStart",
       "env": {
