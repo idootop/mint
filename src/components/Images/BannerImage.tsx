@@ -1,4 +1,4 @@
-import { BoxProps } from '@/core/components/Box';
+import { BoxProps } from '@/common/components/Box';
 
 import { BaseImage } from './BaseImage';
 import styles from './styles.module.css';

@@ -2,9 +2,9 @@
 
 import { useXState } from 'xsta';
 
-import { Center } from '@/core/components/Flex';
-import { Spinner } from '@/core/components/Spinner';
-import { useBreakpoint } from '@/core/hooks/useBreakpoint';
+import { Center } from '@/common/components/Flex';
+import { Spinner } from '@/common/components/Spinner';
+import { useBreakpoint } from '@/common/hooks/useBreakpoint';
 
 import {
   Background3D,

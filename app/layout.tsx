@@ -1,12 +1,12 @@
-import '@/src/styles/reset.css';
-import '@/src/styles/global.css';
-import '@/src/styles/aspect-ratio.css';
+import '@/styles/reset.css';
+import '@/styles/global.css';
+import '@/styles/aspect-ratio.css';
 
 import { Viewport } from 'next';
 
-import { Footer } from '@/src/components/Layouts/footer';
-import { Header } from '@/src/components/Layouts/header';
-import { kSiteMetadata } from '@/src/utils/site-metadata';
+import { Footer } from '@/components/Layouts/footer';
+import { Header } from '@/components/Layouts/header';
+import { kSiteMetadata } from '@/utils/metadata';
 
 export const metadata = kSiteMetadata;
 

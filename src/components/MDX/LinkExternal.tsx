@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import { useLocation } from '@/core/hooks/useLocation';
+import { useLocation } from '@/common/hooks/useLocation';
 
 export function LinkExternal(props: any) {
   const { href, children, target, ...restProps } = props;
