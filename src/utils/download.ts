@@ -5,7 +5,15 @@ import { withRetry } from '@/common/utils/base';
 import { kEnvs, writeFile } from '@/common/utils/io';
 
 const kPendingDownloads = {};
-const kHttpProxyAgent = new HttpsProxyAgent(kEnvs['http_proxy']);
+const kHttpProxyAgent = kEnvs['http_proxy']
+  ? new HttpsProxyAgent(kEnvs['http_proxy'])
+  : undefined;
+const kGotHttpProxyAgent = kHttpProxyAgent
+  ? {
+      http: kHttpProxyAgent,
+      https: kHttpProxyAgent,
+    }
+  : undefined;
 
 export const download = async (
   url: string,
@@ -17,10 +25,7 @@ export const download = async (
     console.log(`🔥 开始下载 ${url}`);
     withRetry(() =>
       got(url, {
-        agent: {
-          http: kHttpProxyAgent,
-          https: kHttpProxyAgent,
-        },
+        agent: kGotHttpProxyAgent,
         decompress: true,
         followRedirect: true,
         responseType: 'buffer',
