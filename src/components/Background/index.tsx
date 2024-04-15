@@ -11,23 +11,22 @@ import rock3 from './images/rock3.svg';
 
 export function Background({ children, isMobile, height }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvas = canvasRef.current;
 
   useEffect(() => {
-    const canvas = canvasRef.current;
     if (canvas) {
       startRockAnimation(canvas, isMobile);
     }
-  }, [canvasRef.current]);
+  }, [canvas, isMobile]);
 
   const { boxRef, width: boxWidth, height: boxHeight } = useBoxSize();
 
   useEffect(() => {
-    const canvas = canvasRef.current;
     if (canvas) {
       canvas.width = boxWidth;
       canvas.height = boxHeight;
     }
-  }, [canvasRef.current, boxWidth, boxHeight]);
+  }, [boxWidth, boxHeight, canvas]);
 
   return (
     <Stack ref={boxRef} width="100%" height={height}>
