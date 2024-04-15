@@ -26,8 +26,7 @@ export type BoxProps = CSSProperties & BaseProps;
 export const getBoxProps = (props: BoxProps) => {
   const {
     id,
-    ref: __,
-    children: ___,
+    children: _,
     className: _class,
     src,
     style,

@@ -30,12 +30,26 @@ export function lastOf<T = any>(datas?: T[]) {
     : undefined;
 }
 
+/**
+ * [min, max] -> int
+ */
 export function randomInt(min: number, max?: number) {
   if (!max) {
     max = min;
     min = 0;
   }
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+/**
+ * [min, max] -> float
+ */
+export function randomFloat(min: number, max?: number) {
+  if (!max) {
+    max = min;
+    min = 0;
+  }
+  return randomInt(min * 1000, max * 1000) / 1000;
 }
 
 export function pickOne<T = any>(datas: T[]) {
