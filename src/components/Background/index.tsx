@@ -13,25 +13,23 @@ import rock3 from './images/rock3.svg';
 export function Background({ children, isMobile, height }) {
   const count = isMobile ? 40 : 100;
   return (
-    <Stack width="100%" height={height}>
-      <Box width="100%" height={height} />
+    <Stack width="100%" height={height} overflow="hidden">
+      <Box size="100%" />
+      {range(count).map(idx => {
+        return (
+          <Rock
+            key={idx}
+            config={{
+              depthRange: isMobile ? 50 : 50,
+              moveSpeed: isMobile ? 2 : 2,
+              rotateSpeed: isMobile ? 1 : 1,
+            }}
+          />
+        );
+      })}
       <Position width="100%" height="100%">
         {children}
       </Position>
-      {range(count).map(idx => {
-        return (
-          <Position key={idx} width="100%" height="100%">
-            <Rock
-              key={idx}
-              config={{
-                depthRange: isMobile ? 50 : 50,
-                moveSpeed: isMobile ? 2 : 2,
-                rotateSpeed: isMobile ? 1 : 1,
-              }}
-            />
-          </Position>
-        );
-      })}
     </Stack>
   );
 }
