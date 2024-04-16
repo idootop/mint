@@ -23,8 +23,12 @@ export function Background({ children, isMobile, height }) {
 
   useEffect(() => {
     if (canvas) {
-      canvas.width = boxWidth;
-      canvas.height = boxHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = boxWidth * dpr;
+      canvas.height = boxHeight * dpr;
+      canvas.getContext('2d')?.scale(dpr, dpr);
+      canvas.style.width = `${boxWidth}px`;
+      canvas.style.height = `${boxHeight}px`;
     }
   }, [boxWidth, boxHeight, canvas]);
 
@@ -52,6 +56,24 @@ interface Rock {
   rotate: number;
 }
 
+const imageCache = {};
+
+const getRockImage = (src: string): Promise<HTMLImageElement | undefined> => {
+  if (imageCache[src]) {
+    return imageCache[src];
+  }
+  imageCache[src] = new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      imageCache[src] = img;
+      resolve(img);
+    };
+    img.onerror = () => resolve(undefined);
+    img.src = src;
+  });
+  return imageCache[src];
+};
+
 const startRockAnimation = (canvas: HTMLCanvasElement, isMobile) => {
   const count = isMobile ? 40 : 100;
   const depthRange = isMobile ? 50 : 50;
@@ -63,9 +85,11 @@ const startRockAnimation = (canvas: HTMLCanvasElement, isMobile) => {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  const drawRock = (ctx: CanvasRenderingContext2D, rock: Rock) => {
-    const img = new Image();
-    img.src = rock.rock;
+  const drawRock = async (ctx: CanvasRenderingContext2D, rock: Rock) => {
+    const img = await getRockImage(rock.rock);
+    if (!img) {
+      return;
+    }
     ctx.save();
     ctx.translate(rock.x, rock.y);
     ctx.rotate(rock.rotate);
@@ -134,6 +158,7 @@ const animateRock = (
       rotateSpeed: Math.random() * Math.PI * rotateSpeed,
     };
   }
+  return props as any;
   let { x, y, rotate } = props as any;
   if (y > 1.5 * height) {
     // 飞出屏幕顶部，重新回到底部
