@@ -1,8 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import { Box } from '@/common/components/Box';
+import { Image } from '@/common/components/Image';
 import { Stack } from '@/common/components/Stack';
 import { Position } from '@/common/components/Stack/position';
-import { useBoxSize } from '@/common/hooks/useBoxSize';
 import { pickOne, randomFloat, range } from '@/common/utils/base';
 
 import rock1 from './images/rock1.svg';
@@ -10,39 +11,32 @@ import rock2 from './images/rock2.svg';
 import rock3 from './images/rock3.svg';
 
 export function Background({ children, isMobile, height }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvas = canvasRef.current;
-
-  useEffect(() => {
-    if (canvas) {
-      startRockAnimation(canvas, isMobile);
-    }
-  }, [canvas, isMobile]);
-
-  const { boxRef, width: boxWidth, height: boxHeight } = useBoxSize();
-
-  useEffect(() => {
-    if (canvas) {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = boxWidth * dpr;
-      canvas.height = boxHeight * dpr;
-      canvas.getContext('2d')?.scale(dpr, dpr);
-      canvas.style.width = `${boxWidth}px`;
-      canvas.style.height = `${boxHeight}px`;
-    }
-  }, [boxWidth, boxHeight, canvas]);
-
+  const count = isMobile ? 40 : 100;
   return (
-    <Stack ref={boxRef} width="100%" height={height}>
-      <canvas ref={canvasRef} />
+    <Stack width="100%" height={height}>
+      <Box width="100%" height={height} />
       <Position width="100%" height="100%">
         {children}
       </Position>
+      {range(count).map(idx => {
+        return (
+          <Position key={idx} width="100%" height="100%">
+            <Rock
+              key={idx}
+              config={{
+                depthRange: isMobile ? 50 : 50,
+                moveSpeed: isMobile ? 2 : 2,
+                rotateSpeed: isMobile ? 1 : 1,
+              }}
+            />
+          </Position>
+        );
+      })}
     </Stack>
   );
 }
 
-interface Rock {
+interface RockContext {
   /**
    * SVG 图片
    */
@@ -54,120 +48,70 @@ interface Rock {
    * 旋转
    */
   rotate: number;
-}
-
-const imageCache = {};
-
-const getRockImage = (src: string): Promise<HTMLImageElement | undefined> => {
-  if (imageCache[src]) {
-    return imageCache[src];
-  }
-  imageCache[src] = new Promise(resolve => {
-    const img = new Image();
-    img.onload = () => {
-      imageCache[src] = img;
-      resolve(img);
-    };
-    img.onerror = () => resolve(undefined);
-    img.src = src;
-  });
-  return imageCache[src];
-};
-
-const startRockAnimation = (canvas: HTMLCanvasElement, isMobile) => {
-  const count = isMobile ? 40 : 100;
-  const depthRange = isMobile ? 50 : 50;
-  const moveSpeed = isMobile ? 2 : 2;
-  const rotateSpeed = isMobile ? 1 : 1;
-
-  let states: Rock[] = range(count).map(_ => ({}) as any);
-
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-
-  const drawRock = async (ctx: CanvasRenderingContext2D, rock: Rock) => {
-    const img = await getRockImage(rock.rock);
-    if (!img) {
-      return;
-    }
-    ctx.save();
-    ctx.translate(rock.x, rock.y);
-    ctx.rotate(rock.rotate);
-    ctx.drawImage(img, -rock.size / 2, -rock.size / 2, rock.size, rock.size);
-    ctx.restore();
-  };
-
-  const drawRocks = () => {
-    // 清除画布
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // 重新绘制
-    states.forEach(state => drawRock(ctx, state));
-  };
-
-  const nextTick = (dt: number = 0) => {
-    // 更新状态
-    states = states.map(state =>
-      animateRock({ ...state, dt, canvas, depthRange, moveSpeed, rotateSpeed }),
-    );
-    // 绘制
-    drawRocks();
-    // 下一帧
-    requestAnimationFrame(() => {
-      nextTick(dt + 1);
-    });
-  };
-
-  return requestAnimationFrame(nextTick);
-};
-
-type RockContext = Rock & {
   moveSpeed: number;
   rotateSpeed: number;
-};
+}
 
-// todo 修复动效
-const animateRock = (
-  props: Partial<Rock> & {
-    dt: number;
-    canvas: HTMLCanvasElement;
-    depthRange: number;
-    moveSpeed: number;
-    rotateSpeed: number;
-  },
-): RockContext => {
-  const { dt, canvas, depthRange, moveSpeed, rotateSpeed } = props;
-  const { width, height } = canvas;
+const Rock = (props: {
+  config: { depthRange: number; moveSpeed: number; rotateSpeed: number };
+}) => {
+  const { depthRange, moveSpeed, rotateSpeed } = props.config;
   const easing = x => Math.sqrt(1 - Math.pow(x - 1, 2));
-  const randomX = () => randomFloat(0, 1 * width);
-  const randomY = () => randomFloat(0, 3 * height);
+  const randomX = () => randomFloat(0, 100);
+  const randomY = () => randomFloat(0, 3 * 100);
   const randomZ = depth => -1 * depth * easing(Math.random());
+  const [state, setState] = useState<RockContext>({
+    // 变量
+    x: randomX(),
+    y: randomY(),
+    rotate: Math.random() * Math.PI * rotateSpeed,
+    // 不变量
+    rock: pickOne([rock1, rock2, rock3])!.src,
+    size: randomZ(depthRange) * 12,
+    moveSpeed: Math.random() * moveSpeed,
+    rotateSpeed: Math.random() * Math.PI * rotateSpeed,
+  });
+  const ctxRef = useRef({ ctx: state, setCtx: setState });
+  ctxRef.current = { ctx: state, setCtx: setState };
 
-  if (!props.rock) {
-    // 初始化参数
-    const depth = randomZ(depthRange);
-    const _rock = pickOne([rock1, rock2, rock3])!;
-    return {
-      // 变量
-      x: randomX(),
-      y: randomY(),
-      rotate: Math.random() * Math.PI * rotateSpeed,
-      // 不变量
-      rock: _rock.src,
-      size: depth,
-      moveSpeed: Math.random() * moveSpeed,
-      rotateSpeed: Math.random() * Math.PI * rotateSpeed,
+  // todo 修复动效
+  const animateRock = dt => {
+    const { ctx, setCtx } = ctxRef.current;
+    let { x, y, rotate } = ctx;
+    if (y > 1.5 * 100) {
+      // 飞出屏幕顶部，重新回到底部
+      y = 1.5 * -100;
+      x = randomX(); // 随机 x 坐标
+    } else {
+      // 横坐标保持不变
+      y = y + dt * moveSpeed;
+    }
+    rotate = rotate + dt / rotateSpeed;
+    setCtx({ ...ctxRef.current.ctx, x, y, rotate });
+  };
+
+  useEffect(() => {
+    return;
+    let requestId: number | null = null;
+    const nextTick = (dt: number = 0) => {
+      animateRock(dt);
+      requestId = requestAnimationFrame(() => {
+        nextTick(dt + 1);
+      });
     };
-  }
-  return props as any;
-  let { x, y, rotate } = props as any;
-  if (y > 1.5 * height) {
-    // 飞出屏幕顶部，重新回到底部
-    y = 1.5 * -height;
-    x = randomX(); // 随机 x 坐标
-  } else {
-    // 横坐标保持不变
-    y = y + dt * moveSpeed;
-  }
-  rotate = rotate + dt / rotateSpeed;
-  return { ...props, x, y, rotate } as any;
+    requestId = requestAnimationFrame(nextTick);
+    return () => {
+      if (requestId !== null) {
+        cancelAnimationFrame(requestId);
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const { x, y, size, rock } = state;
+  return (
+    <Position left={`${x}%`} top={`${y}%`}>
+      <Image src={rock} alt="rock" size={size} />
+    </Position>
+  );
 };
