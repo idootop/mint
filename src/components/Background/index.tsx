@@ -1,29 +1,46 @@
-import { useEffect, useRef, useState } from 'react';
+'use client';
+
+import { useCallback, useEffect, useRef } from 'react';
 
 import { Box } from '@/common/components/Box';
 import { Stack } from '@/common/components/Stack';
 import { Position } from '@/common/components/Stack/position';
-import { pickOne, randomFloat, range } from '@/common/utils/base';
+import { useBreakpoint } from '@/common/hooks/useBreakpoint';
+import { randomFloat, range } from '@/common/utils/base';
 
 import { Rock1, Rock2, Rock3 } from './Rock';
 
-export function Background({ children, isMobile, height }) {
-  const count = isMobile ? 50 : 50;
+interface RockContext {
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+}
+
+const kRockStates: Record<number, RockContext> = {};
+
+export function Background({ children, height }) {
+  const { isMobile, isReady } = useBreakpoint();
+  const count = isMobile ? 20 : 30;
+
   return (
     <Stack width="100%" height={height} overflow="hidden">
       <Box size="100%" />
-      {range(count).map(idx => {
-        return (
-          <Rock
-            key={idx}
-            config={{
-              idx,
-              speed: isMobile ? 1 : 10,
-              spacing: isMobile ? 0.5 : 0.5,
-            }}
-          />
-        );
-      })}
+      {isReady &&
+        range(30).map(idx => {
+          return (
+            <Rock
+              key={idx}
+              config={{
+                idx,
+                count,
+                speed: isMobile ? 1 / 2 : 1 / 2,
+                spacing: isMobile ? 0.5 : 0.5,
+                baseSize: isMobile ? 1 / 2 : 1,
+              }}
+            />
+          );
+        })}
       <Position width="100%" height="100%">
         {children}
       </Position>
@@ -31,82 +48,107 @@ export function Background({ children, isMobile, height }) {
   );
 }
 
-interface RockContext {
-  /**
-   * SVG 图片
-   */
-  Rock: any;
-  x: number;
-  y: number;
-  size: number;
-  speed: number;
-}
-
 const Rock = (props: {
-  config: { idx: number; speed: number; spacing: number };
+  config: {
+    idx: number;
+    count: number;
+    speed: number;
+    spacing: number;
+    baseSize: number;
+  };
 }) => {
-  const { spacing, speed } = props.config;
-  const randomX = () => randomFloat(-spacing * 100, (1 + spacing) * 100);
-  const randomY = () => randomFloat(-spacing * 100, (1 + spacing) * 100);
-  const [state, setState] = useState<RockContext | undefined>();
+  const { idx, count, speed, spacing, baseSize } = props.config;
+  const RockWidget = [Rock1, Rock2, Rock3][(idx + 1) % 3];
+  const isHidden = idx > count - 1;
   const requestRef = useRef<number | null>(null);
-  const ctxRef = useRef<{ ctx; setCtx } | undefined>({
-    ctx: state,
-    setCtx: setState,
-  });
-  if (ctxRef.current) {
-    ctxRef.current.ctx = state;
-    ctxRef.current.setCtx = setState;
-  }
+  const randomX = useCallback(
+    () => randomFloat(-spacing * 100, (1 + spacing) * 100),
+    [spacing],
+  );
+  const randomY = useCallback(
+    () => randomFloat(-spacing * 100, (1 + spacing) * 100),
+    [spacing],
+  );
+  const randomSpeed = useCallback(() => Math.random() * speed, [speed]);
+  const randomSize = useCallback(
+    () => randomFloat(64, 128) * baseSize,
+    [baseSize],
+  );
 
   useEffect(() => {
-    ctxRef.current = { ctx: state, setCtx: setState };
+    if (isHidden) {
+      return;
+    }
+    kRockStates[idx] = {
+      x: randomX(),
+      y: randomY(),
+      size: randomSize(),
+      speed: randomSpeed(),
+    };
     const animateRock = dt => {
-      const { ctx, setCtx } = ctxRef.current!;
-      if (!ctx) {
-        setCtx({
-          x: randomX(),
-          y: randomY(),
-          size: randomFloat(64, 128),
-          speed: Math.random() * speed,
-          Rock: pickOne([Rock1, Rock2, Rock3])!,
-        });
-        return;
-      }
-      let { x, y } = ctx;
+      let transition = '0s';
+      let { x, y, size } = kRockStates[idx];
       if (y > (1 + spacing) * 100) {
         // 飞出屏幕顶部，重新回到底部
         y = -spacing * 100;
-        // 随机 x 坐标
-        // todo 元素不要重叠
+        // todo no overlap
         x = randomX();
+        size = randomSize();
+        transition = '0s';
       } else {
         // 横坐标保持不变
         y = y + dt * speed;
+        transition = 'transform 300ms';
       }
-      setCtx({ ...ctx, x, y });
+      kRockStates[idx] = { ...kRockStates[idx], x, y, size };
+      const rock = document.getElementById(`${idx}`);
+      if (rock) {
+        x = x - 50; // 以屏幕原点为中心点
+        y = y - 50; // 以屏幕原点为中心点
+        y = -1 * y; // 变换移动方向
+        rock.style.width = `${size}px`;
+        rock.style.height = `${size}px`;
+        rock.style.transition = transition;
+        rock.style.transform = `translate(${x}vw, ${y}vh) translateZ(0)`;
+      }
     };
 
     const nextTick = () => {
-      if (!ctxRef.current) {
+      if (!kRockStates[idx]) {
         return;
       }
       animateRock(1);
       requestRef.current = requestAnimationFrame(nextTick);
     };
     requestRef.current = requestAnimationFrame(nextTick);
+
     return () => {
-      ctxRef.current = undefined;
+      delete kRockStates[idx];
       cancelAnimationFrame(requestRef.current!);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [
+    idx,
+    isHidden,
+    randomSize,
+    randomSpeed,
+    randomX,
+    randomY,
+    spacing,
+    speed,
+  ]);
 
-  const { x, y, size, Rock: RockWidget } = state ?? {};
   return (
-    <Position left={`${x}%`} bottom={`${y}%`}>
+    <Position align="center">
       {RockWidget && (
-        <RockWidget style={{ width: `${size}px`, objectFit: 'contain' }} />
+        <RockWidget
+          id={`${idx}`}
+          style={{
+            width: '0px',
+            height: '0px',
+            objectFit: 'contain',
+            opacity: isHidden ? '0' : '1',
+          }}
+        />
       )}
     </Position>
   );
