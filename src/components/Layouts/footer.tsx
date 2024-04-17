@@ -6,12 +6,8 @@ export const Footer = () => {
   return (
     <footer
       style={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
+        textAlign: 'center',
         width: '100%',
-        margin: '0 auto',
         maxWidth: kPageMaxWidth,
         height: kFooterHeight,
         fontSize: '14px',
