@@ -27,7 +27,7 @@ export function Background({ children, height }) {
     <Stack width="100%" height={height} overflow="hidden">
       <Box size="100%" />
       {isReady &&
-        range(1).map(idx => {
+        range(30).map(idx => {
           return (
             <Rock
               key={idx}
@@ -75,19 +75,13 @@ const Rock = (props: {
     [baseSize],
   );
 
-  const buildRef = useRef({
-    build: 0,
-    init: 0,
-    dispose: 0,
-  });
-  buildRef.current.build++;
-  console.log('build', buildRef.current.build);
+  const noTransition = '0ms';
+  const defaultTransition = 'all 300ms';
 
+  const initRef = useRef(0);
   useEffect(() => {
-    buildRef.current.init++;
-    console.log('init', buildRef.current.init);
-    const currentInit = buildRef.current.init;
-    const preDispose = buildRef.current.dispose;
+    initRef.current += 1;
+    const currentInit = initRef.current;
     if (isHidden) {
       return;
     }
@@ -106,11 +100,11 @@ const Rock = (props: {
         // todo no overlap
         x = randomX();
         size = randomSize();
-        transition = '0s';
+        transition = noTransition;
       } else {
         // 横坐标保持不变
         y = y + dt * speed;
-        transition = 'transform 300ms';
+        transition = defaultTransition;
       }
       kRockStates[idx] = { ...kRockStates[idx], x, y, size };
       const rock = document.getElementById(`${idx}`);
@@ -126,8 +120,7 @@ const Rock = (props: {
     };
 
     const nextTick = () => {
-      console.log('nextTick', currentInit, buildRef.current);
-      if (!kRockStates[idx]) {
+      if (currentInit !== initRef.current) {
         return;
       }
       animateRock(1);
@@ -136,8 +129,6 @@ const Rock = (props: {
     requestRef.current = requestAnimationFrame(nextTick);
 
     return () => {
-      buildRef.current.dispose++;
-      console.log('dispose', preDispose, buildRef.current.dispose);
       delete kRockStates[idx];
       cancelAnimationFrame(requestRef.current!);
     };
@@ -162,6 +153,8 @@ const Rock = (props: {
             height: '0px',
             objectFit: 'contain',
             opacity: isHidden ? '0' : '1',
+            transition: defaultTransition,
+            transform: `translate(0, 0) translateZ(0)`,
           }}
         />
       )}
