@@ -27,7 +27,7 @@ export function Background({ children, height }) {
     <Stack width="100%" height={height} overflow="hidden">
       <Box size="100%" />
       {isReady &&
-        range(30).map(idx => {
+        range(1).map(idx => {
           return (
             <Rock
               key={idx}
@@ -75,7 +75,19 @@ const Rock = (props: {
     [baseSize],
   );
 
+  const buildRef = useRef({
+    build: 0,
+    init: 0,
+    dispose: 0,
+  });
+  buildRef.current.build++;
+  console.log('build', buildRef.current.build);
+
   useEffect(() => {
+    buildRef.current.init++;
+    console.log('init', buildRef.current.init);
+    const currentInit = buildRef.current.init;
+    const preDispose = buildRef.current.dispose;
     if (isHidden) {
       return;
     }
@@ -114,6 +126,7 @@ const Rock = (props: {
     };
 
     const nextTick = () => {
+      console.log('nextTick', currentInit, buildRef.current);
       if (!kRockStates[idx]) {
         return;
       }
@@ -123,6 +136,8 @@ const Rock = (props: {
     requestRef.current = requestAnimationFrame(nextTick);
 
     return () => {
+      buildRef.current.dispose++;
+      console.log('dispose', preDispose, buildRef.current.dispose);
       delete kRockStates[idx];
       cancelAnimationFrame(requestRef.current!);
     };
