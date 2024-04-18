@@ -14,14 +14,6 @@ const withMDX = configMDX({
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
-  webpack: (config, ctx) => {
-    config.plugins.push(
-      new ctx.webpack.IgnorePlugin({
-        resourceRegExp: /^electron$/, // download image with got
-      }),
-    );
-    return config;
-  },
 };
 
 export default withMDX(nextConfig);

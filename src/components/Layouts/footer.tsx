@@ -15,14 +15,17 @@ export const Footer = () => {
         maxWidth: kPageMaxWidth,
         height: kFooterHeight,
         fontSize: '14px',
+        textAlign: 'center',
         color: 'rgba(0, 0, 0, 0.4)',
       }}
     >
-      © 2017-{new Date().getFullYear()}&nbsp;
-      <Link href="/" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
-        Del.Wang
-      </Link>
-      . All rights reserved.
+      <p>
+        © 2017-{new Date().getFullYear()}&nbsp;
+        <Link href="/" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
+          Del.Wang
+        </Link>
+        . All rights reserved.
+      </p>
     </footer>
   );
 };

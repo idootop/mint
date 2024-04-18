@@ -1,7 +1,7 @@
 {
   "name": "mint",
   "description": "薄荷的花语是：永不消逝的爱",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -16,12 +16,9 @@
     "build": "pnpm clear-image-cache && next build && pnpm remove-unused-image"
   },
   "dependencies": {
-    "@react-three/drei": "^9.88.10",
-    "@react-three/fiber": "^8.15.9",
     "next": "^14.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.158.0",
     "xsta": "^1.0.2"
   },
   "devDependencies": {
@@ -34,13 +31,13 @@
     "@types/react-dom": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
     "@typescript-eslint/parser": "^7.6.0",
-    "download": "^8.0.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
+    "got": "^14.2.1",
     "https-proxy-agent": "^7.0.4",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
@@ -50,7 +47,6 @@
     "remark-gfm": "^4.0.0",
     "sharp": "^0.33.3",
     "tsx": "^4.7.2",
-    "typescript": "^5.1.3",
-    "unist-util-visit": "^5.0.0"
+    "typescript": "^5.1.3"
   }
 }
