@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 import { Box } from '@/common/components/Box';
 import { Column } from '@/common/components/Flex';
-import { BannerImage } from '@/components/Images/BannerImage';
+import { BannerImage } from '@/components/Image/BannerImage';
 
 import { getProjectsSortedByCategory, Project } from './_project';
 
