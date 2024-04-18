@@ -4,8 +4,8 @@ import '@/styles/aspect-ratio.css';
 
 import { Viewport } from 'next';
 
-import { Footer } from '@/components/Layouts/footer';
-import { Header } from '@/components/Layouts/header';
+import { Footer } from '@/layouts/Footer';
+import { Header } from '@/layouts/Header';
 import { kSiteMetadata } from '@/utils/metadata';
 
 export const metadata = kSiteMetadata;

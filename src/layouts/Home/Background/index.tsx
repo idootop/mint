@@ -7,6 +7,7 @@ import { Stack } from '@/common/components/Stack';
 import { Position } from '@/common/components/Stack/position';
 import { useBreakpoint } from '@/common/hooks/useBreakpoint';
 import { randomFloat, range } from '@/common/utils/base';
+import { kFooterHeight } from '@/layouts/sizes';
 
 import { Rock1, Rock2, Rock3 } from './Rock';
 
@@ -19,13 +20,17 @@ interface RockContext {
 
 const kRockStates: Record<number, RockContext> = {};
 
-export function Background({ children, height }) {
+export function Background({ children }) {
   const { isMobile, isReady } = useBreakpoint();
   const count = isMobile ? 20 : 30;
+  const bodyHeight = `calc(100% - ${kFooterHeight}px)`;
 
   return (
-    <Stack width="100%" height={height} overflow="hidden">
+    <Stack width="100%" height={bodyHeight} overflow="hidden">
       <Box size="100%" />
+      <Position width="100%" height="100%">
+        {children}
+      </Position>
       {isReady &&
         range(30).map(idx => {
           return (
@@ -42,9 +47,6 @@ export function Background({ children, height }) {
             />
           );
         })}
-      <Position width="100%" height="100%">
-        {children}
-      </Position>
     </Stack>
   );
 }
@@ -63,7 +65,7 @@ const Rock = (props: {
   const requestRef = useRef<number | null>(null);
   const spacing = 0.2;
   const noTransition = '0ms';
-  const defaultTransition = 'all 300ms';
+  const defaultTransition = 'transform 300ms';
   const isHidden = idx > count - 1;
   const RockWidget = [Rock1, Rock2, Rock3][(idx + 1) % 3];
   const randomX = () => randomFloat(-spacing, 1 + spacing);

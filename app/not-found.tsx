@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 import { Column } from '@/common/components/Flex';
-import { kBodyHeight } from '@/components/Layouts/sizes';
-import { CardText } from '@/components/Texts/CardText';
+import { CardText } from '@/components/Text/CardText';
+import { kBodyHeight } from '@/layouts/sizes';
 
 import styles from './styles.module.css';
 

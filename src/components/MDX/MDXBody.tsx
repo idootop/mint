@@ -1,7 +1,7 @@
 // Markdown
-import './markdown.css';
-import './prism.css';
-import './highlight.css';
+import './styles/markdown.css';
+import './styles/prism.css';
+import './styles/highlight.css';
 
 export function MDXBody({ children }) {
   return <article className="markdown-body">{children}</article>;

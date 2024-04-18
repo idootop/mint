@@ -1,0 +1,31 @@
+.hello {
+  display: flex;
+  align-items: center;
+}
+
+.hello span {
+  font-size: 48px;
+  font-weight: 600;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-right: 8px;
+}
+
+.hello > div {
+  display: inline-block;
+  width: 8px;
+  height: 80%;
+  border-radius: 0px;
+  background: #64ba5e;
+  animation: typing 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from,
+  to {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}

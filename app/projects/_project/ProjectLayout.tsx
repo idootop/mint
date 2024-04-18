@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import { Column } from '@/common/components/Flex';
-import { BaseImage } from '@/components/Images/BaseImage';
+import { BaseImage } from '@/components/Image/BaseImage';
 import { MDXBody } from '@/components/MDX/MDXBody';
 
 import { getProjectContext, Project } from '.';

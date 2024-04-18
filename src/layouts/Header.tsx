@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 
 import { Expand, Row } from '@/common/components/Flex';
 
-import { IconGithub, IconLogo } from '../Icons';
+import { IconGithub, IconLogo } from '../components/Icon';
 import { kHeaderHeight, kPageMaxWidth, kPagePadding } from './sizes';
 import styles from './styles.module.css';
 
