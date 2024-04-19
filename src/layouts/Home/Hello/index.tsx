@@ -1,26 +1,21 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-
 import { Center } from '@/common/components/Flex';
+import { useEffectSafely } from '@/common/hooks/useEffectSafely';
 import { sleep } from '@/common/utils/base';
 
 import { hellos } from './hello';
 import styles from './styles.module.css';
 
 export const Hello = () => {
-  const initRef = useRef(0);
-  useEffect(() => {
-    initRef.current = initRef.current + 1;
-    const currentInit = initRef.current;
-
+  useEffectSafely(isDisposed => {
     let timer;
     let languageIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
 
     async function type() {
-      if (initRef.current !== currentInit) {
+      if (isDisposed()) {
         return;
       }
       const text = hellos[languageIndex];
