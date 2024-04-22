@@ -15,9 +15,6 @@ export const Hello = () => {
     let isDeleting = false;
 
     async function type() {
-      if (isDisposed()) {
-        return;
-      }
       const text = hellos[languageIndex];
       const speed = isDeleting ? 50 : 150;
 
@@ -29,6 +26,10 @@ export const Hello = () => {
         isDeleting = false;
         languageIndex = (languageIndex + 1) % hellos.length;
         await sleep(200);
+      }
+
+      if (isDisposed()) {
+        return;
       }
 
       const e = document.getElementsByClassName(styles['hello'])[0].children[0];

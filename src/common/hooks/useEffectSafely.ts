@@ -8,7 +8,11 @@ export const useEffectSafely = (
   useEffect(() => {
     effectRef.current = effectRef.current + 1;
     const currentEffect = effectRef.current;
-    return effect(() => currentEffect !== effectRef.current);
+    const ret = effect(() => currentEffect !== effectRef.current);
+    return () => {
+      effectRef.current = effectRef.current + 1;
+      ret?.();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 };
