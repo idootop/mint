@@ -86,7 +86,7 @@ export const Image = forwardRef((props: ImageProps, ref: any) => {
         width={isString(width) ? 0 : (width as any)}
         height={isString(height) ? 0 : (height as any)}
         unoptimized
-        loading="eager"
+        loading="lazy"
         loader={imgLoader}
         onLoad={() => {
           __ref.current.removeAttribute('with');
