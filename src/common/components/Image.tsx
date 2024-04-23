@@ -31,8 +31,8 @@ const Image = forwardRef((props: ImageProps, ref: any) => {
       backgroundPosition: 'center',
       display: isLoaded && !isError ? display : 'none',
     },
-    includes: ['alt', 'placeholder', 'blurDataURL'],
-    excludes: ['onLoad', 'onError'],
+    includes: ['placeholder', 'blurDataURL'],
+    excludes: ['alt', 'src', 'onLoad', 'onError'],
   });
 
   const _placeholder = (

@@ -5,10 +5,12 @@ import { processImage } from '@/utils/image';
 
 import styles from './styles.module.css';
 
-export const BaseImage = async props => {
-  const imageData = await processImage(props.src);
-  props = { ...props, ...imageData };
-  const { src, alt = '', width = 0, height = 0, ...restProps } = props;
+export const BaseImage = async _props => {
+  const imageData = await processImage(_props.src);
+  const props = { ..._props, ...imageData };
+  const { src, alt = '', ...restProps } = props;
+  const width = _props.size ?? props.width ?? 0;
+  const height = _props.size ?? props.height ?? 0;
   const aspectRatioStyle =
     height > 0
       ? {
