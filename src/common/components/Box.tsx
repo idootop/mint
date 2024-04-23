@@ -1,5 +1,11 @@
 /* eslint-disable prefer-const */
-import { CSSProperties, forwardRef, ReactNode } from 'react';
+import {
+  CSSProperties,
+  DOMAttributes,
+  forwardRef,
+  ImgHTMLAttributes,
+  ReactNode,
+} from 'react';
 
 import { removeEmpty, toSet } from '../utils/base';
 import { isArray, isNumber, isString } from '../utils/is';
@@ -18,8 +24,12 @@ export type BaseProps = Partial<{
 }>;
 
 export type BoxProps = BaseProps &
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  BoxStyle & { includes?: string[]; excludes?: string[] } & {};
+  BoxStyle & {
+    includes?: string[];
+    excludes?: string[];
+  } & Omit<DOMAttributes<any>, 'onLoad' | 'onError'> &
+  Omit<ImgHTMLAttributes<any>, 'onLoad' | 'onError'> &
+  object;
 
 export const getBoxProps = (props: BoxProps) => {
   let {
