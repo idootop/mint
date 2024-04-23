@@ -10,29 +10,35 @@ interface TextInputProps {
   onSubmit?: (input: string) => void;
 }
 
-export const TextInput = forwardRef(
-  (props: BoxProps & TextInputProps, ref: any) => {
-    const boxProps = getBoxProps(props);
-    const { value, hint = '', onChange, onSubmit } = props ?? {};
+const TextInput = forwardRef((props: BoxProps & TextInputProps, ref: any) => {
+  const { value, hint = '', onChange, onSubmit } = props ?? {};
 
-    return (
-      <input
-        ref={ref}
-        {...boxProps}
-        className={styles['text-input']}
-        value={value}
-        placeholder={hint}
-        onKeyDown={(event: any) => {
-          if (event.key === 'Enter') {
-            const str = event.target.value;
-            onSubmit?.(str);
-          }
-        }}
-        onChange={(event: any) => {
+  const boxProps = getBoxProps({
+    ...props,
+    excludes: ['value', 'hint', 'onChange', 'onSubmit'],
+  });
+
+  return (
+    <input
+      ref={ref}
+      {...boxProps}
+      className={styles['text-input']}
+      value={value}
+      placeholder={hint}
+      onKeyDown={(event: any) => {
+        if (event.key === 'Enter') {
           const str = event.target.value;
-          onChange?.(str);
-        }}
-      />
-    );
-  },
-);
+          onSubmit?.(str);
+        }
+      }}
+      onChange={(event: any) => {
+        const str = event.target.value;
+        onChange?.(str);
+      }}
+    />
+  );
+});
+
+TextInput.displayName = 'TextInput';
+
+export { TextInput };

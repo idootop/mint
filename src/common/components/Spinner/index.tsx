@@ -4,7 +4,7 @@ import { BoxProps, getBoxProps } from '../Box';
 import styles from './style.module.css';
 
 interface SpinnerProps extends BoxProps {
-  size?: string;
+  size?: string | number;
   color?: string;
   background?: string;
   thickness?: string;
@@ -23,24 +23,28 @@ export const Spinner = (props?: SpinnerProps) => {
       ? 'rgba(0, 0, 0, 0.1)'
       : 'rgba(255, 255, 255, 0.1)',
   } = props ?? {};
-  const style = {
-    width: size,
-    height: size,
-    border: `${thickness} solid ${background}`,
-    borderTop: `${thickness} solid ${color}`,
-  };
+
   const boxProps = getBoxProps({
     ...props,
-    ...{ style, className: styles.spinner, background: 'transparent' },
+    className: styles.spinner,
+    style: {
+      ...props?.style,
+      width: size,
+      height: size,
+      background: 'transparent',
+      border: `${thickness} solid ${background}`,
+      borderTop: `${thickness} solid ${color}`,
+    },
+    excludes: ['delay', 'theme', 'thickness'],
   });
 
-  const [inited, setInited] = useState(delay ? false : true);
+  const [initialized, setInitialized] = useState(delay ? false : true);
   useEffect(() => {
     setTimeout(() => {
-      setInited(true);
+      setInitialized(true);
     }, delay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return inited ? <div {...boxProps} /> : <div />;
+  return initialized ? <div {...boxProps} /> : <div />;
 };

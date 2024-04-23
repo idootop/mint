@@ -22,7 +22,7 @@ export interface PositionProps {
   transform: string;
 }
 
-export const Position = forwardRef(
+const Position = forwardRef(
   (props: BoxProps & Partial<PositionProps>, ref: any) => {
     const position = getStackPosition(props);
     const newProps = {
@@ -33,6 +33,10 @@ export const Position = forwardRef(
     return <Box ref={ref} {...newProps} />;
   },
 );
+
+Position.displayName = 'Position';
+
+export { Position };
 
 const getStackPosition = (props: Partial<PositionProps>) => {
   const alignMap: Record<string, Partial<PositionProps>> = {

@@ -1,68 +1,75 @@
-import { CSSProperties, forwardRef, MouseEventHandler, ReactNode } from 'react';
+/* eslint-disable prefer-const */
+import { CSSProperties, forwardRef, ReactNode } from 'react';
 
-import { removeEmpty } from '../utils/base';
-import { isArray } from '../utils/is';
+import { removeEmpty, toSet } from '../utils/base';
+import { isArray, isNumber, isString } from '../utils/is';
 
-export interface BaseProps {
-  // 基础属性
-  id?: string;
-  ref?: any;
+export type BoxStyle = CSSProperties &
+  Partial<{
+    size: string | number;
+  }>;
+
+export type BaseProps = Partial<{
+  ref: any;
+  children: ReactNode;
+  id: string;
   className?: string | string[];
-  children?: ReactNode;
-  src?: string;
-  style?: CSSProperties;
+  style: BoxStyle;
+}>;
 
-  onClick?: MouseEventHandler | undefined;
-  // 增强属性
-  extStyle?: CSSProperties;
-  size?: string | number;
-  alt?: string;
-  placeholder?: any;
-  blurDataURL?: string;
-}
-
-export type BoxProps = CSSProperties & BaseProps;
+export type BoxProps = BaseProps &
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  BoxStyle & { includes?: string[]; excludes?: string[] } & {};
 
 export const getBoxProps = (props: BoxProps) => {
-  const {
+  let {
+    ref: _,
+    children: __,
     id,
-    children: _,
     className: _class,
-    src,
-    style,
-    extStyle = {},
-    onClick,
-    size,
-    alt,
-    placeholder,
-    blurDataURL,
-    ...styles
+    style: _style,
+    includes = [],
+    excludes = [],
+    ..._boxStyle
   } = props ?? {};
 
-  if (size) {
-    extStyle.width = size;
-    extStyle.height = size;
+  _style = removeEmpty(_style);
+  _boxStyle = removeEmpty(_boxStyle);
+
+  const boxProps = {
+    id,
+    className: isArray(_class) ? _class.join(' ') : _class,
+    style: {} as BoxStyle,
+  };
+
+  Object.entries(_boxStyle).forEach(([key, value]) => {
+    if (isNotCSSProperty([key, value], toSet([...includes, ...excludes]))) {
+      // 不是 CSS style，而是 Box props
+      delete _boxStyle[key];
+      boxProps[key] = value;
+    }
+  });
+
+  boxProps.style = {
+    ..._boxStyle,
+    ..._style,
+  };
+
+  // 处理 size
+  if (boxProps.style.size) {
+    boxProps.style.width = boxProps.style.size;
+    boxProps.style.height = boxProps.style.size;
+    delete boxProps.style['size'];
   }
 
-  const className = isArray(_class) ? (_class as any)!.join(' ') : _class;
+  for (const key of excludes) {
+    delete boxProps[key];
+  }
 
-  return removeEmpty({
-    id,
-    onClick,
-    className,
-    src,
-    alt,
-    placeholder,
-    blurDataURL,
-    style: {
-      ...style,
-      ...styles,
-      ...extStyle,
-    },
-  });
+  return removeEmpty(boxProps);
 };
 
-export const Box = forwardRef((props: BoxProps, ref: any) => {
+const Box = forwardRef((props: BoxProps, ref: any) => {
   const { children } = props;
   const boxProps = getBoxProps(props);
 
@@ -72,3 +79,19 @@ export const Box = forwardRef((props: BoxProps, ref: any) => {
     </div>
   );
 });
+
+Box.displayName = 'Box';
+
+export { Box };
+
+type GetBoxStyle = (props: BoxProps, key: string, value?: any) => any;
+export const getBoxStyle: GetBoxStyle = (props, key, value) => {
+  return props.style?.[key] ?? props[key] ?? value;
+};
+
+const isNotCSSProperty = (
+  [key, value]: [string, any],
+  excludes: string[] = [],
+) => {
+  return excludes.includes(key) || !(isString(value) || isNumber(value));
+};
