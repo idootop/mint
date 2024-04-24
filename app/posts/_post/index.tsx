@@ -78,7 +78,8 @@ export async function generatePostMetadata(path: string) {
   return generatePageMetadata<Post>(await getPostSortedByYear(), path);
 }
 
-export const generatePostPage = async (path: string, Content: any) => {
+export const generatePostPage = async (metaURL: string, Content: any) => {
+  const path = getPostPagePath(metaURL);
   const metadata = await generatePostMetadata(path);
   return {
     metadata,
@@ -89,3 +90,6 @@ export const generatePostPage = async (path: string, Content: any) => {
     ),
   };
 };
+
+export const getPostPagePath = (metaURL: string) =>
+  metaURL.match(/app(\/posts\/.*?)\/page.tsx$/)![1];

@@ -11,23 +11,31 @@ import { ProjectLayout } from './ProjectLayout';
 
 const kProjectCategories = [
   'work',
-  'side-project',
-  'package',
+  'product',
   'ai',
+  'game',
   'web3',
-  'hack',
   'tool',
+  'explore',
+  'hack',
+  'package',
+  'develop',
+  'document',
   'other',
 ];
 
 export const kProjectCategoryNames = {
-  work: '商业项目',
-  'side-project': '个人项目',
-  package: '开源库',
+  work: '工作',
+  product: '产品',
   ai: 'AI',
+  game: '游戏',
   web3: 'Web3',
-  hack: '逆向/安全',
   tool: '小工具',
+  explore: '探索',
+  hack: '逆向/安全',
+  package: '开源库',
+  develop: '开发',
+  document: '文档',
   other: '其他',
 };
 
@@ -128,7 +136,8 @@ export async function generateProjectMetadata(path: string) {
   );
 }
 
-export const generateProjectPage = async (path: string, Content: any) => {
+export const generateProjectPage = async (metaURL: string, Content: any) => {
+  const path = getProjectPagePath(metaURL);
   const metadata = await generateProjectMetadata(path);
   return {
     metadata,
@@ -139,3 +148,6 @@ export const generateProjectPage = async (path: string, Content: any) => {
     ),
   };
 };
+
+export const getProjectPagePath = (metaURL: string) =>
+  metaURL.match(/app(\/projects\/.*?)\/page.tsx$/)![1];
