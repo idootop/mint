@@ -9,7 +9,12 @@ export default async function Page() {
   return (
     <Column className={styles.page}>
       {(await getPostsGroupedByYear()).map(e => {
-        return <YearPost key={e.year} year={e.year} posts={e.posts} />;
+        const posts = e.posts.filter(e => !e.hidden);
+        return (
+          posts.length > 0 && (
+            <YearPost key={e.year} year={e.year} posts={posts} />
+          )
+        );
       })}
     </Column>
   );

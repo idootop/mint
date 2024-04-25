@@ -1,67 +1,33 @@
-import Link from 'next/link';
+import { Suspense } from 'react';
 
-import { Column } from '@/common/components/Flex';
 import { BaseImage } from '@/components/Image/BaseImage';
 import { MDXBody } from '@/components/MDX/MDXBody';
+import { PageFrom } from '@/utils/page/type';
 
-import { getProjectContext, Project } from '.';
+import { getProject, getProjectContext } from '.';
+import { Footer } from './Footer';
 import styles from './styles.module.css';
 
-export async function ProjectLayout({ path, children }: any) {
-  const { current, previous, next } = await getProjectContext(path);
-  if (!current) {
+export async function ProjectLayout({ path, children }) {
+  const page = await getProject(path);
+  if (!page) {
     return '404';
   }
 
+  const ctx = {
+    all: await getProjectContext(path, { from: PageFrom.all }),
+    pinned: await getProjectContext(path, { from: PageFrom.pinned }),
+  };
+
   return (
     <main className={styles.page}>
-      {current.cover && <BaseImage src={current.cover} />}
-      <h1 className={styles.title}>{current.title}</h1>
-      <p className={styles.date}>{current.createAt}</p>
+      {page.cover && <BaseImage src={page.cover} />}
+      <h1 className={styles.title}>{page.title}</h1>
+      <p className={styles.date}>{page.createAt}</p>
       <MDXBody>{children}</MDXBody>
-      <Footer previous={previous} next={next} />
+      <Suspense>
+        <Footer ctx={ctx} />
+      </Suspense>
     </main>
   );
 }
-
-const Footer = (props: { previous?: Project; next?: Project }) => {
-  const { previous, next } = props;
-  return (
-    <Column
-      alignItems="center"
-      style={{
-        width: '100%',
-        padding: '24px',
-        background: '#161616',
-      }}
-    >
-      {previous && <NavItem label="Previous" project={previous} />}
-      {next && <NavItem label="Next" project={next} />}
-    </Column>
-  );
-};
-
-const NavItem = (props: { label: string; project: Project }) => {
-  const { label, project } = props;
-  return (
-    <Column
-      className={styles.link}
-      style={{
-        textAlign: 'center',
-      }}
-    >
-      <span
-        style={{
-          marginBottom: '6px',
-          fontSize: '12px',
-          color: 'rgba(255, 255, 255, 0.4)',
-          textTransform: 'uppercase',
-          letterSpacing: '2px',
-        }}
-      >
-        {label}
-      </span>
-      <Link href={project.path}>{project.title}</Link>
-    </Column>
-  );
-};

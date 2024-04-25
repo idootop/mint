@@ -67,7 +67,7 @@ const Rock = (props: {
   const spacing = 0.2;
   const noTransition = '0ms';
   const defaultTransition = 'transform 300ms';
-  const isHidden = idx > count - 1;
+  const hidden = idx > count - 1;
   const RockWidget = [Rock1, Rock2, Rock3][(idx + 1) % 3];
   const randomX = () => randomFloat(-spacing, 1 + spacing);
   const randomY = () => randomFloat(-spacing, 1 + spacing);
@@ -78,7 +78,7 @@ const Rock = (props: {
 
   useEffectSafely(
     isDisposed => {
-      if (isHidden) {
+      if (hidden) {
         return;
       }
 
@@ -191,7 +191,7 @@ const Rock = (props: {
         cancelAnimationFrame(requestRef.current!);
       };
     },
-    [baseSize, baseSpeed, idx, isHidden, maxSize, randomSize, spacing],
+    [baseSize, baseSpeed, idx, hidden, maxSize, randomSize, spacing],
   );
 
   return (
@@ -203,7 +203,7 @@ const Rock = (props: {
             width: '0px',
             height: '0px',
             objectFit: 'contain',
-            opacity: isHidden ? '0' : '1',
+            opacity: hidden ? '0' : '1',
             transition: defaultTransition,
             transform: `translate(0, 0) translateZ(0)`,
           }}

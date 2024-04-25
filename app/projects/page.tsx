@@ -9,15 +9,17 @@ import { getProjectsSortedByCategory, Project } from './_project';
 export default async function Page() {
   return (
     <Box width="100%">
-      {(await getProjectsSortedByCategory()).map((project, idx) => {
-        return (
-          <ProjectItem
-            key={project.title}
-            project={project}
-            background={idx % 2 !== 0 ? '#fafbfc' : '#fff'}
-          />
-        );
-      })}
+      {(await getProjectsSortedByCategory())
+        .filter(e => !e.hidden)
+        .map((project, idx) => {
+          return (
+            <ProjectItem
+              key={project.title}
+              project={project}
+              background={idx % 2 !== 0 ? '#fafbfc' : '#fff'}
+            />
+          );
+        })}
     </Box>
   );
 }

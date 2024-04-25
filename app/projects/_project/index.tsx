@@ -1,11 +1,14 @@
 import { MakeRequired } from '@/common/utils/types';
 import {
   generatePageMetadata,
+  getPage,
   getPageContext,
   getPages,
   PageContext,
   PageMetadata,
+  PagesWithPinned,
 } from '@/utils/page';
+import { PageFrom } from '@/utils/page/type';
 
 import { ProjectLayout } from './ProjectLayout';
 
@@ -55,7 +58,7 @@ export type Project = MakeRequired<PageMetadata, 'createAt' | 'updateAt'> & {
   source?: string;
 };
 
-export const getProjects = async (): Promise<Project[]> => {
+export const getProjects = async (): Promise<PagesWithPinned<Project>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   return getPages<Project>('projects', ctx, {
     buildMetadata: project => {
@@ -88,10 +91,7 @@ export const getProjectsGroupedByCategory = async () => {
     return kProjectsGroupedByCategory;
   }
   const categoryProjects = {};
-  (await getProjects()).forEach(project => {
-    if (project.isHidden) {
-      return;
-    }
+  (await getProjects()).all.forEach(project => {
     const category = project.category;
     if (!categoryProjects[category]) {
       categoryProjects[category] = [];
@@ -107,15 +107,24 @@ export const getProjectsGroupedByCategory = async () => {
   return kProjectsGroupedByCategory;
 };
 
+const kProjectsPinned: Project[] = [];
+export const getProjectsPinned = async () => {
+  if (kProjectsPinned.length > 0) {
+    return kProjectsPinned;
+  }
+  (await getProjects()).pinned.forEach(project => {
+    kProjectsPinned.push(project);
+  });
+  return kProjectsPinned;
+};
+
 let kProjectSortedByCategory: Project[] = [];
 export const getProjectsSortedByCategory = async () => {
   if (kProjectSortedByCategory.length > 0) {
     return kProjectSortedByCategory;
   }
   kProjectSortedByCategory = (await getProjectsGroupedByCategory()).reduce(
-    (pre, v) => {
-      return [...pre, ...v.projects];
-    },
+    (pre, v) => [...pre, ...v.projects],
     [] as Project[],
   );
   return kProjectSortedByCategory;
@@ -123,10 +132,21 @@ export const getProjectsSortedByCategory = async () => {
 
 export interface ProjectContext extends PageContext<Project> {}
 
+export const getProject = async (path: string) => {
+  return getPage((await getProjects()).all, path);
+};
+
 export const getProjectContext = async (
   path: string,
+  options?: { from?: PageFrom },
 ): Promise<ProjectContext> => {
-  return getPageContext(await getProjectsSortedByCategory(), path);
+  const { from = PageFrom.all } = options ?? {};
+  return getPageContext(
+    from === PageFrom.pinned
+      ? await getProjectsPinned()
+      : await getProjectsSortedByCategory(),
+    path,
+  );
 };
 
 export async function generateProjectMetadata(path: string) {

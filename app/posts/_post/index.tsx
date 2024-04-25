@@ -1,17 +1,20 @@
 import { MakeRequired } from '@/common/utils/types';
 import {
   generatePageMetadata,
+  getPage,
   getPageContext,
   getPages,
   PageContext,
   PageMetadata,
+  PagesWithPinned,
 } from '@/utils/page';
+import { PageFrom } from '@/utils/page/type';
 
 import { PostLayout } from './PostLayout';
 
 export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
 
-export const getPosts = async (): Promise<Post[]> => {
+export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   return getPages<Post>('posts', ctx, {
     buildMetadata: post => {
@@ -42,10 +45,7 @@ export const getPostsGroupedByYear = async () => {
     return kPostsGroupedByYear;
   }
   let year;
-  (await getPosts()).forEach(post => {
-    if (post.isHidden) {
-      return;
-    }
+  (await getPosts()).all.forEach(post => {
     const _year = post.createAt.split('-')[0] as any;
     if (_year !== year) {
       kPostsGroupedByYear.push({ year: _year, posts: [post] });
@@ -57,21 +57,46 @@ export const getPostsGroupedByYear = async () => {
   return kPostsGroupedByYear;
 };
 
+const kPostsPinned: Post[] = [];
+export const getPostsPinned = async () => {
+  if (kPostsPinned.length > 0) {
+    return kPostsPinned;
+  }
+  (await getPosts()).pinned.forEach(project => {
+    kPostsPinned.push(project);
+  });
+  return kPostsPinned;
+};
+
 let kPostSortedByYear: Post[] = [];
 export const getPostSortedByYear = async () => {
   if (kPostSortedByYear.length > 0) {
     return kPostSortedByYear;
   }
-  kPostSortedByYear = (await getPostsGroupedByYear()).reduce((pre, v) => {
-    return [...pre, ...v.posts];
-  }, [] as Post[]);
+  kPostSortedByYear = (await getPostsGroupedByYear()).reduce(
+    (pre, v) => [...pre, ...v.posts],
+    [] as Post[],
+  );
   return kPostSortedByYear;
 };
 
 export interface PostContext extends PageContext<Post> {}
 
-export const getPostContext = async (path: string): Promise<PostContext> => {
-  return getPageContext(await getPostSortedByYear(), path);
+export const getPost = async (path: string) => {
+  return getPage((await getPosts()).all, path);
+};
+
+export const getPostContext = async (
+  path: string,
+  options?: { from?: PageFrom },
+): Promise<PostContext> => {
+  const { from = PageFrom.all } = options ?? {};
+  return getPageContext(
+    from === PageFrom.pinned
+      ? await getPostsPinned()
+      : await getPostSortedByYear(),
+    path,
+  );
 };
 
 export async function generatePostMetadata(path: string) {
