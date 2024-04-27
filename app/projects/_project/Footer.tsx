@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { Column } from '@/common/components/Flex';
-import { PageFrom } from '@/utils/page/type';
+import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
 import type { Project, ProjectContext } from '.';
 import styles from './styles.module.css';
@@ -46,6 +46,7 @@ const NavItem = (props: {
   from: PageFrom;
 }) => {
   const { label, project, from } = props;
+  const pageLink = getPageLinkWithFrom({ path: project.path, from });
   return (
     <Column
       className={styles.link}
@@ -64,7 +65,7 @@ const NavItem = (props: {
       >
         {label}
       </span>
-      <Link href={`${project.path}?from=${from}`}>{project.title}</Link>
+      <Link href={pageLink}>{project.title}</Link>
     </Column>
   );
 };

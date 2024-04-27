@@ -8,7 +8,7 @@ import {
   PageMetadata,
   PagesWithPinned,
 } from '@/utils/page';
-import { PageFrom } from '@/utils/page/type';
+import { PageFrom } from '@/utils/page/from';
 
 import { PostLayout } from './PostLayout';
 

@@ -2,7 +2,7 @@ import { Suspense } from 'react';
 
 import { BaseImage } from '@/components/Image/BaseImage';
 import { MDXBody } from '@/components/MDX/MDXBody';
-import { PageFrom } from '@/utils/page/type';
+import { PageFrom } from '@/utils/page/from';
 
 import { getPost, getPostContext } from '.';
 import { Footer } from './Footer';

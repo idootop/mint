@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 import { Column } from '@/common/components/Flex';
-import { PageFrom } from '@/utils/page/type';
+import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
 import type { Post, PostContext } from '.';
 import styles from './styles.module.css';
@@ -42,6 +42,7 @@ export const Footer = ({
 
 const NavItem = (props: { label: string; post: Post; from: PageFrom }) => {
   const { label, post, from } = props;
+  const pageLink = getPageLinkWithFrom({ path: post.path, from });
   return (
     <Column
       className={styles.link}
@@ -60,7 +61,7 @@ const NavItem = (props: { label: string; post: Post; from: PageFrom }) => {
       >
         {label}
       </span>
-      <Link href={`${post.path}?from=${from}`}>{post.title}</Link>
+      <Link href={pageLink}>{post.title}</Link>
     </Column>
   );
 };

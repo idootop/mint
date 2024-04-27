@@ -1,18 +1,28 @@
 import Link from 'next/link';
 
 import { Column, Expand, Row } from '@/common/components/Flex';
+import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
-import { getPostsGroupedByYear, Post, PostsGroupedByYear } from './_post';
+import { getPostsGroupedByYear, getPostsPinned, Post } from './_post';
 import styles from './styles.module.css';
 
 export default async function Page() {
+  const pinned = await getPostsPinned();
   return (
     <Column className={styles.page}>
+      {pinned.length > 0 && (
+        <GroupedPost group="Pinned" posts={pinned} from={PageFrom.pinned} />
+      )}
       {(await getPostsGroupedByYear()).map(e => {
         const posts = e.posts.filter(e => !e.hidden);
         return (
           posts.length > 0 && (
-            <YearPost key={e.year} year={e.year} posts={posts} />
+            <GroupedPost
+              key={e.year}
+              group={e.year}
+              posts={posts}
+              from={PageFrom.all}
+            />
           )
         );
       })}
@@ -20,8 +30,12 @@ export default async function Page() {
   );
 }
 
-const YearPost = (props: PostsGroupedByYear) => {
-  const { year, posts } = props;
+const GroupedPost = (props: {
+  group: string;
+  posts: Post[];
+  from: PageFrom;
+}) => {
+  const { group, posts, from } = props;
   if (posts.length < 1) return;
   return (
     <Column
@@ -42,21 +56,22 @@ const YearPost = (props: PostsGroupedByYear) => {
           color: 'rgba(0, 0, 0, 0.3)',
         }}
       >
-        {year}
+        {group}
       </span>
       {posts.map(post => {
-        return <PostItem key={post.path} post={post} />;
+        return <PostItem key={post.path} post={post} from={from} />;
       })}
     </Column>
   );
 };
 
-const PostItem = (props: { post: Post }) => {
-  const { post } = props;
+const PostItem = (props: { post: Post; from: PageFrom }) => {
+  const { post, from } = props;
+  const postLink = getPageLinkWithFrom({ path: post.path, from });
   return (
     <Link
       className={styles.post}
-      href={post.path}
+      href={postLink}
       style={{
         width: '100%',
       }}
