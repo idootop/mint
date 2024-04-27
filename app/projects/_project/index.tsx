@@ -85,13 +85,10 @@ export interface ProjectsGroupedByCategory {
   projects: Project[];
 }
 
-const kProjectsGroupedByCategory: ProjectsGroupedByCategory[] = [];
-export const getProjectsGroupedByCategory = async () => {
-  if (kProjectsGroupedByCategory.length > 0) {
-    return kProjectsGroupedByCategory;
-  }
+const groupProjectsByCategory = (projects: Project[]) => {
   const categoryProjects = {};
-  (await getProjects()).all.forEach(project => {
+  const projectsGroupedByCategory: ProjectsGroupedByCategory[] = [];
+  projects.forEach(project => {
     const category = project.category;
     if (!categoryProjects[category]) {
       categoryProjects[category] = [];
@@ -99,28 +96,52 @@ export const getProjectsGroupedByCategory = async () => {
     categoryProjects[category].push(project);
   });
   for (const category of kProjectCategories) {
-    kProjectsGroupedByCategory.push({
+    projectsGroupedByCategory.push({
       category,
       projects: categoryProjects[category] ?? [],
     });
   }
+  return projectsGroupedByCategory;
+};
+
+let kProjectsGroupedByCategory: ProjectsGroupedByCategory[];
+export const getProjectsGroupedByCategory = async () => {
+  if (kProjectsGroupedByCategory) {
+    return kProjectsGroupedByCategory;
+  }
+  kProjectsGroupedByCategory = groupProjectsByCategory(
+    (await getProjects()).all,
+  );
   return kProjectsGroupedByCategory;
 };
 
-const kProjectsPinned: Project[] = [];
+let kProjectsPinned: Project[];
 export const getProjectsPinned = async () => {
-  if (kProjectsPinned.length > 0) {
+  if (kProjectsPinned) {
     return kProjectsPinned;
   }
-  (await getProjects()).pinned.forEach(project => {
-    kProjectsPinned.push(project);
-  });
+  const pinned = (await getProjects()).pinned;
+  const middleStart = pinned.findIndex(e => !e.pinnedIndex);
+  const middleEnd = pinned.findLastIndex(e => !e.pinnedIndex);
+  if (middleStart === middleEnd) {
+    kProjectsPinned = pinned;
+  } else {
+    // sort middle project by category
+    const tops = pinned.slice(0, middleStart);
+    const middles = pinned.slice(middleStart, middleEnd + 1);
+    const middlesGroupedByCategory = groupProjectsByCategory(middles).reduce(
+      (pre, v) => [...pre, ...v.projects],
+      [] as Project[],
+    );
+    const bottoms = pinned.slice(middleEnd + 1);
+    kProjectsPinned = [...tops, ...middlesGroupedByCategory, ...bottoms];
+  }
   return kProjectsPinned;
 };
 
-let kProjectSortedByCategory: Project[] = [];
+let kProjectSortedByCategory: Project[];
 export const getProjectsSortedByCategory = async () => {
-  if (kProjectSortedByCategory.length > 0) {
+  if (kProjectSortedByCategory) {
     return kProjectSortedByCategory;
   }
   kProjectSortedByCategory = (await getProjectsGroupedByCategory()).reduce(

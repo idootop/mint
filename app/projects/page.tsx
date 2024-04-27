@@ -4,12 +4,12 @@ import { Box } from '@/common/components/Box';
 import { Column } from '@/common/components/Flex';
 import { BannerImage } from '@/components/Image/BannerImage';
 
-import { getProjectsSortedByCategory, Project } from './_project';
+import { getProjectsPinned, Project } from './_project';
 
 export default async function Page() {
   return (
     <Box width="100%">
-      {(await getProjectsSortedByCategory())
+      {(await getProjectsPinned())
         .filter(e => !e.hidden)
         .map((project, idx) => {
           return (
