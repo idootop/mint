@@ -68,6 +68,10 @@ const GroupedPost = (props: {
 const PostItem = (props: { post: Post; from: PageFrom }) => {
   const { post, from } = props;
   const postLink = getPageLinkWithFrom({ path: post.path, from });
+  const postDate =
+    from === PageFrom.pinned
+      ? post.createAt.replaceAll('-', '.')
+      : post.createAt.substring(5);
   return (
     <Link
       className={styles.post}
@@ -95,7 +99,7 @@ const PostItem = (props: { post: Post; from: PageFrom }) => {
             color: 'rgba(0, 0, 0, 0.3)',
           }}
         >
-          {post.createAt.substring(5)}
+          {postDate}
         </span>
       </Row>
     </Link>
