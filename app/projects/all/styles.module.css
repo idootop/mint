@@ -32,6 +32,7 @@
 }
 
 .title {
+  margin-right: 8px;
   font-size: 16px;
   font-weight: 500;
   color: #000
@@ -40,4 +41,10 @@
 .date {
   font-size: 14px;
   color: rgba(0, 0, 0, 0.3)
+}
+
+.description {
+  margin-top: 4px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5)
 }

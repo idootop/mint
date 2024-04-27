@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { Column, Expand, Row } from '@/common/components/Flex';
+import { Column } from '@/common/components/Flex';
 
 import {
   getProjectCategoryName,
@@ -47,12 +47,14 @@ const ProjectItem = (props: { project: Project }) => {
   const projectDate = project.createAt.replaceAll('-', '.');
   return (
     <Link className={styles.item} href={projectLink}>
-      <Row alignItems="center" width="100%">
-        <Expand marginRight="10px">
-          <span className={styles.title}>{project.title}</span>
-        </Expand>
+      <span>
+        <span className={styles.title}>
+          {project.emoji} {project.title}
+        </span>
         <span className={styles.date}>{projectDate}</span>
-      </Row>
+        <br />
+        <span className={styles.description}>{project.description}</span>
+      </span>
     </Link>
   );
 };
