@@ -1,0 +1,21 @@
+.page {
+  margin: 0 auto;
+  max-width: 640px;
+}
+@media (max-width: 640px) {
+  .page {
+    max-width: 100%;
+  }
+}
+
+.year + .year {
+  margin-top: 20px;
+}
+
+.project {
+  margin-top: 15px;
+}
+
+.project:hover {
+  font-weight: 600;
+}

@@ -18,28 +18,30 @@ const kProjectCategories = [
   'ai',
   'game',
   'web3',
-  'tool',
   'explore',
+  'tool',
   'hack',
   'package',
   'develop',
-  'document',
   'other',
 ];
 
 export const kProjectCategoryNames = {
-  work: '工作',
-  product: '产品',
+  work: '商业项目',
+  product: '个人项目',
   ai: 'AI',
   game: '游戏',
   web3: 'Web3',
-  tool: '小工具',
   explore: '探索',
-  hack: '逆向/安全',
-  package: '开源库',
-  develop: '开发',
-  document: '文档',
+  tool: '小工具',
+  hack: 'Hacker',
+  package: 'Packages',
+  develop: 'Developer',
   other: '其他',
+};
+
+export const getProjectCategoryName = (key: string) => {
+  return kProjectCategoryNames[key] ?? '其他';
 };
 
 export type Project = MakeRequired<PageMetadata, 'createAt' | 'updateAt'> & {
