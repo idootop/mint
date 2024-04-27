@@ -53,3 +53,31 @@
 .footerLink+.footerLink {
   margin-top: 24px;
 }
+
+.switcher {
+  bottom: 24px;
+  position: -webkit-sticky;
+  position: sticky;
+  z-index: 10;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  width: fit-content;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 10%);
+  transform: translateZ(0);
+  -webkit-backdrop-filter: saturate(180%) blur(5px);
+  backdrop-filter: saturate(180%) blur(5px);
+  background: hsla(0, 0%, 100%, 0.8);
+}
+
+.switcherOption {
+  user-select: none;
+  cursor: pointer;
+  width: 84px;
+  text-align: center;
+  padding: 4px 0;
+  border-radius: 8px;
+}

@@ -1,12 +1,14 @@
 import Link from 'next/link';
 
 import { Column } from '@/common/components/Flex';
+import { PageFrom } from '@/utils/page/from';
 
 import {
   getProjectCategoryName,
   getProjectsGroupedByCategory,
   Project,
 } from '../_project';
+import { ProjectSwitcher } from '../_project/ProjectSwitcher';
 import styles from './styles.module.css';
 
 export default async function Page() {
@@ -24,6 +26,7 @@ export default async function Page() {
           )
         );
       })}
+      <ProjectSwitcher from={PageFrom.all} />
     </Column>
   );
 }

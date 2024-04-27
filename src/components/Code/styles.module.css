@@ -13,6 +13,7 @@
 .header {
   gap: 8px;
   margin-bottom: 8px;
+  position: -webkit-sticky;
   position: sticky;
   left: 12px;
 }

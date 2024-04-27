@@ -30,7 +30,7 @@ export const Header = () => {
               }}
             />
           </Link>
-          <Expand width="100%" alignItems="center" justifyContent="center">
+          <Expand width="100%" justifyContent="center">
             <LinkItem href="/projects">项目</LinkItem>
             <LinkItem href="/posts">博客</LinkItem>
             <LinkItem href="/about">关于</LinkItem>
@@ -65,7 +65,7 @@ const LinkItem = (props: { href: string; children: any }) => {
       style={{
         fontSize: '16px',
         color: !active ? 'rgba(0, 0, 0, 0.3)' : undefined,
-        fontWeight: active ? '600' : undefined,
+        fontWeight: active ? 'bold' : undefined,
       }}
     >
       {children}

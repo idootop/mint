@@ -3,8 +3,10 @@ import Link from 'next/link';
 import { Box } from '@/common/components/Box';
 import { Column } from '@/common/components/Flex';
 import { BannerImage } from '@/components/Image/BannerImage';
+import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
 import { getProjectsPinned, Project } from './_project';
+import { ProjectSwitcher } from './_project/ProjectSwitcher';
 
 export default async function Page() {
   return (
@@ -20,15 +22,20 @@ export default async function Page() {
             />
           );
         })}
+      <ProjectSwitcher from={PageFrom.pinned} />
     </Box>
   );
 }
 
 const ProjectItem = async (props: { project: Project; background: string }) => {
   const { project, background } = props;
+  const projectLink = getPageLinkWithFrom({
+    path: project.path,
+    from: PageFrom.pinned,
+  });
   return (
     <Link
-      href={project.path}
+      href={projectLink}
       style={{
         width: '100%',
       }}
