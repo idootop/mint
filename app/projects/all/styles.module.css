@@ -2,20 +2,42 @@
   margin: 0 auto;
   max-width: 640px;
 }
+
 @media (max-width: 640px) {
   .page {
     max-width: 100%;
   }
 }
 
-.year + .year {
-  margin-top: 20px;
+.group {
+  width: 100%;
 }
 
-.project {
-  margin-top: 15px;
+.groupTitle {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.3);
 }
 
-.project:hover {
-  font-weight: 600;
+.item {
+  width: 100%;
+  margin: 2px 0;
+  padding: 10px 20px;
+  border-radius: 4px;
+}
+
+.item:hover {
+  background: #fafbfc;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000
+}
+
+.date {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.3)
 }

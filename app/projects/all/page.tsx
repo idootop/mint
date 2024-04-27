@@ -32,26 +32,8 @@ const GroupedProject = (props: { group: string; projects: Project[] }) => {
   const { group, projects } = props;
   if (projects.length < 1) return;
   return (
-    <Column
-      className={styles.year}
-      alignItems="start"
-      style={{
-        width: '100%',
-        padding: '20px',
-        background: '#fff',
-        borderRadius: '2px',
-        boxShadow: '0 1px 2px -1px rgba(0, 0, 0, 0.08)',
-      }}
-    >
-      <span
-        style={{
-          fontSize: '18px',
-          fontWeight: '600',
-          color: 'rgba(0, 0, 0, 0.3)',
-        }}
-      >
-        {group}
-      </span>
+    <Column className={styles.group} alignItems="start">
+      <span className={styles.groupTitle}>{group}</span>
       {projects.map(project => {
         return <ProjectItem key={project.path} project={project} />;
       })}
@@ -62,36 +44,14 @@ const GroupedProject = (props: { group: string; projects: Project[] }) => {
 const ProjectItem = (props: { project: Project }) => {
   const { project } = props;
   const projectLink = project.path;
-  const projectDate = project.createAt;
+  const projectDate = project.createAt.replaceAll('-', '.');
   return (
-    <Link
-      className={styles.project}
-      href={projectLink}
-      style={{
-        width: '100%',
-      }}
-    >
+    <Link className={styles.item} href={projectLink}>
       <Row alignItems="center" width="100%">
         <Expand marginRight="10px">
-          <span
-            className={styles.title}
-            style={{
-              fontSize: '18px',
-              color: '#000',
-            }}
-          >
-            {project.title}
-          </span>
+          <span className={styles.title}>{project.title}</span>
         </Expand>
-        <span
-          style={{
-            fontSize: '15px',
-            fontWeight: '400',
-            color: 'rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          {projectDate}
-        </span>
+        <span className={styles.date}>{projectDate}</span>
       </Row>
     </Link>
   );

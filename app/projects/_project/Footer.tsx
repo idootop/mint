@@ -26,14 +26,7 @@ export const Footer = ({
     return; // 当前页面是隐藏页面，或不存在
   }
   return (
-    <Column
-      alignItems="center"
-      style={{
-        width: '100%',
-        padding: '24px',
-        background: '#161616',
-      }}
-    >
+    <Column alignItems="center" className={styles.footer}>
       {previous && <NavItem label="Previous" project={previous} from={from} />}
       {next && <NavItem label="Next" project={next} from={from} />}
     </Column>
@@ -48,23 +41,8 @@ const NavItem = (props: {
   const { label, project, from } = props;
   const pageLink = getPageLinkWithFrom({ path: project.path, from });
   return (
-    <Column
-      className={styles.link}
-      style={{
-        textAlign: 'center',
-      }}
-    >
-      <span
-        style={{
-          marginBottom: '6px',
-          fontSize: '12px',
-          color: 'rgba(255, 255, 255, 0.4)',
-          textTransform: 'uppercase',
-          letterSpacing: '2px',
-        }}
-      >
-        {label}
-      </span>
+    <Column className={styles.footerLink}>
+      <span className={styles.footerLabel}>{label}</span>
       <Link href={pageLink}>{project.title}</Link>
     </Column>
   );
