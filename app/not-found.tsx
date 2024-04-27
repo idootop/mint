@@ -4,8 +4,6 @@ import { Column } from '@/common/components/Flex';
 import { CardText } from '@/components/Text/CardText';
 import { kBodyHeight } from '@/layouts/sizes';
 
-import styles from './styles.module.css';
-
 export default function NotFound() {
   return (
     <Link
@@ -17,7 +15,6 @@ export default function NotFound() {
     >
       <Column style={{ height: kBodyHeight, justifyContent: 'center' }}>
         <CardText
-          className={styles.breathing}
           style={{
             fontSize: '32px',
             marginBottom: '12px',
