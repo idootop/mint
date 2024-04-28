@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 import { Expand, Row } from '@/common/components/Flex';
+import { IconGithub } from '@/components/Icon/IconGithub';
+import { IconLogo } from '@/components/Icon/IconLogo';
 
-import { IconGithub, IconLogo } from '../components/Icon';
 import { kHeaderHeight, kPageMaxWidth, kPagePadding } from './sizes';
 import styles from './styles.module.css';
 
@@ -24,11 +25,7 @@ export const Header = () => {
           }}
         >
           <Link href="/">
-            <IconLogo
-              style={{
-                borderRadius: '50%',
-              }}
-            />
+            <IconLogo borderRadius="50%" />
           </Link>
           <Expand width="100%" justifyContent="center">
             <LinkItem href="/projects">项目</LinkItem>
