@@ -8,7 +8,7 @@ import styles from './styles.module.css';
 export const BaseImage = async _props => {
   const imageData = await processImage(_props.src);
   const props = { ..._props, ...imageData };
-  const { src, alt = '', ...restProps } = props;
+  const { src, alt = '', marginBottom = '16px', ...restProps } = props;
   const width = _props.size ?? props.width ?? 0;
   const height = _props.size ?? props.height ?? 0;
   const aspectRatioStyle =
@@ -44,7 +44,7 @@ export const BaseImage = async _props => {
           />
         )}
         {isNotEmpty(alt) && <span className={styles.center_label}>{alt}</span>}
-        <span style={{ height: '16px', display: 'block' }} />
+        <span style={{ height: marginBottom, display: 'block' }} />
       </>
     )
   );

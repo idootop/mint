@@ -32,7 +32,11 @@ export const Hello = () => {
         return;
       }
 
-      const e = document.getElementsByClassName(styles['hello'])[0].children[0];
+      let e = document.getElementsByClassName(styles['hello'])[0];
+      e = e?.children?.[0];
+      if (!e) {
+        return;
+      }
       e.textContent = isDeleting
         ? text.substring(0, charIndex - 1)
         : text.substring(0, charIndex + 1);

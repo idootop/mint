@@ -19,7 +19,7 @@ export type BaseProps = Partial<{
   ref: any;
   children: ReactNode;
   id: string;
-  className?: string | string[];
+  className?: string | (string | undefined)[];
   style: BoxStyle;
 }>;
 
@@ -27,8 +27,8 @@ export type BoxProps = BaseProps &
   BoxStyle & {
     includes?: string[];
     excludes?: string[];
-  } & Omit<DOMAttributes<any>, 'onLoad' | 'onError'> &
-  Omit<ImgHTMLAttributes<any>, 'onLoad' | 'onError'> &
+  } & Omit<DOMAttributes<any>, 'onLoad' | 'onError' | 'className'> &
+  Omit<ImgHTMLAttributes<any>, 'onLoad' | 'onError' | 'className'> &
   object;
 
 export const getBoxProps = (props: BoxProps) => {
@@ -48,7 +48,7 @@ export const getBoxProps = (props: BoxProps) => {
 
   const boxProps = {
     id,
-    className: isArray(_class) ? _class.join(' ') : _class,
+    className: isArray(_class) ? _class.filter(e => !!e).join(' ') : _class,
     style: {} as BoxStyle,
   };
 
