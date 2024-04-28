@@ -11,7 +11,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Image,
     BaseImage,
     BannerImage,
-    img: BaseImage,
+    img: BaseImage as any,
     a: LinkExternal,
     pre: ({ children }) => {
       return <CodeCard>{children}</CodeCard>;
