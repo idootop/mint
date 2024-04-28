@@ -1,14 +1,22 @@
-import { Image } from '@/common/components/Image';
+import { Image, ImageProps } from '@/common/components/Image';
 import { isNotEmpty } from '@/common/utils/is';
 import { resolveAssetURL } from '@/utils/assets';
 import { processImage } from '@/utils/image';
 
 import styles from './styles.module.css';
 
-export const BaseImage = async _props => {
+export const BaseImage = async (
+  _props: ImageProps & { size?: number; width?: number; height?: number },
+) => {
   const imageData = await processImage(_props.src);
   const props = { ..._props, ...imageData };
-  const { src, alt = '', marginBottom = '16px', ...restProps } = props;
+  const {
+    src,
+    alt = '',
+    marginBottom = '16px',
+    marginTop,
+    ...restProps
+  } = props;
   const width = _props.size ?? props.width ?? 0;
   const height = _props.size ?? props.height ?? 0;
   const aspectRatioStyle =
@@ -25,6 +33,7 @@ export const BaseImage = async _props => {
   return (
     src && (
       <>
+        <span style={{ height: marginTop, display: 'block' }} />
         {height > 0 ? (
           <span className={styles.center_image} style={aspectRatioStyle}>
             <Image

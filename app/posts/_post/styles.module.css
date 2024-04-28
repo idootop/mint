@@ -17,7 +17,8 @@
 
 @media (max-width: 960px) {
   .title {
-    font-size: 28px !important;
+    margin: 10px 0 6px 0;
+    font-size: 32px !important;
   }
 
   .date {

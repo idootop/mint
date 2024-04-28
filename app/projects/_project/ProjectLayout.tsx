@@ -21,7 +21,9 @@ export async function ProjectLayout({ path, children }) {
 
   return (
     <main className={styles.page}>
-      {page.cover && <BaseImage src={page.cover} />}
+      {page.cover && (
+        <BaseImage src={page.cover} marginTop="10px" marginBottom="0" />
+      )}
       <h1 className={styles.title}>{page.title}</h1>
       <p className={styles.date}>{page.createAt}</p>
       <MDXBody>{children}</MDXBody>
