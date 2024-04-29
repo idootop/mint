@@ -10,8 +10,12 @@
   font-size: 36px !important;
 }
 
-.button+.button {
+#button+#button {
   margin: 10px 0
+}
+
+#button:hover {
+  text-decoration: none !important;
 }
 
 .date {

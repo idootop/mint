@@ -2,7 +2,7 @@ import { MDXBody } from '@/components/MDX/MDXBody';
 import { getOGMetadata } from '@/utils/metadata';
 
 import Content from './content.mdx';
-import me from './me.webp';
+import me from './images/me.webp';
 import styles from './styles.module.css';
 
 // @ts-ignore

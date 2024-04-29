@@ -38,7 +38,7 @@ export async function ProjectLayout({ path, children }) {
           </blockquote>
           {project.preview && (
             <Button
-              className={styles.button}
+              id={styles.button}
               url={project.preview}
               width="100%"
               height="48px"
@@ -50,10 +50,9 @@ export async function ProjectLayout({ path, children }) {
           )}
           {project.source && (
             <Button
-              className={styles.button}
+              id={styles.button}
               secondary
               url={project.source}
-              disabled={!project.source}
               width="100%"
               height="48px"
             >

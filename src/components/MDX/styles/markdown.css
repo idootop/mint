@@ -26,15 +26,15 @@
   margin-bottom: 0 !important;
 }
 
-.markdown-body>p a {
+.markdown-body a {
   text-decoration: none;
-  color: #2f6eeb !important;
+  color: #2f6eeb;
 }
 
-.markdown-body>p a:active,
-.markdown-body>p a:hover,
-.markdown-body>p a:visited {
-  color: #2f6eeb !important;
+.markdown-body a:active,
+.markdown-body a:hover,
+.markdown-body a:visited {
+  color: #2f6eeb;
   text-decoration: underline !important;
 }
 
