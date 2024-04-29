@@ -10,6 +10,7 @@ export function getIconProps(props: BoxProps) {
   });
   return {
     fill: 'currentColor',
+    stroke: 'currentColor',
     width: size,
     height: size,
     ...boxProps,

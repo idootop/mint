@@ -1,6 +1,6 @@
 import './style.css';
 
-import { BoxProps, getBoxProps } from '@/common/components/Box';
+import { BoxProps, getBoxProps, getClassName } from '@/common/components/Box';
 
 export function Button(
   props: BoxProps & {
@@ -16,11 +16,16 @@ export function Button(
     download,
     disabled = false,
     children,
+    className,
     ...rest
   } = props;
   const boxProps = getBoxProps({
     ...rest,
-    className: ['button', secondary ? 'button-secondary' : 'button-primary'],
+    className: [
+      'button',
+      secondary ? 'button-secondary' : 'button-primary',
+      getClassName(className),
+    ],
     style: {
       ...rest.style,
       cursor: disabled ? 'not-allowed' : undefined,

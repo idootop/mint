@@ -31,6 +31,10 @@ export type BoxProps = BaseProps &
   Omit<ImgHTMLAttributes<any>, 'onLoad' | 'onError' | 'className'> &
   object;
 
+export const getClassName = (_class?: BoxProps['className']) => {
+  return isArray(_class) ? toSet(_class.filter(e => !!e)).join(' ') : _class;
+};
+
 export const getBoxProps = (props: BoxProps) => {
   let {
     ref: _,
@@ -48,7 +52,7 @@ export const getBoxProps = (props: BoxProps) => {
 
   const boxProps = {
     id,
-    className: isArray(_class) ? _class.filter(e => !!e).join(' ') : _class,
+    className: getClassName(_class),
     style: {} as BoxStyle,
   };
 
