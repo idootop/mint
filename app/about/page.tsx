@@ -7,8 +7,7 @@ import styles from './styles.module.css';
 
 // @ts-ignore
 export const metadata = await getOGMetadata({
-  title: '关于｜Del Wang',
-  description: '热爱当下，创造未来',
+  title: '关于',
   image: me.src,
 });
 

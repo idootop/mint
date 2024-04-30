@@ -1,6 +1,7 @@
 import Link from 'next/link';
 
 import { Column } from '@/common/components/Flex';
+import { getOGMetadata } from '@/utils/metadata';
 import { PageFrom } from '@/utils/page/from';
 
 import {
@@ -10,6 +11,11 @@ import {
 } from '../_project';
 import { ProjectSwitcher } from '../_project/ProjectSwitcher';
 import styles from './styles.module.css';
+
+// @ts-ignore
+export const metadata = await getOGMetadata({
+  title: '项目（全部）',
+});
 
 export default async function Page() {
   return (

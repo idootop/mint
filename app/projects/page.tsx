@@ -3,11 +3,17 @@ import Link from 'next/link';
 import { Box } from '@/common/components/Box';
 import { Column } from '@/common/components/Flex';
 import { BannerImage } from '@/components/Image/BannerImage';
+import { getOGMetadata } from '@/utils/metadata';
 import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
 import { getProjectsPinned, Project } from './_project';
 import { ProjectSwitcher } from './_project/ProjectSwitcher';
 import styles from './styles.module.css';
+
+// @ts-ignore
+export const metadata = await getOGMetadata({
+  title: '项目（精选）',
+});
 
 export default async function Page() {
   return (

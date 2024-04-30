@@ -1,10 +1,16 @@
 import Link from 'next/link';
 
 import { Column, Expand, Row } from '@/common/components/Flex';
+import { getOGMetadata } from '@/utils/metadata';
 import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
 import { getPostsGroupedByYear, getPostsPinned, Post } from './_post';
 import styles from './styles.module.css';
+
+// @ts-ignore
+export const metadata = await getOGMetadata({
+  title: '博客',
+});
 
 export default async function Page() {
   const pinned = await getPostsPinned();

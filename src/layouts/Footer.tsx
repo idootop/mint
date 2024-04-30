@@ -22,7 +22,7 @@ export const Footer = () => {
       <p>
         © 2017-{new Date().getFullYear()}&nbsp;
         <Link href="/" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>
-          Del.Wang
+          Del Wang
         </Link>
         . All rights reserved.
       </p>
