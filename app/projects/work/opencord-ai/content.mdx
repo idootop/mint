@@ -5,7 +5,7 @@ export const metadata = {
   title: 'Opencord AI',
   url: 'https://www.opencord.ai',
   createAt: '2023-10',
-  description: 'AI Agent-Generated Content for Social Media',
+  description: '下一代的社交媒体运营 AI Agent 平台',
   cover: cover.src,
   preview: 'https://www.opencord.ai/',
   pinned: true,
@@ -13,14 +13,47 @@ export const metadata = {
 
 # 项目简介
 
-随着 ChatGPT 等大语言模型能力的进化，AI 开始在越来越多的领域不断超过，并取代人类的工作。
-Opencord AI 应运而生，它是我们对未来的一次大胆预测：在不远的将来，互联网上几乎所有用户生成内容（UGC）都将由 AI 生成或参与制作。
-
-Opencord AI 是一种新型的 AI 智能体，它能在主流社交平台上自主生成高质量内容，像真人一样与粉丝互动，并通过这种交互自然增加关注者。
-无论是在 Twitter、Instagram、YouTube 还是 TikTok，Opencord AI 都能够根据品牌人格或目标受众，自动发布动态、互动评论、分享图片和视频。
-
-与传统的 AI Agent 不同，Opencord AI 的定位**并非只是辅助内容创作者的工具，而是取而代之成为内容创作者本人**，自行管理社交账户，与粉丝互动，并持续不断的创造内容来吸引流量。
+随着人工智能的不断发展，AI 创作、绘画、配音的能力越来越强，甚至还能唱歌（Suno）、拍电影（Sora），互联网上由 AI 产生的内容正变得越来越普遍。
+我们相信在不远的未来，互联网上几乎所有用户生成的内容（UGC）都将由 AI 生成或参与制作。
 
 import postContent from './images/post-content.png';
 
 <BannerImage src={postContent.src} />
+
+Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
+简而言之，就是让 AI Agent 无缝接管您的社交账号运营，通过可视化、无代码的方式，自由定制 AI Workflow，实现内容创作、分发、互动的全自动化，为企业和个人的品牌传播、内容营销和社群运营赋能，节省人力物力成本，助力社交媒体运营实现智能化升级。
+
+# 核心功能
+
+1. **支持主流社交媒体账号**：可与 Twitter、Instagram、YouTube 等主流社交媒体平台无缝集成，方便用户集中管理不同平台的账号。只需安装 Opencord AI 浏览器插件，即可轻松启用自动化运营功能。
+2. **AI 驱动的内容创作**：AI Agent 可以根据用户提供的主题、关键词等信息自动生成高质量的原创内容。同时，AI 还可以对现有内容进行优化和润色，确保内容质量和可读性。
+3. **自动化发布和互动**：平台支持自动化内容发布，用户可以预先设定发布时间和频率。此外，AI Agent 还可以根据用户偏好和行为数据，自动与粉丝互动，提高用户粘性和参与度。
+4. **7x24 小时不间断运行**：AI Agent 可以 7x24 小时不间断运行，确保账号内容持续更新和互动，从而提高曝光率和影响力。
+5. **降低运营成本**：通过自动化流程，平台可以显著降低社交媒体账号运营的人力和时间成本，提高运营效率，为企业和个人节省更多时间，创造更多价值。
+
+# 技术浅析
+
+在这个项目中，我主要负责前期 Python 版本基于 LangChain 的 AI Agent 的架构与优化工作。随着业务的不断发展，基于 LangChain 的 Agent 方案，弊端愈加明显：
+
+1. 业务要求对 AI Agent 内部的实现有极高的灵活度和可控性，LangChain 对 AI Agent 的层层抽象与封装，与我们的业务逻辑无法契合，可扩展性差，阻碍了正常业务需求的实现和快速迭代。
+2. LangChain 框架对 AI Agent 的实现方案比较落后，未利用 JSON mode 等特性，且系统 Prompt 比较简单，对复杂场景和特殊 case 未作任何处理，不适合用于生产环境。
+3. Python 环境消耗机器资源比较高，无法支撑高并发环境。在平台早期，为了快速迭代和方便管理，AI Agent 都是有状态的，用户创建的每一个 AI Agent 实例，都会起一个独立的 docker 容器来运行，内存消耗较高。
+4. 团队后端技术栈以 Go-lang 为主，Python 版本的 AI Agent 实现，前期主要是我一个人在负责，团队缺少 Python 技术储备，等新迭代较慢。
+
+鉴于上述的几点原因，后期我们在整个 AI Agent 的架构实现上，迁移到了基于 Go 的 workflow 方案。
+
+首先，该方案结束了原本每个 Agent 都需要单独起一个 Python docker 的资源瓶颈，而是改为 Go-lang 实现的无状态 Node 的串并联执行流，使资源消耗量显著降低（不低于20x）。同时又将原来基于代码的 Agent 开发模式，转变为基础 Node 能力模块的拼接组合，并且搭配上后台可视化的 Workflow 预览/编辑界面，极大地提高了 Agent 开发的效率和门槛。
+
+# 主要贡献
+
+除了上面提及的平台早期 Python 版本 AI Agent 框架的架构与优化工作之外，我还负责完成了前端 Workflow 可视化预览与编辑模块的实现。
+
+我们前端流程图的选型是 [ReactFlow](https://reactflow.dev/)，除了我们前端本身的技术栈是 React 之外，ReactFlow 的更新频率、社区流行度、项目稳定性、灵活性、可扩展性等方面综合考量下来，与我们的需求最为相符。除此之外，国内滴滴开源的 [LogicFlow](https://github.com/didi/LogicFlow) 还有蚂蚁集团出品的 [X6](https://github.com/antvis/X6) 等，对于简单图编辑场景来说，也都是不错的选择。
+
+基于 ReactFlow，我主要解决了以下几个核心问题：
+
+1. Node 自动布局算法。
+2. Edge 自动路由算法。
+3. Edge 直线拖拽编辑。
+
+最终实现的效果，基本可以媲美飞书和 Figma 的流程图编辑体验。

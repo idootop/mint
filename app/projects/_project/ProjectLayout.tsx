@@ -24,6 +24,57 @@ export async function ProjectLayout({ path, children }) {
 
   const category = getProjectCategoryName(project.category);
 
+  const buttons =
+    !!project.preview && !!project.source ? (
+      <>
+        <Button
+          id={styles.button}
+          url={project.preview}
+          width="100%"
+          height="48px"
+          color="#fff"
+        >
+          <IconOpenLink size="20px" color="#fff" />
+          预览
+        </Button>
+        <Button
+          id={styles.button}
+          secondary
+          url={project.source}
+          width="100%"
+          height="48px"
+          color="#000"
+        >
+          <IconGithub size="20px" />
+          源代码
+        </Button>
+      </>
+    ) : project.preview ? (
+      <Button
+        id={styles.button}
+        secondary
+        url={project.source}
+        width="100%"
+        height="48px"
+        color="#000"
+      >
+        <IconOpenLink size="20px" />
+        预览
+      </Button>
+    ) : project.source ? (
+      <Button
+        id={styles.button}
+        secondary
+        url={project.source}
+        width="100%"
+        height="48px"
+        color="#000"
+      >
+        <IconGithub size="20px" />
+        源代码
+      </Button>
+    ) : undefined;
+
   return (
     <main className={styles.page}>
       <MDXBody>
@@ -36,31 +87,7 @@ export async function ProjectLayout({ path, children }) {
           <blockquote className={styles.description}>
             {project.description}
           </blockquote>
-          {project.preview && (
-            <Button
-              id={styles.button}
-              url={project.preview}
-              width="100%"
-              height="48px"
-              color="#fff"
-            >
-              <IconOpenLink size="20px" color="#fff" />
-              预览
-            </Button>
-          )}
-          {project.source && (
-            <Button
-              id={styles.button}
-              secondary
-              url={project.source}
-              width="100%"
-              height="48px"
-              color="#000"
-            >
-              <IconGithub size="20px" />
-              源代码
-            </Button>
-          )}
+          {buttons}
           {children}
         </>
       </MDXBody>
