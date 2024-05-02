@@ -55,6 +55,7 @@ export async function ProjectLayout({ path, children }) {
               url={project.source}
               width="100%"
               height="48px"
+              color="#000"
             >
               <IconGithub size="20px" />
               源代码
