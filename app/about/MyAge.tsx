@@ -16,5 +16,5 @@ export const MyAge = () => {
       clearInterval(timer);
     };
   }, []);
-  return <span>{age}</span>;
+  return <span>{age.toFixed(12)}</span>;
 };

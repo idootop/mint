@@ -26,7 +26,7 @@ export default async function Page() {
           projects.length > 0 && (
             <GroupedProject
               key={e.category}
-              group={getProjectCategoryName(e.category)}
+              group={e.category}
               projects={projects}
             />
           )
@@ -40,9 +40,12 @@ export default async function Page() {
 const GroupedProject = (props: { group: string; projects: Project[] }) => {
   const { group, projects } = props;
   if (projects.length < 1) return;
+  const groupName = getProjectCategoryName(group);
   return (
     <Column className={styles.group} alignItems="start">
-      <span className={styles.groupTitle}>{group}</span>
+      <span id={group} className={styles.groupTitle}>
+        {groupName}
+      </span>
       {projects.map(project => {
         return <ProjectItem key={project.path} project={project} />;
       })}
