@@ -33,7 +33,7 @@ export const BaseImage = async (
   return (
     src && (
       <>
-        <span style={{ height: marginTop, display: 'block' }} />
+        {marginTop && <span style={{ height: marginTop, display: 'block' }} />}
         {height > 0 ? (
           <span className={styles.center_image} style={aspectRatioStyle}>
             <Image
@@ -53,7 +53,9 @@ export const BaseImage = async (
           />
         )}
         {isNotEmpty(alt) && <span className={styles.center_label}>{alt}</span>}
-        <span style={{ height: marginBottom, display: 'block' }} />
+        {marginBottom && (
+          <span style={{ height: marginBottom, display: 'block' }} />
+        )}
       </>
     )
   );

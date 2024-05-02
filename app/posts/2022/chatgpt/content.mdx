@@ -1,0 +1,71 @@
+export const metadata = {
+  title: '与 ChatGPT 的第一次对话',
+  description: '纪念与 ChatGPT 的第一条对话，拥抱未来。',
+  createAt: '2022-12-15',
+};
+
+# 0x01
+
+时间回到 2022 年末，一个名为 ChatGPT 的大模型在 11 月 30 日正式上线。
+
+由于之前我就一直在关注 NLP 领域的进展，所以第一时间得知了这个消息。
+
+可惜的是，当时卡在了注册账号这一步，没能体验到它的实际能力。
+
+import chatgptRelease from './images/chatgpt-release.webp';
+
+<BaseImage src={chatgptRelease.src} alt="2022年12月1日，我关注到 ChatGPT" />
+
+后来，终于搞定了验证码的问题。登进去之后，我问了 ChatGPT 第一个问题。
+
+import firstChat from './images/first-chat.webp';
+
+<BaseImage src={firstChat.src} alt="2022年12月5日，我问 ChatGPT 的第一个问题" />
+
+当一个完整的九九乘法表，出现在我的眼前的时候，有被惊艳到。
+
+彼时 NLP 被誉为人工智能领域的王冠，还没有任何一个系统达到过如此智能的程度。
+
+我想，这么牛逼的东西，一定要物尽其用。
+
+# 0x02
+
+随后，我迅速逆向了 ChatGPT 的网页版接口[^1]。
+
+import chatApi from './images/chat-api.webp';
+
+<BaseImage
+  src={chatApi.src}
+  alt="2022年12月5日，完成 ChatGPT 网页版接口逆向工作"
+/>
+
+然后趁热打铁，开发了一个 ChatGPT 飞书机器人（可能是国内首个）。
+
+import feishuCommit from './images/feishu-commit.webp';
+
+<BaseImage
+  src={feishuCommit.src}
+  alt="2022年12月11日，开始开发飞书 ChatGPT 机器人"
+/>
+
+开发完机器人之后，继续接到我的个人微信公众号上试试看。
+
+import feishuBot from './images/feishu-bot.jpg';
+
+import wechatGpt from './images/wechat-gpt.jpg';
+
+| <TableImage src={feishuBot.src}alt="飞书 ChatGPT 机器人开发完毕" /> | <TableImage src={wechatGpt.src}   alt="接入 ChatGPT 到我的微信公众号"/> |
+| :-----------------------------------------------------------------: | :---------------------------------------------------------------------: |
+
+👍 效果很 Nice～ 意满离
+
+# 0x03
+
+不久后 Meta 公开了 LLaMA 的源代码，紧接着各种宣称自主研发的大型语言模型（LLM）如同雨后春笋般涌现。
+随着 LLM 能力的不断增强，通用人工智能（AGI）的到来似乎只是时间问题。
+
+import llms from './images/llms.png';
+
+<BaseImage src={llms.src} alt="LLMs 发展历史" />
+
+[^1]: 彼时 OpenAI 还没有对外开放 Chat API
