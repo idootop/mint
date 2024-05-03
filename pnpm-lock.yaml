@@ -18,8 +18,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       xsta:
-        specifier: ^1.0.2
-        version: 1.0.2(@types/react@18.2.46)(react@18.2.0)
+        specifier: ^2.0.0
+        version: 2.0.0(@types/react@18.2.46)(react@18.2.0)
     devDependencies:
       '@mdx-js/loader':
         specifier: ^3.0.1
@@ -2578,8 +2578,8 @@ packages:
   wrappy@1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
 
-  xsta@1.0.2:
-    resolution: {integrity: sha512-0LNAIXinjZQVBxefTh0qT+cYMKcmp7sG8smuvlI/g9trM3wkmoD5BUwiUCdlZK6i/muja4c0RDjUxpKwcUzNYQ==}
+  xsta@2.0.0:
+    resolution: {integrity: sha512-8hEY/DP7Z/EKaIJxiI7I59r3JcrgDN4Svzcni09TGRMHmTHcjGsJFooNaEN4SmZCl8iu6bnAEhU3jdQk5Q+GoQ==}
     peerDependencies:
       '@types/react': '>=16.8'
       react: '>=16.8'
@@ -5834,7 +5834,7 @@ snapshots:
 
   wrappy@1.0.2: {}
 
-  xsta@1.0.2(@types/react@18.2.46)(react@18.2.0):
+  xsta@2.0.0(@types/react@18.2.46)(react@18.2.0):
     dependencies:
       external-shallow-equal: 1.0.0
     optionalDependencies:
