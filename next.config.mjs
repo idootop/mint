@@ -1,4 +1,5 @@
 import configMDX from '@next/mdx';
+import withVideos from 'next-videos';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
@@ -19,4 +20,4 @@ const nextConfig = {
   images: { unoptimized: true },
 };
 
-export default withMDX(nextConfig);
+export default withMDX(withVideos(nextConfig));

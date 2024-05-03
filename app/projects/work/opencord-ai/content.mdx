@@ -5,7 +5,7 @@ export const metadata = {
   title: 'Opencord AI',
   url: 'https://www.opencord.ai',
   createAt: '2023-10',
-  description: '下一代的社交媒体运营 AI Agent 平台',
+  description: 'Next-Gen Social Media Management with AI Agent',
   cover: cover.src,
   preview: 'https://www.opencord.ai/',
   pinned: true,
@@ -13,7 +13,7 @@ export const metadata = {
 
 # 项目简介
 
-随着人工智能的不断发展，AI 创作、绘画、配音的能力越来越强，甚至还能唱歌（Suno）、拍电影（Sora），互联网上由 AI 产生的内容正变得越来越普遍。
+随着人工智能的不断发展，AI 创作、绘画、配音的能力越来越强，互联网上由 AI 产生的内容正变得越来越普遍。
 我们相信在不远的未来，互联网上几乎所有用户生成的内容（UGC）都将由 AI 生成或参与制作。
 
 import postContent from './images/post-content.png';
@@ -60,11 +60,19 @@ Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
 - 支持单个 Node 有多个输入输出 handles
 - 支持动态调整布局方向、节点间隔、端口排序等布局参数
 
+import algorithms from './videos/algorithms.mp4';
+
+<AutoPlay src={algorithms} />
+
 **2. Edge 自动路由算法**
 
-- Edge 与两端 Node 尽量不产生交叉和重合
 - 使用 A\* 搜索算法[^1]结合曼哈顿距离[^2]求解最优路径[^3]
+- Edge 与两端 Node 尽量不产生交叉和重合
 - Edge 路径长度相同时，优先选择轴对称且端点最少的路径
+
+import dragging from './videos/dragging.mp4';
+
+<AutoPlay src={dragging} />
 
 **3. Edge 折线拖拽编辑**
 
@@ -72,7 +80,11 @@ Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
 - Edge 由控制点组成，控制点之间可以通过拖拽控制柄来移动线段
 - 拖拽时自动合并相近的控制点和线段，也可以自动拆分出新的控制点
 
-最终实现的效果，基本可以媲美飞书和 Figma 的流程图编辑体验。
+import merge from './videos/merge.mp4';
+
+<AutoPlay src={merge} />
+
+最终实现的效果，基本可以媲美 Figma 和飞书的流程图编辑体验。
 
 [^1]: A\* 搜索算法: 一种在图形平面上，有多个节点的路径，求出最低通过成本的启发式搜索算法。常用于游戏中的 NPC 的移动计算，或线上游戏的 BOT 的移动计算上。
 [^2]:
