@@ -5,18 +5,96 @@ export const metadata = {
   title: 'Opencord',
   url: 'https://www.opencord.xyz',
   createAt: '2022-03',
-  description: 'A Web 3.0 social platform built for DAOs',
+  description: 'Decentralized Web3 Social Platform',
   cover: cover.src,
+  preview: 'https://www.opencord.xyz',
   pinned: true,
 };
 
 # 项目简介
 
-简单来讲，这是一个 Web3 版本的 Discord，同时也是首个支持全平台（mobile/pc/web）的去中心化社交平台。
-我们的愿景是打造一个真正开放的，Web3 原生的去中心化社交平台，帮助全球化社区在一个更 open，更 safe，更 decentralize 的土壤上，创造更多的可能性。
+简单来讲，这是一个 Web3 版本的 Discord。
 
-同时，我们也在努力成为一个连接起 DAOs 社区，dApp 开发者 和 Web3 支持者的开放纽带，
-为社区和成员提供更完善的链上/链下能力生态，帮助 DAO 社区的治理和协作更加顺畅和高效，推动 Web3 生态的发展与繁荣。
+Opencord 名称的寓意，是指成为连接起 DAO 社区，dApp 开发者 和 Web3 共建者的开放纽带 (**Connecting DAOs, DApps and DAO friends**)。
+
+我们的愿景是打造一个开放的 Web3 去中心化社交平台，帮助 Web3 社区以真正 decentralize 的方式运营和发展，连接更多的 Web3 资源和生态。
+
+import banner from './images/banner.jpg';
+
+<BannerImage src={banner.src} />
+
+# 项目亮点
+
+**1. Web3 原生**
+
+支持使用钱包登录，可选择 ENS 作为用户名，或者使用独特的六边形 NFT 头像。
+
+import profile from './images/profile.jpg';
+
+<BaseImage src={profile.src} alt="个人主页 Web3 Identity Showcase" />
+
+**2. 灵活的 Token-gating**
+
+校验社区成员的链上资产，需满足指定条件才有资格加入社区或自动授予身份组。
+
+比如，社区成员需持有至少 1 个 Cryptopunk NFT，或持有 100 BTC 自动授予管理员身份组。
+
+import server from './images/server.jpg';
+
+import join from './images/join.jpg';
+
+| <TableImage src={server.src} /> | <TableImage src={join.src} /> |
+| :-----------------------------: | :---------------------------: |
+
+Opencord 目前支持以下链上的资产：
+
+import chains from './images/chains.jpg';
+
+<BaseImage src={chains.src} alt="Token-gating 多链支持" />
+
+**3. 丰富的频道种类**
+
+文字频道，公告频道，语音频道，帖子频道等，开箱即用。
+
+import text from './images/text.jpg';
+
+<BaseImage src={text.src} alt="文字频道" />{' '}
+
+import voice from './images/voice.jpg';
+
+<BaseImage src={voice.src} alt="语音频道" />
+
+import forum from './images/forum.jpg';
+
+<BaseImage src={forum.src} alt="帖子频道" />
+
+import link from './images/link.jpg';
+
+<BaseImage src={link.src} alt="插件频道" />
+
+**4. 强大的插件系统**
+
+为了满足不同 Web3 社区对社区治理、链上交互、dApp 使用等多样化的需求，Opencord 提供了一个开放，丰富，简单易用的插件系统。
+
+不同的社区可以通过创建插件，或嵌入任意 dApp 网页到自己的服务器频道，为社区提供了灵活的定制空间和无限的可能性。
+
+import kyberswap from './images/kyberswap.webp';
+
+<BaseImage src={kyberswap.src} alt="KyberSwap" />
+
+import opensea from './images/opensea.webp';
+
+<BaseImage src={opensea.src} alt="OpenSea" />
+
+import cryptoHeatmap from './images/crypto-heatmap.webp';
+
+<BaseImage src={cryptoHeatmap.src} alt="Crypto Heatmap" />
+
+import stableDiffusion from './images/stable-diffusion.webp';
+
+<BaseImage src={stableDiffusion.src} alt="Stable Diffusion" />
+
+# 幕后花絮
 
 这是我们团队第一次参与 Web3 项目，大家满怀期待和激情，踏上了全新的 Web3 之旅。
 
@@ -24,7 +102,7 @@ export const metadata = {
 
 但总的来说，在这一年里，我们迈出的每一步，都收获了很多宝贵的东西。这些经历我觉得是无价的，并且我们依旧不忘初心，向着心中的理想坚定不移的前进。
 
-# 幕后花絮
+# 技术浅析
 
 从技术栈上看，这次对我来说依旧是一次跨度很大的转变。
 期间，为了更好的理解加密货币的原理，我参照比特币的早期源码，用 typescript 手撸了一个相对简易的区块链，了解了比特币背后 PoW、UTXO、挖矿等概念的设计和原理。
