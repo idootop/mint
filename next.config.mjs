@@ -2,13 +2,16 @@ import configMDX from '@next/mdx';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
-const withMDX = configMDX({
+/** @type {import('@next/mdx').NextMDXOptions} */
+const mdxConfig = {
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypePrism],
+    remarkRehypeOptions: { footnoteLabel: '备注' },
   },
-});
+};
+const withMDX = configMDX(mdxConfig);
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
