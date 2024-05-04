@@ -21,7 +21,7 @@ import postContent from './images/post-content.png';
 <BannerImage src={postContent.src} />
 
 Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
-简而言之，就是让 AI Agent 无缝接管您的社交账号运营，通过可视化、无代码的方式，自由定制 AI Workflow，实现内容创作、分发、互动的全自动化，为企业和个人的品牌传播、内容营销和社群运营赋能，节省人力物力成本，助力社交媒体运营实现智能化升级。
+简而言之，就是让 AI Agent 无缝接管您的社交账号运营，通过可视化/无代码的方式，灵活定制社交媒体运营 AI Workflow，实现内容创作、分发、互动的全自动化，为企业和个人的品牌传播、内容营销和社群运营赋能，节省人力物力成本，助力社交媒体运营实现智能化升级。
 
 # 项目亮点
 
@@ -48,7 +48,7 @@ Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
 
 除了上面提及的平台早期 Python 版本 AI Agent 框架的架构与优化工作之外，我主要负责完成了前端 Workflow 可视化预览与编辑模块的实现。
 
-我们前端流程图的选型是 [ReactFlow](https://reactflow.dev/)，除了我们前端本身的技术栈是 React 之外，ReactFlow 的更新频率、社区流行度、项目稳定性、灵活性、可扩展性等方面综合考量下来，与我们的需求最为相符。除此之外，国内滴滴开源的 [LogicFlow](https://github.com/didi/LogicFlow) 还有蚂蚁集团出品的 [X6](https://github.com/antvis/X6) 等，对于简单图编辑场景来说，也都是不错的选择。
+前端流程图的技术选型是 [ReactFlow](https://reactflow.dev/)，除了我们前端本身的技术栈是 React, ReactFlow 的更新频率、社区流行度、稳定性和可扩展性等方面综合考量下来，与我们的需求最为相符。另外，国内滴滴开源的 [LogicFlow](https://github.com/didi/LogicFlow) 还有蚂蚁集团出品的 [X6](https://github.com/antvis/X6) 等，对于简单图编辑场景来说，也都是不错的选择。
 
 基于 ReactFlow，我主要解决了以下几个核心问题：
 
@@ -57,7 +57,6 @@ Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
 - 支持 [Dagre](https://github.com/dagrejs/dagre), [ELK](https://github.com/kieler/elkjs), [D3-hierarchy](https://github.com/d3/d3-hierarchy), [D3-dag](https://github.com/erikbrinkman/d3-dag) 等自动布局算法
 - 支持 Node 动态宽高自适应布局
 - 支持多个 Subflows 自动布局
-- 支持单个 Node 有多个输入输出 handles
 - 支持动态调整布局方向、节点间隔、端口排序等布局参数
 
 import algorithms from './videos/algorithms.mp4';
@@ -91,4 +90,4 @@ import merge from './videos/merge.mp4';
     曼哈顿距离: 在欧几里德空间上两点所形成的线段，对坐标轴产生的投影的距离总和。
     对于平面直角坐标系，曼哈顿距离只要计算加减法即可，极大提高了运算速度。
 
-[^3]: Edge 自动布局思路主要参考自：[LogicFlow 边的绘制与交互](https://juejin.cn/post/6942727734518874142)
+[^3]: Edge 自动路由思路主要参考自：[LogicFlow 边的绘制与交互](https://juejin.cn/post/6942727734518874142)
