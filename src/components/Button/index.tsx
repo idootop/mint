@@ -28,6 +28,7 @@ export function Button(
     ],
     style: {
       ...rest.style,
+      userSelect: 'none',
       cursor: disabled ? 'not-allowed' : undefined,
     },
   });

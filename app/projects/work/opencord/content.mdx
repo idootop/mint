@@ -5,7 +5,7 @@ export const metadata = {
   title: 'Opencord',
   url: 'https://www.opencord.xyz',
   createAt: '2022-03',
-  description: 'Decentralized Web3 Social Platform',
+  description: 'A Decentralized Web3 Social Platform',
   cover: cover.src,
   preview: 'https://www.opencord.xyz',
   pinned: true,
@@ -19,10 +19,6 @@ Opencord 名称的寓意，是指成为连接起 DAO 社区，dApp 开发者 和
 
 我们的愿景是打造一个开放的 Web3 去中心化社交平台，帮助 Web3 社区以真正 decentralize 的方式运营和发展，连接更多的 Web3 资源和生态。
 
-import banner from './images/banner.jpg';
-
-<BannerImage src={banner.src} />
-
 # 项目亮点
 
 **1. Web3 原生**
@@ -35,9 +31,9 @@ import profile from './images/profile.jpg';
 
 **2. 灵活的 Token-gating**
 
-校验社区成员的链上资产，需满足指定条件才有资格加入社区或自动授予身份组。
+校验社区成员的链上资产，需满足指定条件，才有资格加入社区，或自动授予身份组。
 
-比如，社区成员需持有至少 1 个 Cryptopunk NFT，或持有 100 ETH 自动授予管理员身份组。
+比如，社区成员需持有至少 1 ETH，或持有 1 个 Cryptopunk NFT 自动授予管理员身份组。
 
 import server from './images/server.jpg';
 
@@ -58,7 +54,7 @@ import chains from './images/chains.jpg';
 
 import text from './images/text.jpg';
 
-<BaseImage src={text.src} alt="文字频道" />{' '}
+<BaseImage src={text.src} alt="文字频道" />
 
 import voice from './images/voice.jpg';
 
@@ -67,10 +63,6 @@ import voice from './images/voice.jpg';
 import forum from './images/forum.jpg';
 
 <BaseImage src={forum.src} alt="帖子频道" />
-
-import link from './images/link.jpg';
-
-<BaseImage src={link.src} alt="插件频道" />
 
 **4. 强大的插件系统**
 
@@ -86,34 +78,66 @@ import opensea from './images/opensea.webp';
 
 <BaseImage src={opensea.src} alt="OpenSea" />
 
-import cryptoHeatmap from './images/crypto-heatmap.webp';
-
-<BaseImage src={cryptoHeatmap.src} alt="Crypto Heatmap" />
-
 import stableDiffusion from './images/stable-diffusion.webp';
 
 <BaseImage src={stableDiffusion.src} alt="Stable Diffusion" />
 
 # 幕后花絮
 
-这是我们团队第一次参与 Web3 项目，大家满怀期待和激情，踏上了全新的 Web3 之旅。
+这是我参与的第一个 Web3 项目，也是第一次以产品经理的身份，负责 Opencord 用户需求分析，产品设计，运营、研发进度沟通等。
 
 期间我们经历了官方 Twitter 账号粉丝数突破 1000+，Waitlist 一夜之间涌入上千名用户的喜悦，也经历了 LUNA 崩盘，币圈熊市等让人煎熬的事情。
 
-但总的来说，在这一年里，我们迈出的每一步，都收获了很多宝贵的东西。这些经历我觉得是无价的，并且我们依旧不忘初心，向着心中的理想坚定不移的前进。
+后来，我还代表团队参加了 ETHGlobal 举办的 Scaling Ethereum 2023 Hackathon，不过遗憾的是没有拿到好的名次。
+
+# 主要贡献
+
+**1. Opencord Lightpaper**
+
+起草并与运营、设计团队协作完成 Opencord [Lightpaper](https://www.opencord.xyz/lightpaper/) 和白皮书的制作。
+
+import lightpaper from './images/lightpaper.webp';
+
+<a href="https://www.opencord.xyz/lightpaper/" target="_blank">
+  <BaseImage src={lightpaper.src} alt="Opencord Lightpaper" />
+</a>
+
+**2. Opencord Tokenomics**
+
+参与 Opencord 代币经济系统的设计与验证。
+
+import token from './images/token.webp';
+
+<BaseImage src={token.src} />
+
+import schedule from './images/schedule.webp';
+
+<BaseImage src={schedule.src} alt="10 Year Token Release Schedule" />
+
+**3. Opencord Plugin Channel**
+
+参与 Opencord 插件频道的功能设计。我自己也制作了一些有趣的插件，比如：
+
+import cryptoHeatmap from './images/crypto-heatmap.webp';
+
+<BaseImage src={cryptoHeatmap.src} alt="Crypto Heatmap" />
+
+import chat from './images/chat.jpg';
+
+<BaseImage src={chat.src} alt="WeChat GPT" />
 
 # 技术浅析
 
-从技术栈上看，这次对我来说依旧是一次跨度很大的转变。
-期间，为了更好的理解加密货币的原理，我参照比特币的早期源码，用 typescript 手撸了一个相对简易的区块链，了解了比特币背后 PoW、UTXO、挖矿等概念的设计和原理。
+Opencord 整体架构由去中心化层，协议层和客户端应用层 3 部分组成。
 
-再后来，我在 Polygon 上部署发行了自己的 NFT（ERC 721，metadata 完全存于链上，图片放在 IPFS 上），甚至还专门写了一个配套的 dApp：
-任何人只要连接自己的钱包，然后选择一张自己喜欢的图片上传，就可以免费 mint 成自己的 NFT。
+import architecture from './images/architecture.webp';
 
-在这个过程中，我了解并实践了，如何使用 Solidity、OpenZeppelin、Hardhat 等编写，测试和部署智能合约，
-以及如何使用 WalletConnect 连接用户钱包，读写智能合约，在 IPFS 上存取数据，通过 ChainLink 读取链下数据、The Graph 查询链上数据等。
+<BaseImage src={architecture.src} alt="Opencord Architecture" />
 
-最后，我还有幸代表团队参加了 ETHGlobal's Scaling Ethereum 2023 Hackathon，
-参赛作品是一个基于 Layer2 技术的 Patreon 插件（同时也是基于 Opencord 项目真实的用户需求），不过遗憾的是没有拿到预期的名次。
+Opencord 从诞生的那一刻起，就决定要做一个真正开放的去中心化社交平台：它不为任何公司或个人所控制，治理权交给社区（Opencord DAO），并通过渐进式去中心化的 Roadmap 逐步实现整套协议的去中心化。
 
-总的来说，Web3 还是蛮有趣的，我个人非常看好 Web3 的发展方向。另外使用加密钱包进行全球支付，真的超级方便！
+任何组织和个人都可以在上面搭建自己的社区，畅所欲言。还可以通过插件，以模块化的方式，定制和改造自己的社区，自由连接任何 dApp 和已有的 Web2 生态。
+
+import banner from './images/banner.jpg';
+
+<BaseImage src={banner.src} alt="共创未来" />

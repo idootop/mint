@@ -35,7 +35,7 @@ export async function ProjectLayout({ path, children }) {
           color="#fff"
         >
           <IconOpenLink size="20px" color="#fff" />
-          预览
+          查看
         </Button>
         <Button
           id={styles.button}
@@ -46,20 +46,20 @@ export async function ProjectLayout({ path, children }) {
           color="#000"
         >
           <IconGithub size="20px" />
-          源代码
+          源码
         </Button>
       </>
     ) : project.preview ? (
       <Button
         id={styles.button}
         secondary
-        url={project.source}
+        url={project.preview}
         width="100%"
         height="48px"
         color="#000"
       >
         <IconOpenLink size="20px" />
-        预览
+        查看
       </Button>
     ) : project.source ? (
       <Button
@@ -71,7 +71,7 @@ export async function ProjectLayout({ path, children }) {
         color="#000"
       >
         <IconGithub size="20px" />
-        源代码
+        源码
       </Button>
     ) : undefined;
 
