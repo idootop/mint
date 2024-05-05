@@ -5,7 +5,7 @@ export const metadata = {
   title: '碰肩',
   url: 'https://mp.weixin.qq.com/s/9uxCiUUV7pziECtjJtiJLA',
   createAt: '2021-02',
-  description: '一款基于用户实时地理位置的陌生人近场社交应用',
+  description: '一款基于地理位置的陌生人近场社交应用',
   cover: cover.src,
   preview: 'https://mp.weixin.qq.com/s/9uxCiUUV7pziECtjJtiJLA',
   pinned: true,
@@ -13,20 +13,97 @@ export const metadata = {
 
 # 项目简介
 
-这是一款近场陌生人社交 APP，我们期望借助手机定位，帮助人们找回擦肩而过的精彩瞬间，鼓励人们积极探索身边发生的新鲜事物，与有趣的人一起，开启一段妙不可言的缘分之旅。
+这是一款陌生人社交 APP，通过手机定位，帮助人们找回擦肩而过的人和精彩瞬间，鼓励人们积极探索身边发生的新鲜事物，与有趣的人一起，开启一段妙不可言的缘分之旅。
+
+import intro from './images/intro.webp';
+
+<WrappedImage src={intro.src} alt="欢迎页面" maxWidth="360px" />
+
+# 项目预览
+
+import home from './images/home.webp';
+
+import me from './images/me.webp';
+
+import meet from './images/meet.webp';
+
+import moment from './images/moment.webp';
+
+|  <TableImage src={home.src} alt='首页'/>  | <TableImage src={meet.src} alt='擦肩'/> |
+| :---------------------------------------: | :-------------------------------------: |
+| <TableImage src={moment.src} alt='瞬间'/> |  <TableImage src={me.src} alt='我的'/>  |
 
 # 幕后花絮
 
-这是由我一个人独立开发（前端），从零到一上架到应用商店的首款 Flutter 社交应用。
+这是由我一个人独立负责前端开发，从零到一上架到应用商店的首个社交应用。
 
-在这款应用中，我们不断打磨交互设计与动画细节，只为给用户带来最丝滑，和有温度的社交体验。
+为了给用户带来最丝滑、有温度的社交体验，我们不断打磨交互设计与动画细节。尤其在地图交互上，做了许多巧思和创新，带来更有趣的地图交互体验。
 
-尤其在地图交互上，我们精益求精，首创（并且也是独创）[在原生视图上层绑定 Flutter 原生组件作为地图覆盖物](https://juejin.cn/post/7097518993690329124)，为传统的地图交互体验，带来更多的想象空间。
+期间，我在[掘金个人专栏](https://juejin.cn/user/2418581313189326/posts)发表了 10 余篇 Flutter 相关的技术文章，记录分享开发过程中遇到的一些有趣问题，累计阅读量 50,000+
 
-期间，我在[掘金个人专栏](https://juejin.cn/user/2418581313189326/posts)发表了 10 余篇 Flutter 相关的技术文章，记录分享遇到的一些有趣问题，累计阅读量 50,000+
+作为一名开源爱好者，我曾为许多 Flutter 开源项目做过贡献，包括作为 [GetX](https://pub.dev/packages/get)（最受 Flutter 开发者喜爱的库） 的首位中文文档翻译者，以及为 [flutter_screenutil](https://pub.dev/packages/flutter_screenutil), [image](https://pub.dev/packages/image) 等常用库提交过 PR。
 
-作为一名开源爱好者，我也为许多 Flutter 开源社区项目提交过贡献，
+同时，我也发布维护了多个 package 回馈给社区，包括: [nested_scroll_view_plus](https://pub.dev/packages/nested_scroll_view_plus), [auto_hide_keyboard](https://pub.dev/packages/auto_hide_keyboard) 等。
 
-包括作为 [GetX](https://pub.dev/packages/get)（最受 Flutter 开发者喜爱的库） 的首位中文文档翻译者，以及为 [flutter_screenutil](https://pub.dev/packages/flutter_screenutil)、[image](https://pub.dev/packages/image) 等常用 packages 提交过 PR。
+# 技术浅析
 
-同时，我自己也发布维护了多个 packages 回馈给社区，包括：[nested_scroll_view_plus](https://pub.dev/packages/nested_scroll_view_plus)、[auto_hide_keyboard](https://pub.dev/packages/auto_hide_keyboard)
+该项目使用 [Flutter](https://flutter.dev/) 跨平台开发，具有良好的 UI 和性能表现，非常适合早期项目多平台快速开发迭代。
+
+在此项目中，我的主要贡献如下：
+
+**1. 基于高德地图的后台定位**
+
+手机定位是本应用的核心模块，如何保持定位的精确、稳定和低功耗至关重要，尤其是在室内、地下（地铁）和后台持续定位等场景。
+
+这里我们选择了高德定位SDK，相较于系统原生的 GPS 定位服务，它采用 GPS + 北斗 + 基站（含5G基站）+ WIFI 的混合定位模式，可以根据设备所处环境，智能选择最佳的定位方式，在降低耗电的同时，保证定位的准确性。
+
+在应用启动后，会注册并启动一个后台定位服务，通过注册地理围栏，`触发回调后进行一次高精度定位，然后继续以当前位置为半径，注册下一个地理围栏回调`的方式，实现后台定位持续、稳定、低功耗和高精度的需要[^1]。
+
+此外，当后台定位服务获取到最新位置更新时，会启动一个 `Flutter Headless Engine`，然后将在原生平台获取到的定位数据，发送到预先注册的 Dart 回调函数中，复用 Flutter 端已有的网络请求模块和其他的业务逻辑。
+
+**2. 增强的 NestedScrollView**
+
+在主流 APP 中有一种常见的布局，经常用在「我的」页面。
+
+import he1 from './images/he1.webp';
+
+import he2 from './images/he2.webp';
+
+| <TableImage src={he1.src} alt='抖音'/> | <TableImage src={he2.src} alt='小红书'/> |
+| :------------------------------------: | ---------------------------------------- |
+
+这种布局通常由 header + body 两部分组成。其中头部高度一般不固定，用来展示用户头像和个人简介等信息，而 body 区域则是由不同标签分类组成的 Tabview，里面是用来展示用户作品和动态等信息的内容列表。
+
+在 Flutter 中有一个组件与此布局十分相似，那就是 `NestedScrollView`。不过遗憾的是 `NestedScrollView` 在向下滑动时，只有内部的 TabView 列表会被下拉刷新（过度滚动），而不是像抖音和小红书那样外部的 header 会被下拉刷新。
+
+import nested from './images/nested.gif';
+
+import nestedPlus from './images/nested-plus.gif';
+
+| <TableImage src={nested.src} alt='NestedScrollView'/> | <TableImage src={nestedPlus.src} alt='NestedScrollViewPlus'/> |
+| :---------------------------------------------------: | ------------------------------------------------------------- |
+
+为了解决这个问题，我 Fork 了官方的 `NestedScrollView`，然后重写了内外 ScrollView 和 Coordinator 坐标之间的映射关系，并修复了一些已知问题。现在你可以在 [pub.dev](https://pub.dev/packages/nested_scroll_view_plus) 上直接搜索并使用修改后的 `NestedScrollViewPlus` 组件。
+
+**3. 使用 Flutter Widget 作为地图 Marker**
+
+在常见的 Flutter 地图方案中，大多数是将原生平台的地图视图，直接嵌入到 Flutter 界面，造成了原生地图视图与 Flutter 视图的隔离，无法直接使用 Flutter 组件作为地图覆盖物。
+
+import amap from './images/amap.webp';
+
+<BaseImage src={amap.src} alt="工单反馈" />
+
+有趣的是高德地图、百度地图等插件，都提供了使用**静态图片**素材作为地图覆盖物的功能，能够基本解决静态 Marker 效果的需求。但是对于更复杂的**动态效果**（比如交互动画等），却又无能为力。
+
+import marker from './images/marker.webp';
+
+<WrappedImage src={marker.src} alt="效果预览" maxWidth="360px" />
+
+既然无法直接将 Flutter 中的组件“塞”到原生地图上，那么反过来，能不能在 Flutter 视图上将组件“绑定”到原生地图上呢？
+
+理论上是可行的：只需要获取到地图的经纬度边界，通过墨卡托投影[^2]，将经纬坐标映射到屏幕坐标，即可实现“绑定” Flutter 组件到地图上的效果。
+
+为此，我在高德地图插件的基础上，实现了使用 Flutter 原生 Widget 作为地图 Marker 的解决方案，为传统的地图交互体验，带来更多的想象空间。
+
+[^1]: 高德地图提供的持续定位方案，经测试即使晚上睡觉时手机静止不动，也会在后台会消耗大量电量。而地理围栏模式通常要比持续定位和高精度定位模式功耗更低，故最终采用了地理围栏回调 + 单次高精度定位的模式，兼顾了二者的优点，实现了更为低功耗且保持精度的定位方案。
+[^2]: 墨卡托投影：一种正轴等角圆柱投影，由荷兰地图学家墨卡托（G. Mercator）于 1569 年提出。该投影具有等角航线被表示成直线的特性，故广泛用于编制航海图和航空图等。
