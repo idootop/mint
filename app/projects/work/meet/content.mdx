@@ -38,11 +38,11 @@ import moment from './images/moment.webp';
 
 为了给用户带来最丝滑、有温度的社交体验，我们不断打磨交互设计与动画细节。尤其在地图交互上，做了许多巧思和创新，带来更有趣的地图交互体验。
 
-期间，我在[掘金个人专栏](https://juejin.cn/user/2418581313189326/posts)发表了 10 余篇 Flutter 相关的技术文章，记录分享开发过程中遇到的一些有趣问题，累计阅读量 50,000+
+期间，我在[掘金个人专栏](https://juejin.cn/user/2418581313189326/posts)发表了 10 余篇 Flutter 相关的技术文章，记录分享开发过程中遇到的一些有趣问题，累计阅读量 50,000+。
 
-作为一名开源爱好者，我曾为许多 Flutter 开源项目做过贡献，包括作为 [GetX](https://pub.dev/packages/get)（最受 Flutter 开发者喜爱的库） 的首位中文文档翻译者，以及为 [flutter_screenutil](https://pub.dev/packages/flutter_screenutil), [image](https://pub.dev/packages/image) 等常用库提交过 PR。
+作为一名开源爱好者，我也为许多 Flutter 开源项目做过贡献，包括作为 [GetX](https://pub.dev/packages/get)（最受 Flutter 开发者喜爱的库） 的首位中文文档翻译者，以及为 [flutter_screenutil](https://pub.dev/packages/flutter_screenutil), [image](https://pub.dev/packages/image) 等常用库提交过 PR。
 
-同时，我也发布维护了多个 package 回馈给社区，包括: [nested_scroll_view_plus](https://pub.dev/packages/nested_scroll_view_plus), [auto_hide_keyboard](https://pub.dev/packages/auto_hide_keyboard) 等。
+此外，我还发布维护了一些 package 回馈给社区，包括: [nested_scroll_view_plus](https://pub.dev/packages/nested_scroll_view_plus), [auto_hide_keyboard](https://pub.dev/packages/auto_hide_keyboard) 等。
 
 # 技术浅析
 
@@ -54,7 +54,7 @@ import moment from './images/moment.webp';
 
 手机定位是本应用的核心模块，如何保持定位的精确、稳定和低功耗至关重要，尤其是在室内、地下（地铁）和后台持续定位等场景。
 
-这里我们选择了高德定位SDK，相较于系统原生的 GPS 定位服务，它采用 GPS + 北斗 + 基站（含5G基站）+ WIFI 的混合定位模式，可以根据设备所处环境，智能选择最佳的定位方式，在降低耗电的同时，保证定位的准确性。
+这里我们选择了高德定位SDK，相较于系统原生的 GPS 定位服务，它采用 GPS + 北斗 + 基站（含5G基站）+ WIFI 的混合定位模式，可以根据设备所处环境，智能选择最佳的定位方式，在降低耗电的同时，兼顾定位的准确性。
 
 在应用启动后，会注册并启动一个后台定位服务，通过注册地理围栏，`触发回调后进行一次高精度定位，然后继续以当前位置为半径，注册下一个地理围栏回调`的方式，实现后台定位持续、稳定、低功耗和高精度的需要[^1]。
 
@@ -62,7 +62,7 @@ import moment from './images/moment.webp';
 
 **2. 增强的 NestedScrollView**
 
-在主流 APP 中有一种常见的布局，经常用在「我的」页面。
+在主流 APP 中有一种常见的布局，经常用在「我的」页面。这种布局通常由 header + body 两部分组成。其中头部高度一般不固定，用来展示用户头像和个人简介等信息，而 body 区域则是由不同标签分类组成的 Tabview，里面是用来展示用户作品和动态等信息的内容列表。
 
 import he1 from './images/he1.webp';
 
@@ -70,8 +70,6 @@ import he2 from './images/he2.webp';
 
 | <TableImage src={he1.src} alt='抖音'/> | <TableImage src={he2.src} alt='小红书'/> |
 | :------------------------------------: | ---------------------------------------- |
-
-这种布局通常由 header + body 两部分组成。其中头部高度一般不固定，用来展示用户头像和个人简介等信息，而 body 区域则是由不同标签分类组成的 Tabview，里面是用来展示用户作品和动态等信息的内容列表。
 
 在 Flutter 中有一个组件与此布局十分相似，那就是 `NestedScrollView`。不过遗憾的是 `NestedScrollView` 在向下滑动时，只有内部的 TabView 列表会被下拉刷新（过度滚动），而不是像抖音和小红书那样外部的 header 会被下拉刷新。
 
@@ -82,7 +80,9 @@ import nestedPlus from './images/nested-plus.gif';
 | <TableImage src={nested.src} alt='NestedScrollView'/> | <TableImage src={nestedPlus.src} alt='NestedScrollViewPlus'/> |
 | :---------------------------------------------------: | ------------------------------------------------------------- |
 
-为了解决这个问题，我 Fork 了官方的 `NestedScrollView`，然后重写了内外 ScrollView 和 Coordinator 坐标之间的映射关系，并修复了一些已知问题。现在你可以在 [pub.dev](https://pub.dev/packages/nested_scroll_view_plus) 上直接搜索并使用修改后的 `NestedScrollViewPlus` 组件。
+为了解决这个问题，我 Fork 了官方的 `NestedScrollView`，然后重写了内外 ScrollView 和 Coordinator 坐标之间的映射关系，并修复了一些已知问题。
+
+你可以在 [pub.dev](https://pub.dev/packages/nested_scroll_view_plus) 上搜索使用修改后的 `NestedScrollViewPlus` 组件，轻松实现类似抖音和小红书的个人主页布局。
 
 **3. 使用 Flutter Widget 作为地图 Marker**
 
