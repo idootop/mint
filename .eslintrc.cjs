@@ -1,31 +1,6 @@
 /** @type {import("eslint").ESLint.ConfigData} */
 const config = {
-  env: {
-    es2022: true,
-    browser: true,
-    node: true,
-  },
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 'latest',
-    lib: ['dom', 'dom.iterable', 'esnext'],
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'next',
-    'prettier',
-  ],
+  extends: ['plugin:@typescript-eslint/recommended', 'next', 'prettier'],
   plugins: ['@typescript-eslint', 'import', 'simple-import-sort'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'off',
