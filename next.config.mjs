@@ -1,7 +1,8 @@
 import configMDX from '@next/mdx';
-import withVideos from 'next-videos';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
+
+import { nextFileLoader } from './scripts/next-file-loader.mjs';
 
 /** @type {import('@next/mdx').NextMDXOptions} */
 const mdxConfig = {
@@ -18,6 +19,17 @@ const withMDX = configMDX(mdxConfig);
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
+  webpack(config, options) {
+    config.module.rules.push(
+      nextFileLoader({
+        config,
+        options,
+        test: /\.(mp4|webm|mkv|ogg|ogv|wmv|avi|mov|flv|m4v|3gp)$/i,
+        outputPath: '/static/media/[name].[hash:8].[ext]',
+      }),
+    );
+    return config;
+  },
 };
 
-export default withMDX(withVideos(nextConfig));
+export default withMDX(nextConfig);
