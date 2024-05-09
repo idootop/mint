@@ -1,35 +1,32 @@
 import configMDX from '@next/mdx';
+import createNextFileLoader from 'next-file-loader';
 import rehypePrism from 'rehype-prism-plus';
 import remarkGfm from 'remark-gfm';
 
-import { nextFileLoader } from './scripts/next-file-loader.mjs';
+const withNextFileLoader = createNextFileLoader([
+  {
+    test: /\.(mp4|webm|mkv|ogv|wmv|avi|mov|flv|m4v|3gp)$/i,
+    outputPath: 'static/videos/[name].[hash:8].[ext]',
+  },
+  {
+    test: /\.(mp3|wav|flac|ogg|aac|m4a|wma|ape)$/i,
+    outputPath: 'static/audios/[name].[hash:8].[ext]',
+  },
+]);
 
-/** @type {import('@next/mdx').NextMDXOptions} */
-const mdxConfig = {
+const withMDX = configMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkGfm],
     rehypePlugins: [rehypePrism],
     remarkRehypeOptions: { footnoteLabel: '备注' },
   },
-};
-const withMDX = configMDX(mdxConfig);
+});
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
   images: { unoptimized: true },
-  webpack(config, options) {
-    config.module.rules.push(
-      nextFileLoader({
-        config,
-        options,
-        test: /\.(mp4|webm|mkv|ogg|ogv|wmv|avi|mov|flv|m4v|3gp)$/i,
-        outputPath: '/static/media/[name].[hash:8].[ext]',
-      }),
-    );
-    return config;
-  },
 };
 
-export default withMDX(nextConfig);
+export default withMDX(withNextFileLoader(nextConfig));
