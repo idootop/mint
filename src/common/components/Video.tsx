@@ -22,7 +22,7 @@ const Video = forwardRef((props: VideoProps, ref: any) => {
     loop = false,
     controls = false,
     playsInline = false,
-    preload = 'node',
+    preload = 'auto',
     ...rest
   } = props;
 
