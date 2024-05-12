@@ -13,6 +13,7 @@ export const LazyAutoPlay = (props: VideoProps) => {
     if (isIntersected) {
       nextTick().then(() => intersectionRef.current.load());
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isIntersected]);
 
   return (
