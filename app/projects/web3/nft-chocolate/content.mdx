@@ -6,8 +6,34 @@ export const metadata = {
   source: 'https://github.com/idootop/NFT-Chocolate',
   preview: 'https://nft.xbox.work',
   createAt: '2022-04',
-  description:
-    'A delightful, customizable, and secure NFT collection that is completely free to mint and own.',
+  description: 'A delightful NFT that is free to mint and own.',
   cover: cover.src,
   pinned: true,
 };
+
+# 项目预览
+
+import demo from './demo.webp';
+
+<BaseImage src={demo.src} alt="IU Chocolate" />
+
+# 幕后花絮
+
+这是我发行的第一款 [NFT](https://en.wikipedia.org/wiki/Non-fungible_token)，部署在 [Polygon](https://polygonscan.com/token/0xcd5982a4d04f44d7987c87dc30ed4856c1a64f14) 区块链上。
+
+传统的 NFT 普遍采用，在链上通过 `tokenURI` 指向链下图片资源 URI 的做法。
+
+这种方式并非严格意义上的去中心化[^1]，有悖区块链去中心化、不可篡改的精神。
+
+我希望设计一款**更自由，更纯粹**的 NFT：
+
+- 任何人都可以选择自己喜欢的一张图片来免费 mint 成 NFT
+- NFT 的 metadata 采用去中心化存储，永不过期且无法篡改
+- NFT 的持有者对 NFT 拥有绝对所有权，不被任何人操控（即使是管理员）
+- NFT 的持有者可以在 mint 后自由更新 metadata，随时换新 NFT 图片
+
+于是便有了 `NFT Chocolate` 这个项目：
+
+> 希望它可以像糖果一样甜蜜，把快乐和自由带给更多的人。
+
+[^1]: 链下资源可能随时变更或过期，容易被人为操控

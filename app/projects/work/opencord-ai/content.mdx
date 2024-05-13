@@ -20,7 +20,7 @@ import postContent from './images/post-content.png';
 <BannerImage src={postContent.src} />
 
 Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
-简而言之，就是让 AI Agent 无缝接管您的社交账号运营，通过可视化/无代码的方式，灵活定制社交媒体运营 AI Workflow，实现内容创作、分发、互动的全自动化，为企业和个人的品牌传播、内容营销和社群运营赋能，节省人力物力成本，助力社交媒体运营实现智能化升级。
+简而言之，就是让 AI Agent 无缝接管您的社交账号运营，通过可视化/无代码的方式，灵活定制社交媒体运营 AI Workflow，实现内容创作、分发、互动的自动化，为企业和个人的品牌传播、内容营销和社群运营赋能。
 
 # 项目亮点
 
@@ -39,9 +39,7 @@ Opencord AI 是下一代的社交媒体运营 AI Agent 平台。
 3. Python 环境消耗机器资源比较高，无法支撑高并发环境。在平台早期，为了快速迭代和方便管理，AI Agent 都是有状态的，用户创建的每一个 AI Agent 实例，都会起一个独立的 docker 容器来运行，内存消耗较高。
 4. 团队后端技术栈以 Go-lang 为主，Python 版本的 AI Agent 实现，前期主要是我一个人在负责，团队缺少 Python 技术储备，等新迭代较慢。
 
-鉴于上述的几点原因，后期我们在整个 AI Agent 的架构实现上，迁移到了基于 Go 的 workflow 方案。
-
-首先，该方案结束了原本每个 Agent 都需要单独起一个 Python docker 的资源瓶颈，而是改为 Go-lang 实现的无状态 Node 的串并联执行流，使资源消耗量显著降低（不低于20x）。同时又将原来基于代码的 Agent 开发模式，转变为基础 Node 能力模块的拼接组合，并且搭配上后台可视化的 Workflow 预览/编辑界面，极大地提高了 Agent 开发的效率和门槛。
+鉴于上述的几点原因，后期我们在整个 AI Agent 的架构实现上，迁移到了基于 Go 的 Workflow 方案。
 
 # 主要贡献
 
