@@ -23,17 +23,3 @@
     border-radius: 0;
   }
 }
-
-.center_image {
-  margin: 0 auto;
-}
-
-.center_label {
-  width: 100%;
-  margin: 0 auto;
-  display: inline-block;
-  color: #666;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 8px;
-}

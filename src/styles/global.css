@@ -22,3 +22,17 @@ div:focus {
 a {
   text-decoration: none !important;
 }
+
+.center-box {
+  margin: 0 auto;
+}
+
+.center-label {
+  width: 100%;
+  margin: 0 auto;
+  display: inline-block;
+  color: #666;
+  font-size: 12px;
+  text-align: center;
+  margin-top: 8px;
+}

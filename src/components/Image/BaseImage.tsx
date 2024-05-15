@@ -3,8 +3,6 @@ import { isNotEmpty } from '@/common/utils/is';
 import { resolveAssetURL } from '@/utils/assets';
 import { processImage } from '@/utils/image';
 
-import styles from './styles.module.css';
-
 export const BaseImage = async (
   _props: ImageProps & { size?: number; width?: number; height?: number },
 ) => {
@@ -35,7 +33,7 @@ export const BaseImage = async (
       <>
         {marginTop && <span style={{ height: marginTop, display: 'block' }} />}
         {height > 0 ? (
-          <span className={styles.center_image} style={aspectRatioStyle}>
+          <span className="center-box" style={aspectRatioStyle}>
             <Image
               {...restProps}
               src={resolveAssetURL(src)}
@@ -49,10 +47,10 @@ export const BaseImage = async (
             {...restProps}
             src={resolveAssetURL(src)}
             alt={alt}
-            className={styles.center_image}
+            className="center-box"
           />
         )}
-        {isNotEmpty(alt) && <span className={styles.center_label}>{alt}</span>}
+        {isNotEmpty(alt) && <span className="center-label">{alt}</span>}
         {marginBottom && (
           <span style={{ height: marginBottom, display: 'block' }} />
         )}
