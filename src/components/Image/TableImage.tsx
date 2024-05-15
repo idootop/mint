@@ -3,8 +3,6 @@ import { isNotEmpty } from '@/common/utils/is';
 import { resolveAssetURL } from '@/utils/assets';
 import { processImage } from '@/utils/image';
 
-import styles from './styles.module.css';
-
 export const TableImage = async (
   _props: Omit<ImageProps, 'marginBottom' | 'marginTop'> & {
     size?: number;
@@ -26,7 +24,7 @@ export const TableImage = async (
           width="100%"
           height="100%"
         />
-        {isNotEmpty(alt) && <span className={styles.center_label}>{alt}</span>}
+        {isNotEmpty(alt) && <span className="center-label">{alt}</span>}
       </>
     )
   );
