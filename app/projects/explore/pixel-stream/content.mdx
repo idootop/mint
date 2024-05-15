@@ -5,32 +5,53 @@ export const metadata = {
   title: '传影',
   source: 'https://github.com/idootop/chuanying',
   createAt: '2021-06',
-  description: '使用手机相机将物体 “复制/粘贴” 到电脑桌面，所见即所得',
+  description: '使用手机“隔空取物”复制粘贴到电脑桌面',
   cover: cover.src,
+  pinned: true,
 };
+
+# 项目预览
+
+import image from './videos/image.mp4';
+
+<AutoPlay src={image.src} alt="指哪贴哪，所见即所得" />
+
+import latex from './videos/latex.mp4';
+
+<AutoPlay src={latex.src} alt="识别数学公式，输入到 Word" />
+
+import words from './videos/words.mp4';
+
+<AutoPlay src={words.src} alt="识别输入文字" />
 
 # 项目亮点
 
-- 一套 Flutter 代码，多种技术的跨界融合，完美兼容多端。
-- 提供了抠图粘贴/文字输入/公式识别 3 种模式
+- **🧙‍♂️ 混合现实**：像魔法一样隔空取物，所见即所得
+- **💪 生产力 UP**：提供了抠图粘贴、文字输入、公式识别 3 种常用模式
+- **💻 跨平台**：一套 Flutter 代码，多种技术的跨界融合，完美兼容多端
 
 # 幕后花絮
 
-传影，是一次有趣的跨端开发尝试，这个 idea 来自于 clip drop 的原型：https://github.com/cyrildiagne/ar-cutpaste
+这是一次有趣的 AR 实验项目，灵感来自于 clip drop 的原型[^1]。
 
-它融合了 camera，局域网通信，macOS 辅助功能，shell，python，opencv 等多种跨界的技术。
-最神奇的地方在于，它可以通过你的手机相机，捕获身边的物体/文字或公式，然后按照在相机中预览的位置和实际大小，将他们“贴”到你的电脑上。
+其背后是 macOS 辅助功能、Python、OpenCV 等多种跨界技术的融合。
 
-正如前面所提到的，这个项目的实现需要多种跨界技术的融合。
+最神奇的地方在于，它可以通过手机相机，捕获你身边的物体、文字或公式，
 
-首先，这个项目的 PC 端和移动端都是由 Flutter 开发的，极大的提高了开发效率，尤其是在开发局域网通信协议的过程中，两端可以共用一份代码。
+然后按照在相机中预览的位置和大小，将它们“贴”到你的电脑上。
 
-然后，为了实现在 PC 端指定位置输入文字的目的，我又使用 swift 通过 flutter channel 开发了一个 macOS 插件，用来模拟鼠标的点击和键盘的输入动作（类似远程控制电脑所用到的技术）。
+## 技术浅析
 
-有趣的是，这个插件大部分的开发过程，是我在从上海回山东的高铁上完成的。
+此项目使用 Flutter 进行跨端开发，其 PC 端和移动端共用同一份代码（包括局域网通信协议相关的实现），极大的提高了开发效率。
 
-最后还剩下传影的核心：如何根据相机预览的画面，找到其和电脑桌面坐标之间的映射关系？
+为了实现在电脑屏幕的指定位置，输入文字的目的，我用 Swift 开发了一个 macOS native 插件[^2]，用来模拟鼠标点击和键盘输入（类似远程控制电脑所用到的技术）。
 
-底层原理是通过 shell 调用 python 中的 opencv 库，分析相机拍到的屏幕图像，和对应时刻屏幕截图之间的相似点，来定位手机照片中的物理坐标和电脑屏幕坐标之前的映射关系。
+此项目的核心是：**如何根据手机相机的预览画面，找到其与电脑桌面坐标之间的映射关系？**
 
-然后我在原来的 screenpoint 只提供中心点坐标的基础上，将其扩展到了屏幕四个边角点的坐标位置，这样就有了整个屏幕的宽高信息和位置映射，实现了更精准的位置和大小匹配。
+答案是通过 [OpenCV](https://opencv.org/) 分析手机相机拍到的屏幕图像，与对应时刻屏幕截图之间的相似点[^3]，来定位手机照片中的物理坐标和电脑屏幕坐标之前的映射关系。
+
+如此，便实现了“指哪打哪”，“所见即所得”的神奇效果。
+
+[^1]: ar-cutpaste：https://github.com/cyrildiagne/ar-cutpaste
+[^2]: 有趣的是，这个插件的核心实现，是我从上海回山东老家的高铁上完成的。
+[^3]: OpenCV Feature Matching: https://docs.opencv.org/3.4/dc/dc3/tutorial_py_matcher.html
