@@ -1,8 +1,45 @@
+import cover from './cover.png';
+
 export const metadata = {
-  emoji: '',
-  title: '',
-  source: '',
-  createAt: '',
-  description: '',
-  cover: '',
+  emoji: '👻',
+  title: 'X-Coze',
+  source: 'https://github.com/idootop/x-coze',
+  createAt: '2024-03',
+  description: '帮你一键美化 Coze，让 Bot 调试更丝滑。',
+  cover: cover.src,
+  pinned: true,
 };
+
+# 项目预览
+
+import demo from './images/demo.webp';
+
+<BaseImage src={demo.src} alt="Zen Mode" />
+
+# 幕后花絮
+
+2024 年 3 月份， OpenAI 封杀了一大批账号，我的 GPT4 API 账号未能幸免。
+
+无奈，只能继续寻找替代品。
+
+import coze from './images/coze.png';
+
+<BaseImage src={coze.src} alt="Coze" />
+
+Coze 是字节跳动推出的 AI 聊天机器人与应用程序开发平台，类似于 GPT Store。
+
+除此之外，Coze 还加入了插件、知识、工作流、长期记忆和定时任务等增强聊天机器人能力和交互体验的功能，而且最关键的：它支持免费使用 GPT4-128K 模型！
+
+这近乎是一个完美的替代品。
+
+import preview from './images/preview.png';
+
+<BaseImage src={preview.src} alt="狭窄的对话列表" />
+
+但美中不足的是，Coze 的对话调试界面非常狭窄，尤其是在小屏幕上，不适合日常使用。
+
+import zen from './images/zen.png';
+
+<BaseImage src={zen.src} alt="Zen mode" />
+
+于是，我开发了这个浏览器扩展，为 Coze 调试界面提供了一个「禅模式」，帮助一键美化 Coze，让 Bot 调试更丝滑。
