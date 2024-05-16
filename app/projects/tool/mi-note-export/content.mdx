@@ -1,8 +1,35 @@
 export const metadata = {
-  emoji: '',
-  title: '',
-  source: '',
-  createAt: '',
-  description: '',
-  cover: '',
+  emoji: '📒',
+  title: '小米便签导出助手',
+  source: 'https://github.com/idootop/mi-note-export',
+  createAt: '2023-02',
+  description: '一键批量导出备份小米便签（包含图片，录音等文件）',
 };
+
+# 项目预览
+
+import demo from './images/demo.webp';
+
+<BaseImage src={demo.src} alt="导出便签" />
+
+# 幕后花絮
+
+犹记得我最后一部使用过的小米手机是红米 note 4X，当年的千元机之王，陪我走过了整个大学的青春岁月，记录了许多美好回忆。
+
+但是自从大学毕业之后，我就再也没有用过小米手机了。
+
+有一天，我的邮箱里收到了一封邮件：
+
+import mi from './images/mi.webp';
+
+<BaseImage src={mi.src} alt="小米云服务数据即将清空" />
+
+**WTF!**
+
+幸好我经常检查邮箱，不然一个月之后，里面存的便签和图片资料就要被清空了～
+
+本以为云服务里的数据是永久保存的，好吧，天下没有免费的午餐。
+
+更蛋疼的是，这丫不支持批量导出便笺！
+
+无语，只能自己造轮子了～
