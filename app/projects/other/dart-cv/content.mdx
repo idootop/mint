@@ -1,8 +1,20 @@
 export const metadata = {
   emoji: '🪪',
   title: 'Dart CV',
-  source: '',
+  source: 'https://github.com/idootop/dart-cv',
   createAt: '2020-08',
-  description: '使用 Flutter Widget + Dart 生成个人简历',
+  description: '使用 Flutter Widgets 生成个人简历',
   cover: '',
 };
+
+# 项目预览
+
+import demo from './demo.webp';
+
+<BaseImage src={demo.src} alt="使用 Flutter Widgets 生成个人简历" />
+
+# 幕后花絮
+
+在制作个人简历的时候，为了更好的控制排版，我将简历模板封装成了类似 Flutter 风格的组件，直接使用 Dart 代码构建 PDF 文件[^1]。
+
+[^1]: 在认识 Figma 之前，我的个人简历都是通过编写 Dart 代码的方式构建的。
