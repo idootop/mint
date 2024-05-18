@@ -1,0 +1,50 @@
+export const metadata = {
+  emoji: '📐',
+  title: 'ReactFlow Auto Layout',
+  source: 'https://github.com/idootop/http-x-inspector',
+  createAt: '2024-05',
+  description: 'ReactFlow auto layout and Figma-like edge editing demo',
+  cover: '',
+};
+
+# 项目亮点
+
+**1. Node 自动布局算法**
+
+- 支持 [Dagre](https://github.com/dagrejs/dagre), [ELK](https://github.com/kieler/elkjs), [D3-hierarchy](https://github.com/d3/d3-hierarchy), [D3-dag](https://github.com/erikbrinkman/d3-dag) 等自动布局算法
+- 支持 Node 动态宽高自适应布局
+- 支持多个 Subflows 自动布局
+- 支持动态调整布局方向、节点间隔、端口排序等布局参数
+
+import algorithms from './videos/algorithms.mp4';
+
+<AutoPlay src={algorithms.src} />
+
+**2. Edge 自动路由算法**
+
+- 使用 A\* 搜索算法[^1]结合曼哈顿距离[^2]求解最优路径[^3]
+- Edge 与两端 Node 尽量不产生交叉和重合
+- Edge 路径长度相同时，优先选择轴对称且端点最少的路径
+
+import dragging from './videos/dragging.mp4';
+
+<AutoPlay src={dragging.src} />
+
+**3. Edge 折线拖拽编辑**
+
+- Edge 使用带圆角的直角折线 Path 绘制
+- Edge 由控制点组成，控制点之间可以通过拖拽控制柄来移动线段
+- 拖拽时自动合并相近的控制点和线段，也可以自动拆分出新的控制点
+
+import merge from './videos/merge.mp4';
+
+<AutoPlay src={merge.src} />
+
+最终实现的效果，基本可以媲美 Figma 和飞书的流程图编辑体验。
+
+[^1]: A\* 搜索算法: 一种在图形平面上，有多个节点的路径，求出最低通过成本的启发式搜索算法。常用于游戏中的 NPC 的移动计算，或线上游戏的 BOT 的移动计算上。
+[^2]:
+    曼哈顿距离: 在欧几里德空间上两点所形成的线段，对坐标轴产生的投影的距离总和。
+    对于平面直角坐标系，曼哈顿距离只要计算加减法即可，极大提高了运算速度。
+
+[^3]: Edge 自动路由思路主要参考自：[LogicFlow 边的绘制与交互](https://juejin.cn/post/6942727734518874142)
