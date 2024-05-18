@@ -11,13 +11,12 @@
 
 .link {
   color: #000;
-}
-
-.link + .link {
-  margin-left: 24px;
+  margin: 0 12px;
+  padding: 2px 4px;
+  border-radius: 6px;
 }
 
 .link:hover {
   color: rgba(0, 0, 0, 1) !important;
-  font-weight: 600;
+  font-weight: bold;
 }

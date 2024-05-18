@@ -1,7 +1,7 @@
 {
   "name": "mint",
   "description": "薄荷的花语是：永不消逝的爱",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "husky install",
     "dev": "next dev",
-    "preview": "http-server out -c-1",
+    "preview": "serve out",
     "clear-image-cache": "tsx scripts/clear-image-cache.ts",
     "remove-unused-image": "tsx scripts/remove-unused-image.ts",
     "build": "pnpm clear-image-cache && next build && pnpm remove-unused-image"
@@ -19,7 +19,7 @@
     "next": "^14.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "xsta": "^1.0.2"
+    "xsta": "^2.0.0"
   },
   "devDependencies": {
     "@mdx-js/loader": "^3.0.1",
@@ -30,17 +30,15 @@
     "@types/react": "^18.2.10",
     "@types/react-dom": "^18.2.4",
     "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "@typescript-eslint/parser": "^7.6.0",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.1",
     "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "got": "^14.2.1",
     "https-proxy-agent": "^7.0.4",
     "husky": "^9.0.11",
     "lint-staged": "^15.2.2",
+    "next-file-loader": "^1.0.0",
     "prettier": "^3.2.5",
     "proper-lockfile": "^4.1.2",
     "rehype-prism-plus": "^2.0.0",

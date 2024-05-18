@@ -5,7 +5,8 @@
 }
 
 .title {
-  font-size: 36px !important;
+  margin-top: 10px;
+  font-size: 32px !important;
 }
 
 .date {
@@ -16,7 +17,8 @@
 
 @media (max-width: 960px) {
   .title {
-    font-size: 28px !important;
+    margin: 10px 0 6px 0;
+    font-size: 26px !important;
   }
 
   .date {
@@ -24,15 +26,31 @@
   }
 }
 
-.link a,
-.link a:focus,
-.link a:hover {
+.footer {
+  margin-top: 10px;
+  width: 100%;
+  padding: 24px;
+  background: #161616;
+}
+
+.footerLabel {
+  margin-bottom: 6px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.footerLink a,
+.footerLink a:focus,
+.footerLink a:hover {
   font-size: 24px;
   font-weight: 700;
+  text-align: center;
   color: #fff !important;
   text-decoration: none !important;
 }
 
-.link+.link {
+.footerLink+.footerLink {
   margin-top: 24px;
 }

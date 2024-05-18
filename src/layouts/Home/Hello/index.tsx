@@ -1,28 +1,20 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-
 import { Center } from '@/common/components/Flex';
+import { useEffectSafely } from '@/common/hooks/useEffectSafely';
 import { sleep } from '@/common/utils/base';
 
 import { hellos } from './hello';
 import styles from './styles.module.css';
 
 export const Hello = () => {
-  const initRef = useRef(0);
-  useEffect(() => {
-    initRef.current = initRef.current + 1;
-    const currentInit = initRef.current;
-
+  useEffectSafely(isDisposed => {
     let timer;
     let languageIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
 
     async function type() {
-      if (initRef.current !== currentInit) {
-        return;
-      }
       const text = hellos[languageIndex];
       const speed = isDeleting ? 50 : 150;
 
@@ -36,7 +28,15 @@ export const Hello = () => {
         await sleep(200);
       }
 
-      const e = document.getElementsByClassName(styles['hello'])[0].children[0];
+      if (isDisposed()) {
+        return;
+      }
+
+      let e = document.getElementsByClassName(styles['hello'])[0];
+      e = e?.children?.[0];
+      if (!e) {
+        return;
+      }
       e.textContent = isDeleting
         ? text.substring(0, charIndex - 1)
         : text.substring(0, charIndex + 1);

@@ -1,0 +1,120 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🐟',
+  title: '飞鱼',
+  source: 'https://github.com/idootop/feiyu-player',
+  preview: 'https://feiyu-player.xbox.work',
+  createAt: '2023-02',
+  description: '一个漂亮得不像实力派的跨平台视频播放器',
+  cover: cover.src,
+  pinned: true,
+};
+
+# 项目亮点
+
+- **🐳 海量资源，随心搜索**: 支持多种视频源，聚合搜索，看你想看。
+- **🦀 一键订阅，自由分享**: 一键订阅视频源，从此找资源不求人。
+- **🦋 界面极简，超高颜值**: 颜值即正义，给你极致观影体验。
+- **🦄 体积小巧，快如闪电**: 极至精简，安装包不足 10 MB。
+- **🐟 随时随地，想看就看**: 网页、Windows、macOS、Linux 全平台支持。
+
+# 项目预览
+
+import pc from './images/pc.webp';
+
+<BaseImage src={pc.src} alt="首页" />
+
+import play from './images/play.webp';
+
+<BaseImage src={play.src} alt="播放页面" />
+
+import mobile from './images/mobile.jpg';
+
+<BaseImage src={mobile.src} alt="移动端自适应 + 亮暗色模式" />
+
+# 幕后花絮
+
+这个项目的诞生，更多来源于我的个人需求：我喜欢空闲的时候追剧，看电影来放松自己。
+
+有些时候，我想看的片源，比如电锯惊魂，国内的视频网站可能不会引入或有删减，只能去一些相对小众的视频网站上观看。
+
+但这些视频网站为了赚钱，往往会内置许多广告，严重影响观影体验，并且一般不怎么稳定，可能会随时跑路。
+
+于是，自己制作一个在线视频资源播放器的想法，便开始萌发。
+
+飞鱼的前身可以追溯到，我在大学时期使用 Flutter 开发的一款同名视频播放器。
+
+后来，我在 [Flutter 版](https://github.com/idootop/feiyu_flutter)飞鱼播放器的基础上，又将其移植到了网页和 PC 端。
+
+随时随地打开浏览器，就能搜索播放自己想看的片源，非常方便。
+
+# 技术浅析
+
+飞鱼按照开发的先后顺序，可以分为 Flutter 版，网页版和 PC 版三个阶段。
+
+**Flutter 版**
+
+早在 2019 年我还在读大学时候，我就边自学 Flutter 边开发飞鱼播放器。
+
+import old1 from './images/flutter/1.jpg';
+
+import old2 from './images/flutter/2.jpg';
+
+import old3 from './images/flutter/3.jpg';
+
+import old4 from './images/flutter/4.jpg';
+
+| <TableImage src={old1.src} /> | <TableImage src={old2.src} /> | <TableImage src={old3.src} /> | <TableImage src={old4.src}/> |
+| :---------------------------: | :---------------------------: | :---------------------------: | :--------------------------: |
+
+当时 Flutter 社区并没相对成熟的播放器组件，我在官方 [video_player](https://pub.dev/packages/video_player) 的基础上，封装定制了一套相对完善的视频播放器操作界面，支持常见的双击暂停/播放，手势调节播放进度/音量/亮度，视频倍速，重力感应横竖屏等。
+
+import new1 from './images/flutter/5.webp';
+
+import new2 from './images/flutter/6.webp';
+
+import new3 from './images/flutter/7.webp';
+
+import new4 from './images/flutter/8.webp';
+
+| <TableImage src={new1.src} /> | <TableImage src={new2.src} /> | <TableImage src={new3.src} /> | <TableImage src={new4.src}/> |
+| :---------------------------: | :---------------------------: | :---------------------------: | :--------------------------: |
+
+后来，新版本又陆续增加了直播，投屏，分享链接，打开网页观看等贴心小功能。
+
+**网页版**
+
+大学毕业后，我将飞鱼移植到了网页端，与此同时旧的 [Flutter 版本](https://github.com/idootop/feiyu_flutter)不再更新维护。
+
+有趣的是，飞鱼网页版最初是手绘风格的，这也是我的第一个 Vue 项目。
+
+import home from './images/web/home.webp';
+
+import video from './images/web/video.webp';
+
+import search from './images/web/search.webp';
+
+| <TableImage src={home.src} alt='首页'/> | <TableImage src={search.src} alt='搜索结果'/> | <TableImage src={video.src} alt='播放页面'/> |
+| :-------------------------------------: | :-------------------------------------------: | :------------------------------------------: |
+
+**PC 版**
+
+网页版开发完成后，PC 端的适配就比较简单了。
+
+考虑到打包后的应用体积和性能，我使用了最新的 [Tauri v2.0 beta](https://v2.tauri.app/) 来构建[^1]。
+
+不愧是 beta 版本，让我一路踩了不少坑，网上相关的案例和资料实在是少得可怜，大多数需要自己翻源码来慢慢摸索。
+
+我帮官方第一时间发现了许多问题，甚至有一次我提了一个 beta 版本的构建 [issue](https://github.com/tauri-apps/wry/issues/1199)，官方修复后还专门发布了一个小版本。
+
+还有一个网页端资源跨域问题，这在 [Electron](https://electronjs.org/) 上简单配置一下即可搞定，但 Tauri 官方并没有提供底层支持。无奈，没有现成的轮子只能自己造。
+
+尽管对 Rust 不熟，但我还是在 ChatGPT 的帮助下，快速上手并开发了我的第一个使用 Rust 编写的 Tauri 插件：[tauri-plugin-cors-fetch](https://crates.io/crates/tauri-plugin-cors-fetch)，无需任何配置即可让 Tauri 应用内的网络请求支持 CORS，完美解决了跨域问题。
+
+除此之外，飞鱼还是第一个通过 Github Action 实现`全平台+全架构`构建的 [Tauri v2.0 beta](https://v2.tauri.app/) 应用[^2]，为社区提供了 [Tauri](https://v2.tauri.app/) 全平台打包最佳实践。
+
+最后，飞鱼很荣幸 list 在了 Tauri 官方的 [awesome-tauri ](https://github.com/tauri-apps/awesome-tauri#audio--video) 榜单上，撒花 🎉
+
+[^1]: 因为我用到了一个 v1 版本没有的新特性，并且 Tauri v2.0 beta 修复了许多已知问题。
+[^2]: 飞鱼安装包覆盖以下平台和架构： Window x64/x32/arm64、macOS x64/aarch64/universal 和 Linux x64/i686/arm64/armv7。

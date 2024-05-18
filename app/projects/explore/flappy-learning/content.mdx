@@ -1,0 +1,170 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🐦',
+  title: 'Flappy Learning',
+  source: 'https://github.com/idootop/FlappyLearning',
+  preview: 'https://juejin.cn/post/7087186721800421407',
+  createAt: '2022-04',
+  description: '当 Flappy Bird 遇上 AI，交叉变异，基因突变……',
+  cover: cover.src,
+  pinned: true,
+};
+
+# 预览
+
+import demo from './images/demo.gif';
+
+<BaseImage src={demo.src} alt="由 AI 驱动的 Flappy Bird" />
+
+# 简介
+
+当年 AlphaGo 打败世界围棋冠军李世石震惊一时，不久后 Google 又推出了 AlphaGo Zero， 自己打败了自己，强化学习的惊艳表现令人印象深刻。
+
+此项目是我入门强化学习的一个实验：**让 AI 自己学会玩游戏**。
+
+下面我将从神经网络和遗传变异两方面展开，探索如何让机器从零开始学会操控小鸟，并取得高分。
+
+# 问题分析
+
+首先，我们从一只鸟的情况开始看起，结合前面的动图分析可知：
+
+1. 每个时刻，玩家对鸟有两种动作：`啥都不做让鸟往下落` 或 `点击屏幕让鸟向上飞`
+2. 每个时刻，鸟只需要关心下一个障碍物的缺口位置，避免撞上管道
+3. 鸟可以感知到自己距离地面和下一障碍物的距离，以及管道缺口位置和长度
+4. 每个管道缺口的长度是相同的
+5. 鸟一直在向右匀速飞行
+6. 鸟撞上管道就会死亡
+7. 鸟存活的时间越长分数越高
+
+转化成机器可以理解的数学模型就是：
+
+> 根据输入条件（鸟距离地面和下一障碍物的距离，以及管道缺口位置等）不断计算决策输出（鸟的两个动作：`往下落` 或 `向上飞`），使鸟获得更高的分数。
+
+我们可以使用 [Tensorflow](https://www.tensorflow.org/?hl=zh-cn) 快速搭建一个人工神经网络模型进行求解（炼丹）。
+
+# 神经网络
+
+下图是一个典型的人工神经网络示意图。
+
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/26b8bf134c804517ae26590fe12e4494~tplv-k3u1fbpfcp-zoom-1.image)
+
+## 网络结构
+
+```typescript
+// 神经网络
+class NeuralNetwork {
+  // 输入层节点数
+  inputNodes: number;
+  // 隐藏层节点数
+  hiddenNodes: number;
+  // 输出层节点数
+  outputNodes: number;
+  model: tf.Sequential;
+
+  // 模型结构
+  createModel() {
+    const model = tf.sequential();
+    const hidden = tf.layers.dense({
+      units: this.hiddenNodes,
+      inputDim: this.inputNodes,
+      activation: 'sigmoid',
+    });
+    model.add(hidden);
+    const output = tf.layers.dense({
+      units: this.outputNodes,
+      activation: 'softmax',
+    });
+    model.add(output);
+    return model;
+  }
+
+  // 预测
+  predict(inputs: number[]) {
+    const xs = tf.tensor2d([inputs]);
+    const ys = this.model.predict(xs) as tf.Tensor<tf.Rank>;
+    return ys.dataSync();
+  }
+}
+```
+
+## 控制决策
+
+```typescript
+class Bird {
+  constructor(brain?: NeuralNetwork) {
+    if (brain) {
+      this.brain = brain.copy();
+    } else {
+      // 输出为 2 个节点，分别对应向上/下飞两个动作
+      this.brain = new NeuralNetwork(4, 8, 2);
+    }
+  }
+
+  think() {
+    let inputs = [];
+    // 鸟距地高度
+    inputs[0] = this.y / height;
+    // 下一障碍物缺口位置纵坐标
+    inputs[1] = this.topNextObstacle.y / height;
+    // 下一障碍物缺口位置横坐标
+    inputs[2] = this.bottomNextObstacle.x / width;
+    // 鸟的速度
+    inputs[3] = this.velocity / 10;
+    // 根据当前状态作为输入，预测输出下一步的操作
+    let output = this.brain.predict(inputs);
+    if (output[0] > output[1]) {
+      // 是否向上飞
+      this.goUp();
+    }
+  }
+}
+```
+
+注意在输入时，参数需要归一化处理，使得各特征变量缩放到相近的区间范围。
+
+# 遗传变异
+
+为了使模型快速收敛，选择一个好的遗传变异算法可以事半功倍。
+
+我们知道生物在繁衍过程中，会将自己的一些特征遗传给子代，比如肤色，身高等。
+
+另外，子代基因也是其父代双亲基因交叉变异的结果。
+
+如此一来，子代除了可以继承父代优秀的基因，也可以通过局部突变，产生自己独一无二的基因与特征。而这也正是生物界上亿年来，一直繁衍昌盛至今的基础保障。
+
+物竞天择，适者生存，长江后浪推前浪，一代更比一代强。新的世代总是比旧的世代更加优秀，适应能力更强，这也意味着旧的世代在被环境逐渐淘汰。
+
+基于上述生物界的生物繁衍规律，我们可以仿照构建一个支持交叉变异的遗传算法[^1]。
+
+# 实验结果
+
+### 第一阶段：无头苍蝇
+
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9843ff9647b04ab5819bd6270d90e146~tplv-k3u1fbpfcp-zoom-1.image)
+
+在最开始时，我们随机初始化了神经网络中，各神经元的输入参数权重，
+
+所以一开始，小鸟像无头苍蝇一样到处乱闯，根本无法稳定飞行，
+
+大部分的鸟，一上来就落地或飞出边界死掉了。
+
+### 第二阶段：稳定飞行
+
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dc3948aa4429433a85245d042b9eb709~tplv-k3u1fbpfcp-zoom-1.image)
+
+剩下的一小批鸟，误打误撞，随机生成的权重刚好使其可以维持飞行稳定，一直向前飞去，所以比那些乱飞的鸟活得更久一些。
+
+但是光会稳定飞行是远远不够的，就像只能直线行驶却无法转向的汽车，迟早会撞上障碍物，结束游戏，所以一大批已经学会稳定飞行的鸟，随着管道的移动也逐渐挂掉了。
+
+### 第三阶段：自由穿梭
+
+![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e3fc0d5a1b7d48288ca0c6597e433d34~tplv-k3u1fbpfcp-zoom-1.image)
+
+幸运的是，随着每代小鸟的不断学习和变异，有的小鸟误打误撞，学会了根据自己当前位置和障碍物缺口位置，去“转向”躲避障碍物，于是它们成了鸟群中的佼佼者，活得更久，由它们繁衍而来的后代，也幸运的继承了这些经验。
+
+在此基础之上，还有一部分鸟发生了变异：有的是不利的被淘汰掉，有的是更优秀的基因，使鸟飞的更稳，更灵活。
+
+于是鸟儿们的飞行技术越来越好，生存的时间也越来越长，最终整个鸟群都学会了，如何在管道间自由穿梭！
+
+[^1]: 遗传算法：https://github.com/idootop/FlappyLearning/blob/main/Neuroevolution.js

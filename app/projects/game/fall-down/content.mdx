@@ -1,0 +1,35 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🌍',
+  title: '坠落',
+  source: 'https://github.com/idootop/fallDown',
+  preview: 'https://fall.xbox.work/',
+  createAt: '2020-07',
+  description: '一个开源的 Flame 小游戏',
+  cover: cover.src,
+};
+
+# 项目预览
+
+import home from './images/home.jpg';
+
+import menu from './images/menu.jpg';
+
+import score from './images/score.jpg';
+
+import fall from './images/fall.jpg';
+
+| <TableImage src={home.src} alt='游戏首页'/> | <TableImage src={menu.src} alt='游戏选项'/>  |
+| :-----------------------------------------: | -------------------------------------------- |
+| <TableImage src={fall.src} alt='等级提升'/> | <TableImage src={score.src} alt='最终得分'/> |
+
+# 幕后花絮
+
+这是我开发的第一款小游戏，使用 [Flutter](https://flutter.dev/) + [Flame](https://flame-engine.org/) + [Box2D](https://flame-engine.org/docs/box2d.md) 构建。
+
+这个游戏的原身是我高中时最喜欢玩[^1]的一款小游戏： [FallDown delux](https://play.google.com/store/apps/details?id=com.wiiza.falldown)
+
+我在其基础上将其移植到了 Flutter 平台，并添加了重力感应等特性。
+
+[^1]: 我平常很少玩游戏，只玩过一些简单的小游戏，比如魂斗罗，大鱼吃小鱼等。相比于玩游戏，对我来说自己做一款游戏的吸引力和成就感可能更大一些。

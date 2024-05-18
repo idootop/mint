@@ -3,8 +3,20 @@ import cover from './cover.png';
 export const metadata = {
   emoji: '🪙',
   title: 'TS Bitcoin',
-  url: 'https://github.com/idootop/ts-bitcoin',
-  createAt: '2022-10',
-  description: 'A simple Typescript implementation of Blockchain.',
+  source: 'https://github.com/idootop/ts-bitcoin',
+  createAt: '2022-02',
+  description: 'A simple Typescript implementation of Blockchain',
   cover: cover.src,
 };
+
+# 项目预览
+
+import demo from './demo.webp';
+
+<BaseImage src={demo.src} alt="挖矿测试" />
+
+# 幕后花絮
+
+这是我第一次接触区块链[^1]，我参考 [BitCoin v0.1.5 ALPHA](https://github.com/idootop/bitcoin.bak/tree/master) 的源码，用 Typescript 实现了一个简易区块链，进一步了解比特币背后 PoW、UTXO、挖矿、创世区块、手续费等概念的含义和实现原理。
+
+[^1]: 在此之前我对区块链的了解，只停留在几种常见名词（比如挖矿、比特币等）的片面理解上。

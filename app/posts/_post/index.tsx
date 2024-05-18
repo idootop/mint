@@ -1,17 +1,20 @@
 import { MakeRequired } from '@/common/utils/types';
 import {
   generatePageMetadata,
+  getPage,
   getPageContext,
   getPages,
   PageContext,
   PageMetadata,
+  PagesWithPinned,
 } from '@/utils/page';
+import { PageFrom } from '@/utils/page/from';
 
 import { PostLayout } from './PostLayout';
 
 export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
 
-export const getPosts = async (): Promise<Post[]> => {
+export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   return getPages<Post>('posts', ctx, {
     buildMetadata: post => {
@@ -36,16 +39,14 @@ export interface PostsGroupedByYear {
   posts: Post[];
 }
 
-const kPostsGroupedByYear: PostsGroupedByYear[] = [];
+let kPostsGroupedByYear: PostsGroupedByYear[];
 export const getPostsGroupedByYear = async () => {
-  if (kPostsGroupedByYear.length > 0) {
+  if (kPostsGroupedByYear) {
     return kPostsGroupedByYear;
   }
   let year;
-  (await getPosts()).forEach(post => {
-    if (post.isHidden) {
-      return;
-    }
+  kPostsGroupedByYear = [];
+  (await getPosts()).all.forEach(post => {
     const _year = post.createAt.split('-')[0] as any;
     if (_year !== year) {
       kPostsGroupedByYear.push({ year: _year, posts: [post] });
@@ -57,28 +58,52 @@ export const getPostsGroupedByYear = async () => {
   return kPostsGroupedByYear;
 };
 
-let kPostSortedByYear: Post[] = [];
+let kPostsPinned: Post[];
+export const getPostsPinned = async () => {
+  if (kPostsPinned) {
+    return kPostsPinned;
+  }
+  kPostsPinned = (await getPosts()).pinned;
+  return kPostsPinned;
+};
+
+let kPostSortedByYear: Post[];
 export const getPostSortedByYear = async () => {
-  if (kPostSortedByYear.length > 0) {
+  if (kPostSortedByYear) {
     return kPostSortedByYear;
   }
-  kPostSortedByYear = (await getPostsGroupedByYear()).reduce((pre, v) => {
-    return [...pre, ...v.posts];
-  }, [] as Post[]);
+  kPostSortedByYear = (await getPostsGroupedByYear()).reduce(
+    (pre, v) => [...pre, ...v.posts],
+    [] as Post[],
+  );
   return kPostSortedByYear;
 };
 
 export interface PostContext extends PageContext<Post> {}
 
-export const getPostContext = async (path: string): Promise<PostContext> => {
-  return getPageContext(await getPostSortedByYear(), path);
+export const getPost = async (path: string) => {
+  return getPage((await getPosts()).all, path);
+};
+
+export const getPostContext = async (
+  path: string,
+  options?: { from?: PageFrom },
+): Promise<PostContext> => {
+  const { from = PageFrom.all } = options ?? {};
+  return getPageContext(
+    from === PageFrom.pinned
+      ? await getPostsPinned()
+      : await getPostSortedByYear(),
+    path,
+  );
 };
 
 export async function generatePostMetadata(path: string) {
   return generatePageMetadata<Post>(await getPostSortedByYear(), path);
 }
 
-export const generatePostPage = async (path: string, Content: any) => {
+export const generatePostPage = async (metaURL: string, Content: any) => {
+  const path = getPostPagePath(metaURL);
   const metadata = await generatePostMetadata(path);
   return {
     metadata,
@@ -89,3 +114,6 @@ export const generatePostPage = async (path: string, Content: any) => {
     ),
   };
 };
+
+export const getPostPagePath = (metaURL: string) =>
+  metaURL.match(/app(\/posts\/.*?)\/page.tsx$/)![1];

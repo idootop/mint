@@ -3,11 +3,11 @@
 import NextImage from 'next/image';
 import { forwardRef, ReactNode, useRef, useState } from 'react';
 
-import { isEmpty, isString, kIsDev } from '../utils/is';
-import { BoxProps, getBoxProps } from './Box';
+import { isEmpty, isString } from '../utils/is';
+import { BoxProps, getBoxProps, getBoxStyle } from './Box';
 
 export interface ImageProps extends BoxProps {
-  src?: string;
+  src: string;
   alt?: string;
   onLoad?: ReactNode;
   onError?: ReactNode;
@@ -17,27 +17,22 @@ export interface ImageProps extends BoxProps {
 
 const imgLoader = (p: { src: string }) => p.src;
 
-export const Image = forwardRef((props: ImageProps, ref: any) => {
+const Image = forwardRef((props: ImageProps, ref: any) => {
   const [isLoaded, setIsLoaded] = useState(!!props.placeholder);
   const [isError, setIsError] = useState(false);
 
-  const src = props.src;
-
+  const display = getBoxStyle(props, 'display', 'block');
   const boxProps = getBoxProps({
     ...props,
-    extStyle: {
-      ...props.extStyle,
-      display:
-        isLoaded && !isError
-          ? props.display ??
-            props.style?.display ??
-            props.extStyle?.display ??
-            'block'
-          : 'none',
+    style: {
+      ...props.style,
       objectFit: 'cover',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
+      display: isLoaded && !isError ? display : 'none',
     },
+    includes: ['placeholder', 'blurDataURL'],
+    excludes: ['alt', 'src', 'onLoad', 'onError'],
   });
 
   const _placeholder = (
@@ -51,42 +46,32 @@ export const Image = forwardRef((props: ImageProps, ref: any) => {
   );
 
   const {
-    width = 0,
-    height = 0,
+    src,
     alt = '',
-    placeholder,
-    blurDataURL,
     onLoad = _placeholder,
     onError = _placeholder,
   } = props;
 
+  const { width = 0, height = 0 } = boxProps.style;
+
   const _ref = useRef();
   const __ref = ref ?? _ref;
 
-  // 在 dev 环境下，将图片的 blur 参数挂到 className 上显示出来
-  if (kIsDev) {
-    boxProps.className = [
-      boxProps.className,
-      'placeholder:' + placeholder,
-      'blurDataURL:' + blurDataURL,
-    ]
-      .filter(e => !!e)
-      .join(' ');
+  if (isEmpty(src)) {
+    return onError;
   }
 
-  return isEmpty(src) ? (
-    (onError as any)
-  ) : (
+  return (
     <>
       <NextImage
         ref={__ref}
         {...boxProps}
-        src={src!}
+        src={src}
         alt={alt}
-        width={isString(width) ? 0 : (width as any)}
-        height={isString(height) ? 0 : (height as any)}
+        width={isString(width) ? 0 : width}
+        height={isString(height) ? 0 : height}
         unoptimized
-        loading="eager"
+        loading="lazy"
         loader={imgLoader}
         onLoad={() => {
           __ref.current.removeAttribute('with');
@@ -116,3 +101,7 @@ export const Image = forwardRef((props: ImageProps, ref: any) => {
     </>
   );
 });
+
+Image.displayName = 'Image';
+
+export { Image };

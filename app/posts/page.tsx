@@ -1,82 +1,72 @@
 import Link from 'next/link';
 
 import { Column, Expand, Row } from '@/common/components/Flex';
+import { getOGMetadata } from '@/utils/metadata';
+import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
-import { getPostsGroupedByYear, Post, PostsGroupedByYear } from './_post';
+import { getPostsGroupedByYear, getPostsPinned, Post } from './_post';
 import styles from './styles.module.css';
 
+// @ts-ignore
+export const metadata = await getOGMetadata({
+  title: '博客',
+});
+
 export default async function Page() {
+  const pinned = await getPostsPinned();
   return (
     <Column className={styles.page}>
+      {pinned.length > 0 && (
+        <GroupedPost group="Pinned" posts={pinned} from={PageFrom.pinned} />
+      )}
       {(await getPostsGroupedByYear()).map(e => {
-        return <YearPost key={e.year} year={e.year} posts={e.posts} />;
+        const posts = e.posts.filter(e => !e.hidden);
+        return (
+          posts.length > 0 && (
+            <GroupedPost
+              key={e.year}
+              group={e.year}
+              posts={posts}
+              from={PageFrom.all}
+            />
+          )
+        );
       })}
     </Column>
   );
 }
 
-const YearPost = (props: PostsGroupedByYear) => {
-  const { year, posts } = props;
+const GroupedPost = (props: {
+  group: string;
+  posts: Post[];
+  from: PageFrom;
+}) => {
+  const { group, posts, from } = props;
   if (posts.length < 1) return;
   return (
-    <Column
-      className={styles.year}
-      alignItems="start"
-      style={{
-        width: '100%',
-        padding: '20px',
-        background: '#fff',
-        borderRadius: '2px',
-        boxShadow: '0 1px 2px -1px rgba(0, 0, 0, 0.08)',
-      }}
-    >
-      <span
-        style={{
-          fontSize: '18px',
-          fontWeight: '600',
-          color: 'rgba(0, 0, 0, 0.3)',
-        }}
-      >
-        {year}
-      </span>
+    <Column className={styles.group} alignItems="start">
+      <span className={styles.groupTitle}>{group}</span>
       {posts.map(post => {
-        return <PostItem key={post.path} post={post} />;
+        return <PostItem key={post.path} post={post} from={from} />;
       })}
     </Column>
   );
 };
 
-const PostItem = (props: { post: Post }) => {
-  const { post } = props;
+const PostItem = (props: { post: Post; from: PageFrom }) => {
+  const { post, from } = props;
+  const postLink = getPageLinkWithFrom({ path: post.path, from });
+  const postDate =
+    from === PageFrom.pinned
+      ? post.createAt.replaceAll('-', '.')
+      : post.createAt.substring(5);
   return (
-    <Link
-      className={styles.post}
-      href={post.path}
-      style={{
-        width: '100%',
-      }}
-    >
+    <Link className={styles.item} href={postLink}>
       <Row alignItems="center" width="100%">
         <Expand marginRight="10px">
-          <span
-            className={styles.title}
-            style={{
-              fontSize: '18px',
-              color: '#000',
-            }}
-          >
-            {post.title}
-          </span>
+          <span className={styles.title}>{post.title}</span>
         </Expand>
-        <span
-          style={{
-            fontSize: '15px',
-            fontWeight: '400',
-            color: 'rgba(0, 0, 0, 0.3)',
-          }}
-        >
-          {post.createAt.substring(5)}
-        </span>
+        <span className={styles.date}>{postDate}</span>
       </Row>
     </Link>
   );

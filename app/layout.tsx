@@ -6,9 +6,10 @@ import { Viewport } from 'next';
 
 import { Footer } from '@/layouts/Footer';
 import { Header } from '@/layouts/Header';
-import { kSiteMetadata } from '@/utils/metadata';
+import { getOGMetadata } from '@/utils/metadata';
 
-export const metadata = kSiteMetadata;
+// @ts-ignore
+export const metadata = await getOGMetadata();
 
 export const viewport: Viewport = {
   width: 'device-width',

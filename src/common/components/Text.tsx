@@ -6,7 +6,7 @@ interface TextProps extends BoxProps {
   maxLines?: number;
 }
 
-export const Text = forwardRef((props: TextProps, ref: any) => {
+const Text = forwardRef((props: TextProps, ref: any) => {
   const { children, maxLines, style = {} } = props;
   const maxLinesStyle: BoxProps = maxLines
     ? {
@@ -20,14 +20,14 @@ export const Text = forwardRef((props: TextProps, ref: any) => {
     : {
         display: 'inline-block',
       };
+
   const boxProps = getBoxProps({
     ...props,
-    ...{
-      style: {
-        ...style,
-        ...maxLinesStyle,
-      },
+    style: {
+      ...style,
+      ...maxLinesStyle,
     },
+    excludes: ['maxLines'],
   });
 
   return (
@@ -36,3 +36,7 @@ export const Text = forwardRef((props: TextProps, ref: any) => {
     </span>
   );
 });
+
+Text.displayName = 'Text';
+
+export { Text };

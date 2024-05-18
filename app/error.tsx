@@ -6,8 +6,6 @@ import { Center } from '@/common/components/Flex';
 import { CardText } from '@/components/Text/CardText';
 import { kBodyHeight } from '@/layouts/sizes';
 
-import styles from './styles.module.css';
-
 export default function ErrorPage({
   error,
   reset,
@@ -30,7 +28,6 @@ export default function ErrorPage({
       cursor="pointer"
     >
       <CardText
-        className={styles.breathing}
         style={{
           fontSize: '32px',
           marginBottom: '12px',

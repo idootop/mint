@@ -1,34 +1,47 @@
 import { MakeRequired } from '@/common/utils/types';
 import {
   generatePageMetadata,
+  getPage,
   getPageContext,
   getPages,
   PageContext,
   PageMetadata,
+  PagesWithPinned,
 } from '@/utils/page';
+import { PageFrom } from '@/utils/page/from';
 
 import { ProjectLayout } from './ProjectLayout';
 
 const kProjectCategories = [
   'work',
-  'side-project',
-  'package',
+  'product',
   'ai',
+  'game',
+  'explore',
   'web3',
-  'hack',
   'tool',
+  'hack',
+  'package',
+  'develop',
   'other',
 ];
 
 export const kProjectCategoryNames = {
   work: '商业项目',
-  'side-project': '个人项目',
-  package: '开源库',
+  product: '个人项目',
   ai: 'AI',
+  game: '游戏',
   web3: 'Web3',
-  hack: '逆向/安全',
+  explore: '探索',
   tool: '小工具',
+  hack: 'Hacker',
+  package: 'Packages',
+  develop: 'Developer',
   other: '其他',
+};
+
+export const getProjectCategoryName = (key: string) => {
+  return kProjectCategoryNames[key] ?? '其他';
 };
 
 export type Project = MakeRequired<PageMetadata, 'createAt' | 'updateAt'> & {
@@ -47,7 +60,7 @@ export type Project = MakeRequired<PageMetadata, 'createAt' | 'updateAt'> & {
   source?: string;
 };
 
-export const getProjects = async (): Promise<Project[]> => {
+export const getProjects = async (): Promise<PagesWithPinned<Project>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   return getPages<Project>('projects', ctx, {
     buildMetadata: project => {
@@ -74,16 +87,10 @@ export interface ProjectsGroupedByCategory {
   projects: Project[];
 }
 
-const kProjectsGroupedByCategory: ProjectsGroupedByCategory[] = [];
-export const getProjectsGroupedByCategory = async () => {
-  if (kProjectsGroupedByCategory.length > 0) {
-    return kProjectsGroupedByCategory;
-  }
+const groupProjectsByCategory = (projects: Project[]) => {
   const categoryProjects = {};
-  (await getProjects()).forEach(project => {
-    if (project.isHidden) {
-      return;
-    }
+  const projectsGroupedByCategory: ProjectsGroupedByCategory[] = [];
+  projects.forEach(project => {
     const category = project.category;
     if (!categoryProjects[category]) {
       categoryProjects[category] = [];
@@ -91,23 +98,56 @@ export const getProjectsGroupedByCategory = async () => {
     categoryProjects[category].push(project);
   });
   for (const category of kProjectCategories) {
-    kProjectsGroupedByCategory.push({
+    projectsGroupedByCategory.push({
       category,
       projects: categoryProjects[category] ?? [],
     });
   }
+  return projectsGroupedByCategory;
+};
+
+let kProjectsGroupedByCategory: ProjectsGroupedByCategory[];
+export const getProjectsGroupedByCategory = async () => {
+  if (kProjectsGroupedByCategory) {
+    return kProjectsGroupedByCategory;
+  }
+  kProjectsGroupedByCategory = groupProjectsByCategory(
+    (await getProjects()).all,
+  );
   return kProjectsGroupedByCategory;
 };
 
-let kProjectSortedByCategory: Project[] = [];
+let kProjectsPinned: Project[];
+export const getProjectsPinned = async () => {
+  if (kProjectsPinned) {
+    return kProjectsPinned;
+  }
+  const pinned = (await getProjects()).pinned;
+  const middleStart = pinned.findIndex(e => !e.pinnedIndex);
+  const middleEnd = pinned.findLastIndex(e => !e.pinnedIndex);
+  if (middleStart === middleEnd) {
+    kProjectsPinned = pinned;
+  } else {
+    // sort middle project by category
+    const tops = pinned.slice(0, middleStart);
+    const middles = pinned.slice(middleStart, middleEnd + 1);
+    const middlesGroupedByCategory = groupProjectsByCategory(middles).reduce(
+      (pre, v) => [...pre, ...v.projects],
+      [] as Project[],
+    );
+    const bottoms = pinned.slice(middleEnd + 1);
+    kProjectsPinned = [...tops, ...middlesGroupedByCategory, ...bottoms];
+  }
+  return kProjectsPinned;
+};
+
+let kProjectSortedByCategory: Project[];
 export const getProjectsSortedByCategory = async () => {
-  if (kProjectSortedByCategory.length > 0) {
+  if (kProjectSortedByCategory) {
     return kProjectSortedByCategory;
   }
   kProjectSortedByCategory = (await getProjectsGroupedByCategory()).reduce(
-    (pre, v) => {
-      return [...pre, ...v.projects];
-    },
+    (pre, v) => [...pre, ...v.projects],
     [] as Project[],
   );
   return kProjectSortedByCategory;
@@ -115,10 +155,21 @@ export const getProjectsSortedByCategory = async () => {
 
 export interface ProjectContext extends PageContext<Project> {}
 
+export const getProject = async (path: string) => {
+  return getPage((await getProjects()).all, path);
+};
+
 export const getProjectContext = async (
   path: string,
+  options?: { from?: PageFrom },
 ): Promise<ProjectContext> => {
-  return getPageContext(await getProjectsSortedByCategory(), path);
+  const { from = PageFrom.all } = options ?? {};
+  return getPageContext(
+    from === PageFrom.pinned
+      ? await getProjectsPinned()
+      : await getProjectsSortedByCategory(),
+    path,
+  );
 };
 
 export async function generateProjectMetadata(path: string) {
@@ -128,7 +179,8 @@ export async function generateProjectMetadata(path: string) {
   );
 }
 
-export const generateProjectPage = async (path: string, Content: any) => {
+export const generateProjectPage = async (metaURL: string, Content: any) => {
+  const path = getProjectPagePath(metaURL);
   const metadata = await generateProjectMetadata(path);
   return {
     metadata,
@@ -139,3 +191,6 @@ export const generateProjectPage = async (path: string, Content: any) => {
     ),
   };
 };
+
+export const getProjectPagePath = (metaURL: string) =>
+  metaURL.match(/app(\/projects\/.*?)\/page.tsx$/)![1];

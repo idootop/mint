@@ -1,10 +1,35 @@
 import cover from './cover.png';
 
 export const metadata = {
-  emoji: '🔤',
+  emoji: '🙃',
   title: '英文倒转',
-  url: 'https://github.com/idootop/flip',
-  createAt: '2020-07',
+  source: 'https://github.com/idootop/flip',
+  preview: 'https://flip.xbox.work/',
+  createAt: '2020-06',
   description: '一个有趣的小工具，可以把英文字符翻转 180° 显示',
   cover: cover.src,
+  pinned: true,
 };
+
+# 项目预览
+
+- Hello world → **p❘ɹoʍ o❘❘ǝH**
+- I Love You. → **˙no⅄ ǝʌo⅂ I**
+- Too young & too simple! → **¡ǝ❘dɯıs ooʇ ⅋ ƃunoʎ oo⊥**
+
+# 幕后花絮
+
+这个项目的创意来自 [David Faden](http://www.revfad.com/flip.html)，后来我将其移植到了微信小程序和安卓应用。
+
+如果你看过上面的源码就会发现，它是用 [Lua](https://www.lua.org/) 编写的安卓应用，是不是很神奇？
+
+那时我刚上大学，喜欢刷机瞎折腾[^1]，也因此认识了一些小众开发者，其中一位是一个木函的作者寒歌，他的另一个作品 Fusion App，可以在手机上用 Lua 编写[^2]、打包和安装 Android 应用，带我进入了编程的大门。
+
+import fusion from './images/fusion.jpg';
+
+<BaseImage src={fusion.src} alt="Fusion APP - 所有网页都是客户端" />
+
+后来，我又先后用 Taro 和 Flutter 重写过这个项目，使其扩展到微信小程序、iOS 、网页等各种平台。
+
+[^1]: 整个大学时代，都是[红米 note 4X](https://www.mi.com/redminote4x/specs) 这部百元神机陪伴着我，高中时是[红米 note2](https://www.mi.com/note2)。
+[^2]: AndroidLua: https://github.com/nirenr/AndroLua_pro

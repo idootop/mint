@@ -1,0 +1,42 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🖼',
+  title: 'X-Captcha',
+  source: 'https://gitee.com/LoveWJG/tflite_train',
+  createAt: '2019-11',
+  description: '端到端验证码识别解决方案，涵盖训练、推理、部署全流程',
+  cover: cover.src,
+};
+
+# 项目预览
+
+import captchas from './images/captchas.jpg';
+
+<BaseImage src={captchas.src} alt="数据集" />
+
+import train from './images/train.png';
+
+<BaseImage src={train.src} alt="训练中" />
+
+import captcha from './images/captcha.jpg';
+
+<WrappedImage src={captcha.src} alt="识别结果" maxWidth="360px" />
+
+# 项目亮点
+
+- **端到端验证码识别**：无需对验证码进行切割、去噪等预处理操作，端到端直接识别验证码。
+- **支持端侧部署推理**：支持量化导出 tflite 格式模型，方便移动端设备部署，离线推理。
+- **通用的验证码识别方案**：针对英文数字型验证码，具有较好的识别效果，可以很方便的迁移到其他类型的验证码识别任务。
+
+# 幕后花絮
+
+此项目是我在大学时，为了破解教务系统选课验证码，实现自动选课[^1]而生的。
+
+通过传统的字符分割、去噪、特征提取等方式，无法很好的识别字符扭曲变形的验证码。
+
+于是，我开始入门深度学习，搭建了一个具有 3 层卷积池化结构的**卷积神经网络**，直接端到端识别验证码，获得了不错的结果。
+
+后来这段验证码识别技术的研究过程，也被作为选题写进了我的本科毕业论文里，算是一段非常有趣的经历。
+
+[^1]: [Killer](/projects/product/killer): 一个通用的高校教务系统自动选课 APP

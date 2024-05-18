@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 import { flattenChildren } from '../../utils/base';
 import { Box, BoxProps } from '../Box';
 
-export const Stack = forwardRef((props: BoxProps, ref: any) => {
+const Stack = forwardRef((props: BoxProps, ref: any) => {
   const children = flattenChildren(props.children);
   const [target, ...items] = children;
   const newProps = {
@@ -19,3 +19,7 @@ export const Stack = forwardRef((props: BoxProps, ref: any) => {
     </Box>
   );
 });
+
+Stack.displayName = 'Stack';
+
+export { Stack };

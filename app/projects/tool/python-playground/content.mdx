@@ -3,8 +3,34 @@ import cover from './cover.png';
 export const metadata = {
   emoji: '🐍',
   title: 'Python Playground',
-  url: 'https://github.com/idootop/react-python-playground',
+  source: 'https://github.com/idootop/react-python-playground',
+  preview: 'https://react-python-playground.vercel.app',
   createAt: '2023-05',
-  description: 'A python playground running locally on browser.',
+  description: 'A python playground running locally on browser',
   cover: cover.src,
+  pinned: true,
 };
+
+# 项目预览
+
+import demo from './demo.png';
+
+<BaseImage src={demo.src} />
+
+# 幕后花絮
+
+在写 Python 代码的时候，经常遇到需要运行一小段代码验证结果的场景。
+
+此时，我希望有一个 Python Playground 网页，方便随时随地预览结果。
+
+当然，网上也有许多能够在线运行 Python 代码的网站，但它们大多是将代码传送到 Server 端执行，然后再将执行结果返回给前端。
+
+我希望这个 Playground 网页，可以直接在浏览器本地运行：
+
+- 离线可用
+- 不泄漏隐私代码和敏感信息
+- 更快的响应速度（本地实时运行，不用到服务器端中转）
+
+于是便有了本项目，其核心是通过 WebAssembly 在浏览器运行了一个 Python 容器[^1]，首次加载完毕后即可本地离线使用。
+
+[^1]: Pyodide: https://github.com/pyodide/pyodide

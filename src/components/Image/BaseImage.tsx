@@ -1,14 +1,22 @@
-import { Image } from '@/common/components/Image';
+import { Image, ImageProps } from '@/common/components/Image';
 import { isNotEmpty } from '@/common/utils/is';
 import { resolveAssetURL } from '@/utils/assets';
 import { processImage } from '@/utils/image';
 
-import styles from './styles.module.css';
-
-export const BaseImage = async props => {
-  const imageData = await processImage(props.src);
-  props = { ...props, ...imageData };
-  const { src, alt = '', width = 0, height = 0, ...restProps } = props;
+export const BaseImage = async (
+  _props: ImageProps & { size?: number; width?: number; height?: number },
+) => {
+  const imageData = await processImage(_props.src);
+  const props = { ..._props, ...imageData };
+  const {
+    src,
+    alt = '',
+    marginBottom = '16px',
+    marginTop,
+    ...restProps
+  } = props;
+  const width = _props.size ?? props.width ?? 0;
+  const height = _props.size ?? props.height ?? 0;
   const aspectRatioStyle =
     height > 0
       ? {
@@ -23,8 +31,9 @@ export const BaseImage = async props => {
   return (
     src && (
       <>
+        {marginTop && <span style={{ height: marginTop, display: 'block' }} />}
         {height > 0 ? (
-          <span className={styles.center_image} style={aspectRatioStyle}>
+          <span className="center-box" style={aspectRatioStyle}>
             <Image
               {...restProps}
               src={resolveAssetURL(src)}
@@ -38,11 +47,13 @@ export const BaseImage = async props => {
             {...restProps}
             src={resolveAssetURL(src)}
             alt={alt}
-            className={styles.center_image}
+            className="center-box"
           />
         )}
-        {isNotEmpty(alt) && <span className={styles.center_label}>{alt}</span>}
-        <span style={{ height: '16px', display: 'block' }} />
+        {isNotEmpty(alt) && <span className="center-label">{alt}</span>}
+        {marginBottom && (
+          <span style={{ height: marginBottom, display: 'block' }} />
+        )}
       </>
     )
   );

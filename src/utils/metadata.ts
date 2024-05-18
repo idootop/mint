@@ -1,23 +1,32 @@
 import { processImage } from './image';
 
 export const kSiteMetadata = {
-  title: '🌱 Mint',
-  description: '薄荷的花语是：永不消逝的爱 ❤️ ',
+  home: 'https://www.del.wang',
+  title: 'Del Wang',
+  description: 'The best way to predict the future is to create it.',
+  image: '/public/cover.png',
 };
 
-export const kSiteHome = 'https://del.wang';
-
-export async function getOGMetadata(props: {
+export async function getOGMetadata(props?: {
   title?: string;
   description?: string;
   image?: string;
 }) {
-  const { title, description, image } = props;
+  const {
+    title = kSiteMetadata.title,
+    description = kSiteMetadata.description,
+    image = kSiteMetadata.image,
+  } = props ?? {};
+  const _title =
+    title === kSiteMetadata.title
+      ? kSiteMetadata.title
+      : `${title}｜${kSiteMetadata.title}`;
   return {
-    metadataBase: new URL(kSiteHome),
+    title: _title,
+    metadataBase: new URL(kSiteMetadata.home),
     openGraph: {
       type: 'website',
-      url: kSiteHome,
+      url: kSiteMetadata.home,
       siteName: kSiteMetadata.title,
       title,
       description: description,

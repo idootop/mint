@@ -3,8 +3,12 @@ import Link from 'next/link';
 import { Column } from '@/common/components/Flex';
 import { CardText } from '@/components/Text/CardText';
 import { kBodyHeight } from '@/layouts/sizes';
+import { getOGMetadata } from '@/utils/metadata';
 
-import styles from './styles.module.css';
+// @ts-ignore
+export const metadata = await getOGMetadata({
+  title: '404',
+});
 
 export default function NotFound() {
   return (
@@ -17,7 +21,6 @@ export default function NotFound() {
     >
       <Column style={{ height: kBodyHeight, justifyContent: 'center' }}>
         <CardText
-          className={styles.breathing}
           style={{
             fontSize: '32px',
             marginBottom: '12px',
