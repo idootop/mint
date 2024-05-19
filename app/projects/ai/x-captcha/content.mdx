@@ -5,7 +5,7 @@ export const metadata = {
   title: 'X-Captcha',
   source: 'https://gitee.com/LoveWJG/tflite_train',
   createAt: '2019-11',
-  description: '端到端验证码识别解决方案，涵盖训练、推理、部署全流程',
+  description: '端到端验证码识别，涵盖训练、推理、部署全流程',
   cover: cover.src,
 };
 
@@ -33,7 +33,7 @@ import captcha from './images/captcha.jpg';
 
 此项目是我在大学时，为了破解教务系统选课验证码，实现自动选课[^1]而生的。
 
-通过传统的字符分割、去噪、特征提取等方式，无法很好的识别字符扭曲变形的验证码。
+传统的字符分割、去噪、特征提取等方式，无法很好的识别字符扭曲变形的验证码。
 
 于是，我开始入门深度学习，搭建了一个具有 3 层卷积池化结构的**卷积神经网络**，直接端到端识别验证码，获得了不错的结果。
 
