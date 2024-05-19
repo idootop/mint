@@ -5,5 +5,52 @@ export const metadata = {
   preview: 'https://idootop.github.io/json_to_dart',
   createAt: '2021-10',
   description: '根据 JSON 内容自动生成 Dart 解析代码（空安全）',
-  cover: '',
 };
+
+# 项目预览
+
+import demo from './demo.png';
+
+<BaseImage src={demo.src} alt="首页" />
+
+# 幕后花絮
+
+2021 年，彼时 Dart Null safety 刚刚开始推广，社区主流的 JSON to Dart 代码生成工具，对空安全特性还没有很好的支持。
+
+此外，当时的后端老哥也经常不讲武德，直接不返回空值的字段（比如空数组），导致 JSON 转 Dart 对象时取值为空解析异常。
+
+此项目可以根据 JSON 内容，自动生成空安全的 Dart 解析代码，极大的降低了手工编写代码出错的概率，提高了开发效率。比如：
+
+```json
+{
+  "code": 404,
+  "msg": "Not found!"
+}
+```
+
+以上 JSON 对应生成代码如下：
+
+```Dart
+class HttpError {
+  late int code;
+  late String msg;
+
+  HttpError({
+    int? code,
+    String? msg,
+  }) {
+    this.code = code ?? 0; // 空值自动替换为默认值
+    this.msg = msg ?? '';
+  }
+
+  factory HttpError.fromJson(Map<String, dynamic> json) => HttpError(
+        code: json['code'],
+        msg: json['msg'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'code': code,
+        'msg': msg,
+      };
+}
+```
