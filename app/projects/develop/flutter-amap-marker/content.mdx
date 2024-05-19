@@ -4,5 +4,28 @@ export const metadata = {
   source: 'https://github.com/idootop/Flutter_Amap_Marker',
   createAt: '2022-05',
   description: '使用 Flutter 原生组件作为高德地图覆盖物',
-  cover: '',
 };
+
+# 项目预览
+
+import marker from './images/marker.webp';
+
+<WrappedImage src={marker.src} alt="效果预览" maxWidth="360px" />
+
+# 技术浅析
+
+在常见的 Flutter 地图方案中，大多数是将原生平台的地图视图，直接嵌入到 Flutter 界面，造成了原生地图视图与 Flutter 视图的隔离，无法直接使用 Flutter 组件作为地图覆盖物。
+
+import amap from './images/amap.webp';
+
+<BaseImage src={amap.src} alt="工单反馈" />
+
+有趣的是高德地图、百度地图等插件，都提供了使用**静态图片**素材作为地图覆盖物的功能，能够基本解决静态 Marker 效果的需求。但是对于更复杂的**动态效果**（比如交互动画等），却又无能为力。
+
+既然无法直接将 Flutter 中的组件“塞”到原生地图上，那么反过来，能不能在 Flutter 视图上将组件“绑定”到原生地图上呢？
+
+理论上是可行的：只需要获取到地图的经纬度边界，通过墨卡托投影[^1]，将经纬坐标映射到屏幕坐标，即可实现“绑定” Flutter 组件到地图上的效果。
+
+为此，我在高德地图插件的基础上，实现了使用 Flutter 原生 Widget 作为地图 Marker，为传统的地图交互体验，带来了更多的想象空间。
+
+[^1]: 墨卡托投影：一种正轴等角圆柱投影，由荷兰地图学家墨卡托（G. Mercator）于 1569 年提出。该投影具有等角航线被表示成直线的特性，故广泛用于编制航海图和航空图等。

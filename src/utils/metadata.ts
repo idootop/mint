@@ -1,7 +1,7 @@
 import { processImage } from './image';
 
 export const kSiteMetadata = {
-  home: 'https://www.del.wang',
+  home: 'https://del.wang',
   title: 'Del Wang',
   description: 'The best way to predict the future is to create it.',
   image: '/public/cover.png',

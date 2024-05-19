@@ -5,5 +5,32 @@ export const metadata = {
   preview: 'https://pub.dev/packages/nested_scroll_view_plus',
   createAt: '2021-09',
   description: 'Enhanced NestedScrollView for overscroll in outer scroll views',
-  cover: '',
 };
+
+# 幕后花絮
+
+在主流 APP 中有一种常见的布局，经常用在「我的」页面[^1]。
+
+import he1 from './images/he1.webp';
+
+import he2 from './images/he2.webp';
+
+| <TableImage src={he1.src} alt='抖音'/> | <TableImage src={he2.src} alt='小红书'/> |
+| :------------------------------------: | ---------------------------------------- |
+
+在 Flutter 中有一个组件与此布局十分相似，那就是 `NestedScrollView`。
+
+不过遗憾的是 `NestedScrollView` 在向下滑动时[^2]，只有内部的 TabView 列表会下拉刷新（过度滚动），而不是像抖音和小红书那样外部的 header 会被下拉刷新。
+
+import nested from './images/nested.gif';
+
+import nestedPlus from './images/nested-plus.gif';
+
+| <TableImage src={nested.src} alt='NestedScrollView'/> | <TableImage src={nestedPlus.src} alt='NestedScrollViewPlus'/> |
+| :---------------------------------------------------: | ------------------------------------------------------------- |
+
+为了解决这个问题，我 Fork 了官方的 `NestedScrollView`[^3]，然后重写了内外 ScrollView 和 Coordinator 坐标之间的映射关系，并修复了一些已知问题，轻松实现类似抖音和小红书的个人主页布局。
+
+[^1]: 这种布局通常由 header + body 两部分组成：其中头部高度一般不固定，用来展示用户头像和个人简介等信息，而 body 区域则是 Tabview，里面是用来展示用户作品和动态等信息的内容列表。
+[^2]: Flutter issues #54059: https://github.com/flutter/flutter/issues/54059
+[^3]: NestedScrollViewPlus: https://pub.dev/packages/nested_scroll_view_plus

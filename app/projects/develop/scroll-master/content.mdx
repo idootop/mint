@@ -2,7 +2,23 @@ export const metadata = {
   emoji: '♟',
   title: 'Scroll Master',
   source: 'https://github.com/idootop/scroll_master',
+  preview: 'https://flutter-scroll-master.vercel.app',
   createAt: '2021-08',
   description: 'Flutter 中常见手势冲突问题的处理方法',
-  cover: '',
 };
+
+# 项目预览
+
+import demo from './demo.mp4';
+
+<LazyAutoPlay src={demo.src} alt="演示" />
+
+# 幕后花絮
+
+在 Flutter 中，经常会遇到一些手势冲突的问题，尤其是涉及滚动视图的场景。
+
+本项目主要演示了以下常见手势冲突问题的解决方案：
+
+1. NestedScrollView 头部过度滚动，仿抖音个人主页布局
+2. NestedScrollView 嵌套 TabView，仿闲鱼首页下拉刷新
+3. 多个 TabView 和 ScrollView 联合滚动，仿网易云音乐页面切换

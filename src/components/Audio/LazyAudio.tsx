@@ -2,13 +2,11 @@
 
 import { useEffect } from 'react';
 
-import { VideoProps } from '@/common/components/Video';
+import { Audio, AudioProps } from '@/common/components/Audio';
 import { useIntersection } from '@/common/hooks/useIntersection';
 import { nextTick } from '@/common/utils/base';
 
-import { AutoPlay } from './AutoPlay';
-
-export const LazyAutoPlay = (props: VideoProps) => {
+export const LazyAudio = (props: AudioProps) => {
   const { intersectionRef, isIntersected } = useIntersection();
 
   useEffect(() => {
@@ -19,9 +17,12 @@ export const LazyAutoPlay = (props: VideoProps) => {
   }, [isIntersected]);
 
   return (
-    <AutoPlay
+    <Audio
       ref={intersectionRef}
       {...props}
+      width="100%"
+      margin="0 auto"
+      marginBottom="16px"
       src={isIntersected ? props.src : ''}
     />
   );

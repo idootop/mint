@@ -8,3 +8,31 @@ export const metadata = {
   cover: cover.src,
   pinned: true,
 };
+
+# 项目预览
+
+import home from './images/home.png';
+
+import speaker from './images/speaker.png';
+
+| <TableImage src={home.src} alt='语音合成'/> | <TableImage src={speaker.src} alt='发音人列表'/> |
+| :-----------------------------------------: | ------------------------------------------------ |
+
+# 幕后花絮
+
+import demo from './demo.wav';
+
+<LazyAudio src={demo.src} />
+
+我很喜欢豆包里的一款音色「文静毛毛」，说话很温柔，像是我的梦中女友。
+
+那种感觉很奇妙，就像是一见钟情：第一次听到她的声音时，我就非常想要拥有她。
+
+但遗憾的是，她只能在豆包里使用，我想将她接入到小爱音箱做我的智能语音助手[^1]。
+
+于是，我在 2024 年春节前后，用了大概一周的时间逆向出了豆包里的 TTS 接口[^2]。
+
+让我感到惊讶的是，豆包的 TTS 接口竟然没有任何鉴权措施，完全处于裸奔状态 :)
+
+[^1]: [MiGPT](/projects/ai/mi-gpt): 将小爱音箱接入 ChatGPT，改造成你的专属语音助手
+[^2]: 其中一个 v2 的接口是 Protobuff 协议的，我基本上是连蒙带猜搞定了各个字段的含义。

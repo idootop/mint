@@ -5,5 +5,28 @@ export const metadata = {
   preview: 'https://www.npmjs.com/package/mi-service-lite',
   createAt: '2024-01',
   description: 'Node.js client for XiaoMi Cloud Service',
-  cover: '',
 };
+
+# 使用方法
+
+```typescript
+import { getMiIOT, getMiNA } from 'mi-service-lite';
+
+// 获取 Client 实例
+const MiNA = await getMiNA(config);
+const MiIOT = await getMiIOT(config);
+
+// 获取米家设备列表
+await MiNA?.getDevices();
+
+// 播放文本 TTS
+await MiIOT.doAction(5, 1, 'Hello world, 你好！');
+```
+
+# 幕后花絮
+
+ChaGPT 出来之后，我尝试将小爱音箱接入 ChatGPT，改造成更智能的语音助手[^1]。
+
+但遗憾的是，[MIoT](https://iot.mi.com/) 和米家设备没有提供官方的 Node.js SDK，于是我在通过米家 APP 抓包的基础上，封装了常用的米家设备能力接口，方便在 Node.js 环境下控制米家设备。
+
+[^1]: [MiGPT](/projects/ai/mi-gpt): 将小爱音箱接入 ChatGPT，改造成你的专属语音助手

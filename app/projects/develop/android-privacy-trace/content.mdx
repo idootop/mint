@@ -4,5 +4,25 @@ export const metadata = {
   source: 'https://github.com/idootop/apt',
   createAt: '2022-01',
   description: '安卓隐私合规高敏接口调用检测工具',
-  cover: '',
 };
+
+# 使用方法
+
+```javascript
+// 此处配置你需要 hook 的 java 类和方法
+const customPrivacyClassMethods = {
+  // 要 hook 的 Java 类
+  'android.telephony.TelephonyManager': [
+    ['$init', '读取手机状态和身份'], // hook 构造函数需要使用 $init
+    ['someFunction', '读取手机状态和身份'], // 要 hook 的 Java 方法
+  ],
+};
+```
+
+# 幕后花絮
+
+从 2022 年开始，安卓各大应用商店加强了对应用获取用户隐私信息的监管。
+
+为了更好的配合新的隐私政策的执行，此工具使用 frida[^1] 动态分析应用程序中，隐私敏感接口的调用情况，帮助开发者更方便的进行隐私合规自测。
+
+[^1]: [frida](https://frida.re): Dynamic instrumentation toolkit for developers, reverse-engineers, and security researchers.

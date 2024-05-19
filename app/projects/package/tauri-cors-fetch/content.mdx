@@ -1,3 +1,5 @@
+import cover from './cover.png';
+
 export const metadata = {
   emoji: '🦀',
   title: 'Tauri Plugin CORS Fetch',
@@ -5,5 +7,25 @@ export const metadata = {
   preview: 'https://crates.io/crates/tauri-plugin-cors-fetch',
   createAt: '2024-03',
   description: 'Enabling CORS for fetch requests within Tauri App',
-  cover: '',
+  cover: cover.src,
 };
+
+# 使用方法
+
+```rust
+// src-tauri/main.rs
+fn main() {
+    tauri::Builder::default()
+        .plugin(tauri_plugin_cors_fetch::init())
+        .run(tauri::generate_context!())
+        .expect("failed to run app");
+}
+```
+
+# 幕后花絮
+
+在使用 Tauri 构建跨平台桌面应用程序时，我们在本地有时可能会需要访问像一些受到跨源资源共享（CORS）策略限制的资源或服务，比如：OpenAI Chat API、第三方音/视频资源等。
+
+虽然使用官方的 [tauri-plugin-http](https://crates.io/crates/tauri-plugin-http) 可以绕过 CORS，但它需要修改已有的网络请求代码，并且不适用于其他第三方依赖库中的网路请求。
+
+该插件通过在网页初始化时 hook 浏览器的原生 fetch 方法，将其重定向到 [tauri-plugin-http](https://crates.io/crates/tauri-plugin-http)，无需额外的代码修改，无感知的使原有 fetch 请求支持 CORS。
