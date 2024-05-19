@@ -15,7 +15,6 @@ export const AutoPlay = (
         muted
         autoPlay
         loop
-        preload="none"
         margin="0 auto"
       />
       {alt && (
