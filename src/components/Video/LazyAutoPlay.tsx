@@ -2,9 +2,11 @@
 
 import { useEffect } from 'react';
 
-import { Video, VideoProps } from '@/common/components/Video';
+import { VideoProps } from '@/common/components/Video';
 import { useIntersection } from '@/common/hooks/useIntersection';
 import { nextTick } from '@/common/utils/base';
+
+import { AutoPlay } from './AutoPlay';
 
 export const LazyAutoPlay = (props: VideoProps) => {
   const { intersectionRef, isIntersected } = useIntersection();
@@ -17,14 +19,9 @@ export const LazyAutoPlay = (props: VideoProps) => {
   }, [isIntersected]);
 
   return (
-    <Video
+    <AutoPlay
       ref={intersectionRef}
       {...props}
-      muted
-      autoPlay
-      loop
-      margin="0 auto"
-      marginBottom="16px"
       src={isIntersected ? props.src : ''}
     />
   );
