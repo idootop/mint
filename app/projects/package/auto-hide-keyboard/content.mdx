@@ -8,3 +8,194 @@ export const metadata = {
     'Automatically hides the keyboard when tapping outside the TextField',
   cover: '',
 };
+
+# 项目预览
+
+import demo from './demo.gif';
+
+<WrappedImage src={demo.src} alt="点击空白处自动收起软键盘" maxWidth="320px" />
+
+# 技术浅析
+
+我们在 Flutter 中实现点击空白处隐藏键盘的需求时，通常有以下两种方法：
+
+### 方案一
+
+在整个页面外部包裹一个GestureDetector
+
+```dart
+void hideKeyboard() => FocusManager.instance.primaryFocus?.unfocus();
+
+class SomePage extends StatelessWidget {
+    @override
+    Widget build(BuildContext context) {
+        return GestureDetector(
+            onTap: hideKeyboard,
+            child: Scaffold(
+                body: ..., //something
+            ),
+        );
+    }
+}
+```
+
+或者全局为所有子页面都包裹一个 `GestureDetector`
+
+```dart
+class MyApp extends StatelessWidget {
+    @override
+    Widget build(BuildContext context) {
+        return MaterialApp(
+            title: 'Flutter Demo',
+            builder: (context, child) => GestureDetector(
+                onTap: hideKeyboard,
+                child: child,
+            ),
+            home: ..., //home page
+        );
+    }
+}
+```
+
+**😫 但是这种方案有一个缺陷：**
+
+如果页面中有其他消费点击事件的子组件，比如 `Button`，那么包裹在当前页面最外面的 `GestureDetector` 将无法响应该点击事件。
+
+为了解决这个问题，比较简单粗暴的一种做法是：为所有点击事件再调用一次`hideKeyboard()`（想想就很刺激...）
+
+```dart
+class SomePage extends StatelessWidget {
+
+    void onTapButton(){
+        hideKeyboard();
+        ... //do something
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        return GestureDetector(
+            onTap: hideKeyboard,
+            child: Scaffold(
+                body: Column(
+                    children: [
+                        // 点击此按钮的时候，外部 GestureDetector 的 onTap 不会响应
+                        TextButton(
+                            onPressed: onTapButton, // 需要再手动调用一次 hideKeyboard()
+                            child: Text('我是按钮'),
+                        ),
+                        ... //something
+                    ],
+                ),
+            ),
+        );
+    }
+}
+```
+
+### 方案二
+
+针对方案一中的缺陷，我们尝试将包裹在页面外部的 `GestureDetector` 换成 `Listener`
+
+```dart
+class SomePage extends StatelessWidget {
+
+    void onTapButton(){
+        ... //do something
+    }
+
+    @override
+    Widget build(BuildContext context) {
+        return Listener(
+            onPointerDown: (_) => hideKeyboard(),
+            child: Scaffold(
+                body: Column(
+                    children: [
+                        //点击此按钮的时候，外部 Listener 的 onPointerDown 也会响应
+                        TextButton(
+                            onPressed: onTapButton,
+                            child: Text('我是按钮'),
+                        ),
+                        ... //something
+                    ],
+                ),
+            ),
+        );
+    }
+}
+```
+
+OK，现在方案一中的问题似乎已经完美解决了。
+
+**但是**
+
+你有没有发现，如果在输入框聚焦键盘弹起的状态下，再点击输入框区域，
+
+此时已经弹起的键盘会先收下去，然后重新弹出来。
+
+很蛋疼～
+
+## 💡 解决思路
+
+简单分析可知，解决此需求的关键有两点：
+
+1. 响应全局点击事件，且不影响已有组件点击事件的分发响应
+2. 获取点击坐标，判断是否命中输入框组件所在区域
+
+**1. 如何监听全局点击事件，且不影响已有组件点击事件的分发响应**
+
+对于第一点，我从 `ToolTip` 组件的源码中获得了灵感
+
+```dart
+class _TooltipState extends State<Tooltip> withSingleTickerProviderStateMixin {
+    ...
+    void _handlePointerEvent(PointerEvent event) {
+        ...
+        if (event is PointerUpEvent || event is PointerCancelEvent) {
+            _hideTooltip();
+        } else if (event is PointerDownEvent) {
+            _hideTooltip(immediately: true);
+        }
+    }
+
+    @override
+    void initState() {
+        super.initState();
+        ...
+        // Listen to global pointer events so that we can hide a tooltip immediately
+        // if some other control is clicked on.
+        GestureBinding.instance!.pointerRouter.addGlobalRoute(_handlePointerEvent);
+    }
+
+    @override
+    void dispose() {
+        GestureBinding.instance!.pointerRouter.removeGlobalRoute(_handlePointerEvent);
+        ...
+        super.dispose();
+    }
+    ...
+}
+```
+
+可以看到，我们可以通过 `GestureBinding.instance!.pointerRouter` 注册全局点击事件回调，并且可以从 `PointerEvent` 拿到点击坐标。
+
+至此我们解决了问题的一大半。
+
+接着往下看，如何拿到输入框组件所在的区域？
+
+**2. 如何获取输入框组件所在的区域，判断点击坐标是否命中**
+
+这个问题比较简单，我们可以通过输入框组件的 `BuildContext` 拿到它的 `RenderObject`，然后通过 `RenderBox.localToGlobal` 即可得到输入框组件所在的区域。示例代码如下：
+
+```dart
+  void _handlePointerEvent(PointerEvent event) {
+    final randerObject = context.findRenderObject();
+    if (randerObject is RenderBox) {
+      final box = randerObject;
+      final target = box.localToGlobal(Offset.zero) & box.size;
+      final inSide = target.contains(event.position);
+      ...
+    }
+  }
+```
+
+OK，基于上述两点我们就实现了一个更靠谱的点击空白处隐藏键盘的解决方案。
