@@ -2,7 +2,28 @@ export const metadata = {
   emoji: '🩻',
   title: 'HTTP X-Inspector',
   source: 'https://github.com/idootop/http-x-inspector',
+  preview: 'https://http-x-inspector.vercel.app/api',
   createAt: '2024-03',
   description: '一个用于分析网络请求的调试工具',
   cover: '',
 };
+
+# 项目预览
+
+import demo from './demo.webp';
+
+<BaseImage src={demo.src} alt="查看请求详情" />
+
+# 幕后花絮
+
+在本地调试网络请求时，有时我们可能无法确认后端最终收到的请求参数是什么。
+
+如果是内部接口，可以请求后端同事协助，但是沟通过程一般比较耗时。
+
+此时，你可以将原始接口替换为 HTTP X-Inspector 的 API，它会原样返回你发送给它的任何内容，包括请求的 method、query、headers 和 body 等。
+
+然后就可以愉快的调试网络请求参数，~~找后端接口负责人算账~~了 :)
+
+import meme from './meme.jpg';
+
+<BaseImage src={meme.src} alt="哥们，你这接口保通吗？" />
