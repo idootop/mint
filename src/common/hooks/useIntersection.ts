@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
 import { useEffect, useRef } from 'react';
@@ -38,10 +39,10 @@ export const useIntersection = (options?: IntersectionObserverInit) => {
     );
     observer.observe(intersectionRef.current);
     return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      observer.unobserve(intersectionRef.current);
+      if (intersectionRef.current) {
+        observer.unobserve(intersectionRef.current);
+      }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return { intersectionRef, ...stateRef.current };
 };
