@@ -7,3 +7,23 @@ export const metadata = {
   description: "Allowing external access to React's shallowEqual function",
   cover: '',
 };
+
+# 使用方法
+
+```typescript
+import { shallowEqual } from 'external-shallow-equal';
+
+shallowEqual(0, -0); // false
+shallowEqual(NaN, NaN); // true
+shallowEqual([1, 2, 3], [1, 2, 3]); // true
+```
+
+# 幕后花絮
+
+在我开发 XSta[^1] 的时候，期望使用 React 中的 `shallowEqual` 方法。
+
+但遗憾的是 React 并没有将此方法公开给外部使用。
+
+本项目实现了一个与 React 等价的 `shallowEqual` 方法，方便外部使用。
+
+[^1]: [XSta](/projects/package/xsta): An ultra-lightweight React state management solution
