@@ -6,3 +6,41 @@ export const metadata = {
   description: 'Dynamic reverse proxy for any endpoint',
   cover: '',
 };
+
+# 项目预览
+
+import demo from './demo.webp';
+
+<BaseImage src={demo.src} alt="Proxy with Google" />
+
+# 幕后花絮
+
+2024 年 3 月份， OpenAI 封杀了一大批账号，我的 GPT4 API 账号未能幸免。
+
+原因基本可以确定为，直接在中国境内访问 OpenAI 服务。
+
+为了避免今后再被封号，我需要一个代理服务，
+
+在受支持地区的海外服务器上访问这些服务，然后将响应代理回来。
+
+# 技术浅析
+
+通常，我们可以通过配置 Nginx，快速实现对某个资源的反向代理。
+
+但是这种方案是**静态**的，需要预先配置 Nignx，无法做到对任意域名的**动态代理**。
+
+而 X-Proxy 的设计就是为了解决动态代理的场景：
+
+- 零配置，开箱即用，动态代理任意 URL
+- 无需修改原始请求的 query、headers 和 body
+- 自动处理 Response 中的 headers，支持 redirect 和 CORS
+
+```shell
+http://localhost:3000/?x-proxy-to=`target-endpoint`
+```
+
+只需为目标地址添加固定前缀（baseURL），即可轻松代理任意地址，示例：
+
+```shell
+http://localhost:3000/?x-proxy-to=https://www.google.com
+```
