@@ -21,8 +21,8 @@ export const TableImage = async (
           {...restProps}
           src={resolveAssetURL(src)}
           alt={alt}
-          width="100%"
-          height="100%"
+          width="auto"
+          height="auto"
         />
         {isNotEmpty(alt) && <span className="center-label">{alt}</span>}
       </>
