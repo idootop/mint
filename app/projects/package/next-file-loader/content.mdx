@@ -7,3 +7,54 @@ export const metadata = {
   description: 'Webpack loader streamlining assets import for Next.js',
   cover: '',
 };
+
+# 幕后花絮
+
+在 Next.js 中，为了方便管理媒体资源，我习惯在 Page 同级目录下存放文件，然后通过 `import` 相对路径导入，比如：
+
+```typescript
+import cover from './cover.png';
+import demoVideo from './videos/demo.mp4';
+import demoAudio from './audios/demo.mp3';
+```
+
+但遗憾的是， Next.js 只支持图片资源的相对路径导入，并不支持音视频和其他类型的资源文件。于是，我参考官方的 `next-image-loader` 开发了这个项目：
+
+- 支持导入任意文件类型
+- 支持自定义 loader 内容读取结果
+
+让 Next.js 中的本地资源导入变简单 ✨
+
+# 使用方法
+
+```typescript
+// next.config.js
+const withNextFileLoader = require('next-file-loader')([
+  {
+    // Video loader
+    test: /\.(mp4|webm|mkv|ogg|ogv|wmv|avi|mov|flv|m4v|3gp)$/i,
+    outputPath: 'static/videos/[name].[hash:8].[ext]',
+  },
+  {
+    // Audio loader
+    test: /\.(mp3|wav|flac|ogg|aac|m4a|wma|ape)$/i,
+    outputPath: 'static/audios/[name].[hash:8].[ext]',
+  },
+  {
+    // Custom file content resolution
+    test: /\.(rar|zip)$/i,
+    outputPath: 'static/other/[name].[hash:8].[ext]',
+    resolve: ({ src, content, resourcePath }) => {
+      return `export default {
+        src: "${src}",
+        fileSize: "100KB",
+        resourcePath: "${resourcePath}"
+      }`;
+    },
+  },
+]);
+
+module.exports = withNextFileLoader({
+  // Your existing nextConfig
+});
+```
