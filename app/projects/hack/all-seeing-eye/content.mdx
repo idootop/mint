@@ -11,3 +11,28 @@ export const metadata = {
   cover: cover.src,
   pinned: true,
 };
+
+# 项目预览
+
+import demo from './demo.webp';
+
+<BaseImage src={demo.src} alt="读取 file:///etc/passwd 本地文件" />
+
+# 幕后花絮
+
+在 Google Chrome 116 版本之前，对 XML 中未经信任的输入的验证不足，会导致允许远程攻击者通过精心设计的 HTML 页面绕过文件访问限制[^1]。
+
+由于漏洞较新，其影响范围极为广泛，微信等应用的自带浏览器也受到影响。
+
+本项目是此漏洞的一个演示，主要实现了以下能力：
+
+- 读取本地任意目标文件
+- 联网上报文件读取内容（关键）
+
+最新版 Chorme 已修复此漏洞，建议经常保持浏览器更新。
+
+# Disclaimer
+
+The contents of this repository, including code, demonstrations, and documentation (collectively referred to as "the material"), are provided for educational and informational purposes only. The material is intended to demonstrate the existence of an arbitrary file read vulnerability in Chrome browsers before version 116 and to inform the community and affected parties so that they may better protect against such vulnerabilities.
+
+[^1]: Chorme 安全等级中等：https://bugs.chromium.org/p/chromium/issues/detail?id=1458911
