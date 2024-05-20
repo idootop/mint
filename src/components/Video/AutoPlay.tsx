@@ -20,6 +20,7 @@ const AutoPlay = forwardRef(
           muted
           autoPlay
           loop
+          playsInline
           margin="0 auto"
         />
         {alt && (

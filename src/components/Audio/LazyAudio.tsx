@@ -20,6 +20,7 @@ export const LazyAudio = (props: AudioProps) => {
     <Audio
       ref={intersectionRef}
       {...props}
+      playsInline
       width="100%"
       margin="0 auto"
       marginBottom="16px"

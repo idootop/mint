@@ -28,6 +28,13 @@ const Video = forwardRef((props: VideoProps, ref: any) => {
 
   const boxProps = getBoxProps(rest);
 
+  const playsInlineProps = playsInline
+    ? {
+        playsInline: true,
+        'x5-playsinline': true,
+      }
+    : {};
+
   return (
     <video
       ref={ref}
@@ -37,8 +44,8 @@ const Video = forwardRef((props: VideoProps, ref: any) => {
       autoPlay={autoPlay}
       loop={loop}
       controls={controls}
-      playsInline={playsInline}
       preload={preload}
+      {...playsInlineProps}
     />
   );
 });
