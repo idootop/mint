@@ -69,6 +69,27 @@
   margin-top: 24px;
 }
 
+@media (max-width: 960px) {
+  .footer {
+    padding: 22px;
+  }
+
+  .footerLabel {
+    margin-bottom: 4px;
+    letter-spacing: 2px;
+  }
+
+  .footerLink+.footerLink {
+    margin-top: 18px;
+  }
+
+  .footerLink a,
+  .footerLink a:focus,
+  .footerLink a:hover {
+    font-size: 22px;
+  }
+}
+
 .switcher {
   bottom: 24px;
   position: -webkit-sticky;

@@ -32,16 +32,14 @@ const Audio = forwardRef((props: AudioProps, ref: any) => {
     <audio
       ref={ref}
       {...boxProps}
+      src={src}
       muted={muted}
       autoPlay={autoPlay}
       loop={loop}
       controls={controls}
       playsInline={playsInline}
       preload={preload}
-    >
-      <source src={src} type="audio/mpeg" />
-      Your browser does not support the audio tag.
-    </audio>
+    />
   );
 });
 
