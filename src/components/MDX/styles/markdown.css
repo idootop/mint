@@ -204,6 +204,15 @@
   background-color: rgba(175, 184, 193, 0.2);
 }
 
+.markdown-body pre code {
+  font-size: 85% !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #cdd9e5 !important;
+  background-color: transparent !important;
+}
+
 .markdown-body code br,
 .markdown-body tt br {
   display: none;
@@ -306,12 +315,4 @@
 
 .markdown-body .task-list-item {
   list-style: none;
-}
-
-.markdown-body pre code {
-  border-radius: 0 !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  color: #cdd9e5 !important;
-  background-color: transparent !important;
 }

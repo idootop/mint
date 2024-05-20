@@ -1,21 +1,22 @@
 .card {
   margin: 0 auto;
-  max-width: 100%;
   width: 100%;
   padding: 12px 0;
   border-radius: 8px;
   background: #061726;
   margin-bottom: 16px;
-  overflow-x: auto;
   border: 0.5px solid rgba(166, 166, 166, 0.5);
+}
+
+.card pre {
+  width: 100%;
+  overflow-x: auto;
 }
 
 .header {
   gap: 8px;
   margin-bottom: 8px;
-  position: -webkit-sticky;
-  position: sticky;
-  left: 12px;
+  margin-left: 12px;
 }
 
 .red {
