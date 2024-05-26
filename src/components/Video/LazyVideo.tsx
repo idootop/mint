@@ -1,17 +1,16 @@
 'use client';
 
-import { AudioProps } from '@/common/components/Audio';
+import { VideoProps } from '@/common/components/Video';
 import { useIntersection } from '@/common/hooks/useIntersection';
 
-import { BaseAudio } from './BaseAudio';
+import { BaseVideo } from './BaseVideo';
 
-export const LazyAudio = (props: AudioProps) => {
+export const LazyVideo = (props: VideoProps) => {
   const { intersectionRef, isIntersected } = useIntersection();
 
   return (
-    <BaseAudio
+    <BaseVideo
       ref={intersectionRef}
-      playsInline
       {...props}
       src={isIntersected ? props.src : ''}
     />
