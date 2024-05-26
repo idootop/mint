@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { Video, VideoProps } from '@/common/components/Video';
 
-const AutoPlay = forwardRef(
+const BaseVideo = forwardRef(
   (
     props: VideoProps & {
       alt?: string;
@@ -13,16 +13,7 @@ const AutoPlay = forwardRef(
     return (
       <>
         {marginTop && <span style={{ height: marginTop, display: 'block' }} />}
-        <Video
-          ref={ref}
-          className="center-box"
-          {...rest}
-          muted
-          autoPlay
-          loop
-          playsInline
-          margin="0 auto"
-        />
+        <Video ref={ref} className="center-box" {...rest} margin="0 auto" />
         {alt && (
           <span className="center-label" style={{ margin: '0 auto' }}>
             {alt}
@@ -36,6 +27,6 @@ const AutoPlay = forwardRef(
   },
 );
 
-AutoPlay.displayName = 'AutoPlay';
+BaseVideo.displayName = 'BaseVideo';
 
-export { AutoPlay };
+export { BaseVideo };
