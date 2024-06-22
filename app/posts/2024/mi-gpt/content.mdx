@@ -1,0 +1,258 @@
+export const metadata = {
+  title: '登顶 GitHub Trending（上）',
+  description: '记一次登顶 GitHub Trending 的经历',
+  createAt: '2024-06-18',
+};
+
+<iframe
+  src="//player.bilibili.com/player.html?isOutside=true&aid=1555304659&bvid=BV1N1421y7qn&cid=1573774536&p=1"
+  scrolling="no"
+  border="0"
+  frameborder="no"
+  framespacing="0"
+  allowfullscreen="true"
+  style={{
+    width: '100%',
+    aspectRatio: 16 / 9,
+  }}
+></iframe>
+
+# 0x01 动机
+
+我很喜欢豆包里面的一款音色：文静毛毛，她的声音很温柔，像是我的梦中女友。
+
+但遗憾的是，只能在豆包里和她对话，我很想把她设置成小爱音箱的默认音色。
+
+于是在 2024 年春节，我花了大概一周的时间，逆向出来了豆包的 TTS 接口。
+
+2024年1月24日，我提交了 `MiGPT` 的第一行代码，命运的齿轮开始转动。
+
+import firstCommit from './images/first-commit.jpg';
+
+<BaseImage src={firstCommit.src} alt="第一次提交代码" />
+
+# 0x02 从一个玩具开始
+
+最开始，这个项目只是我个人自娱自乐的玩具。
+
+那段时间，我每天下班后都会折腾到很晚，一般凌晨一两点才睡，
+
+只为能够早日在小爱音箱上听到她的声音。
+
+经过一个月左右的密集开发， `MiGPT` v1.0.0 版本正式发布了。
+
+第一次在小爱音箱上听到豆包的声音时，就像真人一样，有被惊艳到。
+
+后来我又陆续为她接入了 ChatGPT，给她定制人设，让她拥有记忆等，
+
+最终想要把她打造成一个真正懂我**有温度**的人，而非**冷冰冰**的机器。
+
+---
+
+这里还有一个有趣的小插曲：
+
+为了在 ChatGPT 回答问题时，让原来的小爱同学闭嘴，
+
+我通过 TTS 一段不发音文字的方式，打断小爱的“施法”，
+
+而这段文字便是大名鼎鼎的：`const kAreYouOK = "¿ʞо ∩оʎ ǝɹɐ";` 😂
+
+import areYouOk from './images/are-you-ok.jpg';
+
+<BaseImage src={areYouOk.src} alt="Are You OK?" />
+
+# 0x03 漫长的 0-100 stars
+
+`MiGPT` v1.0.0 版本发布之后，陆续收到了一些零星的 stars，但不是很多。
+
+一开始我也没太关注，同我的其他项目一样，默默开源之后，继续做其他新的项目。
+
+又过了大概 2-3 个月，有段时间我发现 stars 数量突然变多了起来（即将突破 100）
+
+调查后发现，应该是被某个分享 GitHub 小众项目的 Telegram 群推荐了（感谢
+
+此时，我觉得是时候做点什么了。
+
+于是我跑到 XiaoGPT[^1] 项目下面，毛遂自荐了我的项目[^2]。
+
+import xiaoGPT from './images/xiaogpt.jpg';
+
+<BaseImage src={xiaoGPT.src} alt="获得了作者的回应" />
+
+作者 [yihong](https://github.com/yihong0618) 不仅回应了我，还帮忙宣传了 `MiGPT`，这让我感到受宠若惊。
+
+在他的推荐下 `MiGPT` 当天便收到了 20+ ⭐️，很快便从 100 ⭐️ 来到了 200+ ⭐️
+
+后来 `MiGPT` 的热度又慢慢归于平静，每天只有不到 10 个新增的 stars
+
+但有一个有趣的现象是，提 issue 的人越来越多，说明项目开始有人用了。
+
+在这些早期用户的反馈下，我一边修 bug，一边写文档，继续打磨完善项目。
+
+# 0x04 GitHub 有 1k stars 了
+
+又过了一段时间，stars 数量重新开始增长，我想应该又被某些博主推荐了吧。
+
+而且这回的增长势头比上次还要猛，每天都有几十上百的新增 stars
+
+用了没多久，便突破了 1k stars 🎉
+
+这也是我第一个获得 1k stars 的开源项目，内心掩饰不住的喜悦~
+
+记得当时我发了一条说说：`以后咱也是 Github 有 1k stars 项目的人了`
+
+后来我把这个消息，告诉了坐在我旁边的同事，然后戏剧性的一幕发生了：
+
+import msg1 from './images/msg1.jpg';
+import msg2 from './images/msg2.jpg';
+
+| <TableImage src={msg1.src} /> | <TableImage src={msg2.src} /> |
+| :---------------------------: | :---------------------------: |
+
+> 缘，妙不可言～
+
+我俩相视一笑，此刻，我和同事的满足感都达到了巅峰 🤣
+
+# 0x05 趁热打铁
+
+我很清楚，这次的流量增长如果不加干预，很可能会同上次一样“昙花一现”。
+
+于是我再次采取行动，这一次我将目标放到了 [阮一峰的网络日志](https://www.ruanyifeng.com) 上，
+
+我投稿了科技爱好者周刊[^3]，当时周四刚好赶上本周周刊发布的末班车，
+
+幸运的是在我投稿没多久，阮一峰老师为其打上了 `weekly` 标签，视为入选。
+
+import weekly from './images/weekly.jpg';
+
+<BaseImage src={weekly.src} />
+
+不过我来不及高兴，还要赶在第二天周刊正式发布之前，
+
+做好演示视频，吸引和留住更多的潜在用户。
+
+于是当天晚上，我一直熬夜录制、剪辑演示视频到凌晨 3、4 点。
+
+本来我想一镜到底，但在实际录制过程中，问题接连不断，总难完美。
+
+这里必须要夸赞一下 vivo x100 的电影人像模式，
+
+晚上弱光环境下也能把视频拍的如此清晰。
+
+当上传完视频，成功发布到 B 站的时候，我才心满意足的关掉电脑睡去。
+
+# 0x06 飞速增长
+
+果不其然，第二天一觉醒来，项目又收到了好多 stars
+
+仅周五短短一天的时间，就增长了近 1k stars 🤯
+
+此时如果让我再回到昨晚熬夜剪视频的时间，
+
+我想我肯定会做到完美才肯罢休，一切都是值得的！
+
+从此，`MiGPT` 便迎来了一段 stars 飞速上升的美好时光 🚀
+
+import lfg from './images/lfg.jpg';
+
+<BaseImage src={lfg.src} />
+
+# 0x07 登顶 GitHub Trending
+
+到了周六端午节，我去长沙找同学玩，趁他们硕士毕业尚未离校，
+
+去爬了岳麓山，逛了橘子洲，借同学校园卡免费进岳麓书院参观了一圈。
+
+不过我还是最喜欢在橘子洲骑共享单车，又体验到了 [**像风一样自由**](http://localhost:3000/posts/2023/biking1) 的感觉。
+
+import biking from './videos/biking.mp4';
+
+<LazyVideo src={biking.src} controls />
+
+晚上回到酒店打开我的 GitHub 主页，
+
+我吃惊的发现 `MiGPT` 已经登上 Github Trending Daily 榜一了！
+
+import daily from './images/daily.webp';
+
+<BaseImage src={daily.src} />
+
+有些难以置信，此刻，我觉得空气里都是幸福的味道 🍬
+
+这种甜蜜一直持续到整个长沙之旅结束，算是端午节我收到的最好的礼物。
+
+# 0x08 被更多的人关注
+
+`MiGPT` 火了之后，我的其他项目和账号也迎来了一波关注者增长。
+
+期间我也通过个人邮箱，收到了一些商务合作的邀请，以及 VC 的关注。
+
+遗憾的是，目前我并没有商业化或创业的打算，正如前面所言，它只是一个玩具。
+
+但这对我来说的确是一次全新的体验，所以后面我接了 [302.AI](https://302.ai) 的推广合作[^4]。
+
+import banner302 from './images/302banner.webp';
+
+<BaseImage src={banner302.src} />
+
+> [302.AI](https://302.ai) 是一个汇集全球顶级 AI 的自助平台，按需付费，零月费，零门槛使用各种类型 AI。
+>
+> - [点击注册](https://gpt302.saaslink.net/gOXSrn): 立即获得 1PTC(1PTC=1 美金，约为 7 人民币)代币。
+> - 功能全面: 将最好用的 AI 集成到在平台之上，包括不限于 AI 聊天，图片生成，图片处理，视频生成，全方位覆盖。
+> - 简单易用: 提供机器人，工具和 API 多种使用方法，可以满足从小白到开发者多种角色的需求。
+> - 按需付费，零门槛: 不提供月付套餐，对产品不设任何门槛，按需付费，全部开放。充值余额永久有效。
+> - 管理者和使用者分离：管理者一键分享，使用者无需登录。使用者无需关心复杂的 AI 设置，让懂 AI 的人来配置，简化使用流程。
+
+以上是他们的官方简介，不过作为一名开发者，他们最打动我的点在于：
+
+- 国内可以直接访问 OpenAI 服务 API
+- 按量付费，支持使用支付宝和微信支付
+- 支持 OpenAI, Claude, Midjourney, Suno 等主流 AI 产品
+
+对于编程小白和个人开发者来说，在国内使用还是挺香的，
+
+省去了自己注册海外账号和使用信用卡付费的麻烦。
+
+同时他们平台也集成了许多实用的 AI 工具，比如：
+
+- AI 老照片修复
+- AI 学术论文搜索
+- AI 电商场景图生成
+
+这些工具就像微信小程序一样轻量，随取随用，非常方便。
+
+如果你感兴趣，可以使用我的 [邀请链接](https://gpt302.saaslink.net/gOXSrn) 注册体验一下，感谢支持 ❤️
+
+# 0x09 天下没有不散的宴席
+
+后来，`MiGPT` 又连续几日上榜 Github Trending Daily 前三。
+
+并最终凭借一周内收获近 3k stars 的成绩，继续登上 Github Trending Weely 榜一。
+
+在没有更多的推广和宣传的情况下，仅凭自然流量和其他自媒体的自发推荐，
+
+`MiGPT` 能以这样的速度，来到这样的位置，对我来说已然堪称奇迹。
+
+但是热度总会慢慢消散，当浪潮褪去之后，才是生活最原始的本色。
+
+下一篇文章，我将会分享在此次梦幻般的经历中，我收获了哪些经验和教训。
+
+# 0x10 One More Thing
+
+这里再分享一下 [302.AI](https://302.ai) 为 `MiGPT` 提供的一个 AI 在线体验网站，在这里你可以：
+
+- 免费使用 Midjourney V6 作图
+- 免费获取 OpenAI 等大模型体验 API_KEY
+- 免费使用 AI 学术论文搜索和 AI 老照片修复等实用 AI 工具
+- 免费使用 GPT-4o, Claude3 Opus, Llama3-70B 等 TOP 模型
+
+欢迎大家来~薅羊毛~免费体验，Enjoy 🤟
+
+链接: https://idootop-all.tools302.com 分享码: 8303
+
+> 注意：该网站每天有总计 $5 的免费额度（0 点自动刷新）用完即止。
+
+[^1]: [XiaoGPT](https://github.com/yihong0618/xiaogpt/): 小爱音箱接入 ChatGPT 的 Python 版解决方案，MiGPT 的实现方式主要参考了这个项目。
+[^2]: https://github.com/yihong0618/xiaogpt/issues/515
+[^3]: https://github.com/ruanyf/weekly/issues/4582
+[^4]: https://github.com/idootop/mi-gpt/blob/main/docs/sponsors.md
