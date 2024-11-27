@@ -23,7 +23,6 @@ const kRockStates: Record<number, RockContext> = {};
 
 export function Background({ children }) {
   const { isMobile, isReady } = useBreakpoint();
-  const count = isMobile ? 20 : 30;
   const bodyHeight = `calc(100% - ${kFooterHeight}px)`;
 
   return (
@@ -39,11 +38,12 @@ export function Background({ children }) {
               key={idx}
               config={{
                 idx,
-                count,
                 minSize: 64,
                 maxSize: 128,
+                count: isMobile ? 40 : 50,
                 baseSize: isMobile ? 1 / 2 : 1,
                 baseSpeed: isMobile ? 1 / 2 : 1 / 2,
+                spacing: 0.5,
               }}
             />
           );
@@ -60,11 +60,12 @@ const Rock = (props: {
     maxSize: number;
     baseSize: number;
     baseSpeed: number;
+    spacing: number;
   };
 }) => {
-  const { idx, count, minSize, maxSize, baseSize, baseSpeed } = props.config;
+  const { idx, count, minSize, maxSize, baseSize, baseSpeed, spacing } =
+    props.config;
   const requestRef = useRef<number | null>(null);
-  const spacing = 0.2;
   const noTransition = '0ms';
   const defaultTransition = 'transform 300ms';
   const hidden = idx > count - 1;
