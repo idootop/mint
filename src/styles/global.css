@@ -37,3 +37,11 @@ a {
   margin-top: 8px;
   font-weight: normal;
 }
+
+.hide-scrollbar {
+  scrollbar-width: none !important;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}

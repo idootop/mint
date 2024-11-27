@@ -11,6 +11,7 @@
     "prepare": "husky install",
     "dev": "next dev",
     "preview": "serve out",
+    "update-deps": "pnpm update -i --latest",
     "clear-image-cache": "tsx scripts/clear-image-cache.ts",
     "remove-unused-image": "tsx scripts/remove-unused-image.ts",
     "build": "pnpm clear-image-cache && next build && pnpm remove-unused-image"
