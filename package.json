@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "prepare": "husky install",
@@ -17,22 +17,22 @@
     "build": "pnpm clear-image-cache && next build && pnpm remove-unused-image"
   },
   "dependencies": {
-    "next": "^14.2.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "next": "^14.2.18",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "xsta": "^2.0.0"
   },
   "devDependencies": {
     "@mdx-js/loader": "^3.0.1",
     "@mdx-js/react": "^3.0.1",
-    "@next/mdx": "^14.2.1",
+    "@next/mdx": "^14.2.18",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^18.16.17",
+    "@types/node": "^20.17.8",
     "@types/react": "^18.2.10",
     "@types/react-dom": "^18.2.4",
-    "@typescript-eslint/eslint-plugin": "^7.6.0",
-    "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.1",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.18",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-simple-import-sort": "^12.0.0",
     "got": "^14.2.1",
