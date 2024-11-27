@@ -1,0 +1,56 @@
+export const metadata = {
+  emoji: '⏰',
+  title: 'AsyncTasks',
+  source: 'https://github.com/idootop/async-tasks',
+  preview: 'https://pypi.python.org/pypi/async-tasks-python',
+  createAt: '2024-11',
+  description: 'A Python library for managing asynchronous tasks',
+};
+
+## 幕后花絮
+
+异步任务的取消和超时，是一种常见的业务需求。
+
+但在 Python 中，原生的 Thread 并不支持中途终止和超时的能力。假设我们在主线程开启了多个长耗时的异步任务 Thread，想要在某个时刻立即终止所有任务，这是做不到的。
+
+为了实现这一目的，通常的做法是通过设置退出标志的方式，告知子线程终止。比如在循环开始/结束时刻，通过读取最新标识，判断是否需要退出。如果我们要想在循环内部打断运行，则必须按照任务的颗粒度，手动埋点判断是否需要退出。
+
+显然上面的做法十分繁琐。
+
+要是我们能够实现无侵入的在任意时刻打断 Thread 运行就好了。
+
+## 核心实现
+
+要做到在任意位置打断 Python 代码的运行，其实原理非常简单：
+
+> 抛出异常。要是一个不够，那就一直抛...
+
+```python
+import ctypes
+import threading
+
+
+class ThreadStoppedException(BaseException):
+    def __str__(self):
+        return self.__class__.__name__
+
+
+class StoppableThread(threading.Thread):
+
+    # ...
+
+    def stop(self, max_exceptions=10):
+        c_tid = ctypes.c_ulong(self.ident)
+        c_exception = ctypes.py_object(ThreadStoppedException)
+        try:
+            count = 0
+            while self.is_alive() and count < max_exceptions:
+                # 持续抛出异常（只抛出一次有可能被上层代码 catch），直到终止或超出上限
+                ctypes.pythonapi.PyThreadState_SetAsyncExc(c_tid, c_exception)
+                count += 1
+        except BaseException:
+            pass
+        return not self.is_alive()
+```
+
+就是这么酸爽、朴实无华且枯燥，哈哈

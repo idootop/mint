@@ -10,7 +10,7 @@ export const CodeCard = ({ children }) => {
         <div className={styles.yellow} />
         <div className={styles.green} />
       </Row>
-      <pre>{children}</pre>
+      <pre className="hide-scrollbar">{children}</pre>
     </Column>
   );
 };
