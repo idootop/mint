@@ -1,0 +1,50 @@
+export const metadata = {
+  emoji: '🎭',
+  title: 'TinyFace',
+  source: 'https://github.com/idootop/TinyFace',
+  preview: 'https://pypi.python.org/pypi/tinyface',
+  createAt: '2024-11',
+  description: 'The minimalist face swapping tool that just works.',
+};
+
+## 幕后花絮
+
+这是一个极简的 AI 换脸库。
+
+一个经典的换脸工作流，通常由人脸检测、识别、换脸、画质增强等多个步骤组成。
+
+TinyFace 精简封装了上述能力，为视频人脸追踪等任务提供了更灵活的分析能力。
+
+## 示例
+
+```python
+import cv2
+
+from tinyface import FacePair, TinyFace
+
+# Load input images
+input_img = cv2.imread("input.jpg")
+reference_img = cv2.imread("reference.jpg")
+destination_img = cv2.imread("destination.jpg")
+
+# Initialize the TinyFace instance
+tinyface = TinyFace()
+
+# (Optional) Prepare models (downloads automatically if skipped)
+tinyface.prepare()
+
+# Detect faces in the images
+faces = tinyface.get_many_faces(input_img)
+reference_face = tinyface.get_one_face(reference_img)
+destination_face = tinyface.get_one_face(destination_img)
+
+# Swap a single face
+output_img = tinyface.swap_face(input_img, reference_face, destination_face)
+
+# Swap multiple faces
+output_img = tinyface.swap_faces(
+    input_img,
+    face_pairs=[FacePair(reference=reference_face, destination=destination_face)],
+)
+cv2.imwrite("out.jpg", output_img)
+```
