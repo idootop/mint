@@ -8,6 +8,7 @@ export const metadata = {
   cover: cover.src,
   preview: 'https://mp.weixin.qq.com/s/5AmAnWW8y7T7l6rc65ZC4g',
   pinned: true,
+  hidden: true,
 };
 
 # 项目简介
@@ -76,5 +77,7 @@ import post from './images/post.webp';
 <WrappedImage src={post.src} alt="分享海报" maxWidth="360px" />
 
 [^1]: 其中 `Common` 下存放的是企业内部可以跨项目使用的公共模块，比如基础的 utils, hooks 和 components 等。而 `Application` 下存放的则是当前项目相关的一些业务模块，比如一些定制的小组件等。
+
 [^2]: 美团是我用过的长列表性能做的最好的微信小程序。
+
 [^3]: 实现原理很简单，就是一个堆叠的 Stack 布局，通过控制 Page 的 zIndex 和 visibility 来控制显示内容的切换，优点是只需操作 CSS 属性值，无需 rebuild 整个页面，降低 Tab 切换开销。
