@@ -13,7 +13,7 @@ import { PageFrom } from '@/utils/page/from';
 import { ProjectLayout } from './ProjectLayout';
 
 const kProjectCategories = [
-  'work',
+  // 'work',
   'product',
   'ai',
   'game',
@@ -27,7 +27,7 @@ const kProjectCategories = [
 ];
 
 export const kProjectCategoryNames = {
-  work: '商业项目',
+  // work: '商业项目',
   product: '个人项目',
   ai: 'AI',
   game: '游戏',
