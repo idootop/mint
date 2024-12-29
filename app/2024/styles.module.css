@@ -1,0 +1,67 @@
+.page {
+  margin: 0 auto;
+  max-width: 640px;
+}
+
+@media (max-width: 640px) {
+  .page {
+    max-width: 100%;
+  }
+}
+
+.item {
+  gap: 4px;
+  width: 100%;
+  padding: 64px 20px 80px 20px;
+  border-bottom: 1px solid #eaeaea;
+  color: #000;
+  text-align: center;
+}
+
+.itemTitle {
+  padding: 0 10px;
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.itemDescription {
+  padding: 0 10px;
+  font-size: 14px;
+  font-weight: normal;
+  margin-bottom: 24px;
+}
+
+.itemEmoji {
+  font-size: 64px;
+  font-weight: normal;
+}
+
+@media (max-width: 640px) {
+  .item {
+    width: 100%;
+    padding: 54px 0 0 0;
+    border-bottom: none;
+    color: #000;
+    text-align: center;
+  }
+
+  .itemFirst {
+    margin-top: -24px;
+  }
+
+  .itemTitle {
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .itemDescription {
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  .itemEmoji {
+    font-size: 48px;
+    font-weight: normal;
+  }
+}
