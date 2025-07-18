@@ -1,7 +1,7 @@
 .code-line {
   display: block;
-  padding-left: 12px;
   padding-right: 12px;
+  padding-left: 12px;
 }
 
 .code-line.inserted {
@@ -9,19 +9,19 @@
 }
 
 .code-line.deleted {
-  background-color: rgba(239, 68, 68, 0.5); 
+  background-color: rgba(239, 68, 68, 0.5);
 }
 
 .highlight-line {
-  background-color: rgba(55, 65, 81, 0.5); 
+  background-color: rgba(55, 65, 81, 0.5);
 }
 
 .line-number::before {
   display: inline-block;
   width: 1rem;
-  text-align: right;
   margin-right: 12px;
   margin-left: -8px;
-  color: rgb(156, 163, 175); 
+  color: rgb(156, 163, 175);
+  text-align: right;
   content: attr(line);
 }

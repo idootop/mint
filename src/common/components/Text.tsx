@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { BoxProps, getBoxProps } from './Box';
+import { type BoxProps, getBoxProps } from './Box';
 
 interface TextProps extends BoxProps {
   maxLines?: number;

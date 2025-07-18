@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Box, BoxProps, getBoxStyle } from './Box';
+import { Box, type BoxProps, getBoxStyle } from './Box';
 
 const Row = forwardRef((props: BoxProps, ref: any) => {
   return (

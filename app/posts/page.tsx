@@ -4,7 +4,7 @@ import { Column, Expand, Row } from '@/common/components/Flex';
 import { getOGMetadata } from '@/utils/metadata';
 import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
-import { getPostsGroupedByYear, getPostsPinned, Post } from './_post';
+import { getPostsGroupedByYear, getPostsPinned, type Post } from './_post';
 import styles from './styles.module.css';
 
 // @ts-ignore
@@ -17,17 +17,17 @@ export default async function Page() {
   return (
     <Column className={styles.page}>
       {pinned.length > 0 && (
-        <GroupedPost group="Pinned" posts={pinned} from={PageFrom.pinned} />
+        <GroupedPost from={PageFrom.pinned} group="Pinned" posts={pinned} />
       )}
-      {(await getPostsGroupedByYear()).map(e => {
-        const posts = e.posts.filter(e => !e.hidden);
+      {(await getPostsGroupedByYear()).map((e) => {
+        const posts = e.posts.filter((e) => !e.hidden);
         return (
           posts.length > 0 && (
             <GroupedPost
-              key={e.year}
-              group={e.year}
-              posts={posts}
               from={PageFrom.all}
+              group={e.year}
+              key={e.year}
+              posts={posts}
             />
           )
         );
@@ -44,10 +44,10 @@ const GroupedPost = (props: {
   const { group, posts, from } = props;
   if (posts.length < 1) return;
   return (
-    <Column className={styles.group} alignItems="start">
+    <Column alignItems="start" className={styles.group}>
       <span className={styles.groupTitle}>{group}</span>
-      {posts.map(post => {
-        return <PostItem key={post.path} post={post} from={from} />;
+      {posts.map((post) => {
+        return <PostItem from={from} key={post.path} post={post} />;
       })}
     </Column>
   );

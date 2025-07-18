@@ -1,3 +1,4 @@
+// biome-ignore lint/suspicious/noShadowRestrictedNames: just do it
 export function isNaN(e: unknown): boolean {
   return Number.isNaN(e);
 }
@@ -19,7 +20,9 @@ export function isNotNullish(e: unknown): boolean {
 }
 
 export function isEmpty(e: any): boolean {
-  if (e?.size ?? 0 > 0) return false;
+  if ((e?.size ?? 0) > 0) {
+    return false;
+  }
 
   return (
     isNaN(e) ||

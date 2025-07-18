@@ -7,7 +7,7 @@ import { PageFrom } from '@/utils/page/from';
 import {
   getProjectCategoryName,
   getProjectsGroupedByCategory,
-  Project,
+  type Project,
 } from '../_project';
 import { ProjectSwitcher } from '../_project/ProjectSwitcher';
 import styles from './styles.module.css';
@@ -20,13 +20,13 @@ export const metadata = await getOGMetadata({
 export default async function Page() {
   return (
     <Column className={styles.page}>
-      {(await getProjectsGroupedByCategory()).map(e => {
-        const projects = e.projects.filter(e => !e.hidden);
+      {(await getProjectsGroupedByCategory()).map((e) => {
+        const projects = e.projects.filter((e) => !e.hidden);
         return (
           projects.length > 0 && (
             <GroupedProject
-              key={e.category}
               group={e.category}
+              key={e.category}
               projects={projects}
             />
           )
@@ -42,11 +42,11 @@ const GroupedProject = (props: { group: string; projects: Project[] }) => {
   if (projects.length < 1) return;
   const groupName = getProjectCategoryName(group);
   return (
-    <Column className={styles.group} alignItems="start">
-      <span id={group} className={styles.groupTitle}>
+    <Column alignItems="start" className={styles.group}>
+      <span className={styles.groupTitle} id={group}>
         {groupName}
       </span>
-      {projects.map(project => {
+      {projects.map((project) => {
         return <ProjectItem key={project.path} project={project} />;
       })}
     </Column>

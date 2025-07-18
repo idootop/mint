@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Audio, AudioProps } from '@/common/components/Audio';
+import { Audio, type AudioProps } from '@/common/components/Audio';
 
 const BaseAudio = forwardRef(
   (
@@ -14,8 +14,8 @@ const BaseAudio = forwardRef(
       <>
         {marginTop && <span style={{ height: marginTop, display: 'block' }} />}
         <Audio
-          ref={ref}
           className="center-box"
+          ref={ref}
           {...rest}
           margin="0 auto"
           width="100%"

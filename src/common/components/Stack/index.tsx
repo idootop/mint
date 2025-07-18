@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 
 import { flattenChildren } from '../../utils/base';
-import { Box, BoxProps } from '../Box';
+import { Box, type BoxProps } from '../Box';
 
 const Stack = forwardRef((props: BoxProps, ref: any) => {
   const children = flattenChildren(props.children);

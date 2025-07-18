@@ -1,4 +1,4 @@
-import { BoxProps, getBoxProps } from '@/common/components/Box';
+import { type BoxProps, getBoxProps } from '@/common/components/Box';
 
 const kDefaultIconSize = '32px';
 

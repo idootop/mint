@@ -27,7 +27,7 @@ export const Header = () => {
           <Link href="/">
             <IconLogo borderRadius="50%" />
           </Link>
-          <Expand width="100%" justifyContent="center">
+          <Expand justifyContent="center" width="100%">
             <LinkItem href="/projects">项目</LinkItem>
             <LinkItem href="/posts">博客</LinkItem>
             <LinkItem href="/about">关于</LinkItem>

@@ -1,6 +1,5 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-
 import sharp from 'sharp';
 
 import {
@@ -96,7 +95,7 @@ export const processImage = async (url: string | undefined) => {
     ...image,
     ...compressedImage,
   });
-  const getMetadata = e => {
+  const getMetadata = (e) => {
     const { data: _, sharpImage: __, ...metadata } = e ?? {};
     return isEmpty(metadata) ? undefined : metadata;
   };
@@ -161,7 +160,7 @@ const downloadImage = async (
   } else {
     // 网络图片
     checksum = await hashSha256(url);
-    src = path.join('/' + kDownloadDir, checksum + '.webp');
+    src = path.join('/', kDownloadDir, `${checksum}.webp`);
     filePath = path.join(kRootDir, kPublicDir, src);
     if (!existsSync(filePath)) {
       // 下载图片到本地
@@ -193,7 +192,7 @@ const compressImage = async (
     // 不需要压缩的图片类型
     return;
   }
-  const src = path.join('/' + kCompressionDir, checksum + '.webp');
+  const src = path.join(`/${kCompressionDir}`, `${checksum}.webp`);
   const filePath = path.join(kRootDir, kPublicDir, src);
   newImage.src = src;
   newImage.filePath = filePath;
@@ -236,5 +235,5 @@ const createBlurDataURL = async (img: ImageWithMetadata) => {
     .resize(placeholderImgWidth, placeholderImgHeight)
     .png({ quality: 75 })
     .toBuffer()
-    .then(buffer => `data:image/png;base64,${buffer.toString('base64')}`);
+    .then((buffer) => `data:image/png;base64,${buffer.toString('base64')}`);
 };

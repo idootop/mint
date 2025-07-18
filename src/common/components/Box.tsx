@@ -1,10 +1,10 @@
 /* eslint-disable prefer-const */
 import {
-  CSSProperties,
-  DOMAttributes,
+  type CSSProperties,
+  type DOMAttributes,
   forwardRef,
-  ImgHTMLAttributes,
-  ReactNode,
+  type ImgHTMLAttributes,
+  type ReactNode,
 } from 'react';
 
 import { removeEmpty, toSet } from '../utils/base';
@@ -32,7 +32,7 @@ export type BoxProps = BaseProps &
   object;
 
 export const getClassName = (_class?: BoxProps['className']) => {
-  return isArray(_class) ? toSet(_class.filter(e => !!e)).join(' ') : _class;
+  return isArray(_class) ? toSet(_class.filter((e) => !!e)).join(' ') : _class;
 };
 
 export const getBoxProps = (props: BoxProps) => {
@@ -73,7 +73,7 @@ export const getBoxProps = (props: BoxProps) => {
   if (boxProps.style.size) {
     boxProps.style.width = boxProps.style.size;
     boxProps.style.height = boxProps.style.size;
-    delete boxProps.style['size'];
+    delete boxProps.style.size;
   }
 
   for (const key of excludes) {

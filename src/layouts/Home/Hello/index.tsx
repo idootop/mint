@@ -8,8 +8,8 @@ import { hellos } from './hello';
 import styles from './styles.module.css';
 
 export const Hello = () => {
-  useEffectSafely(isDisposed => {
-    let timer;
+  useEffectSafely((isDisposed) => {
+    let timer: any;
     let languageIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -32,7 +32,7 @@ export const Hello = () => {
         return;
       }
 
-      let e = document.getElementsByClassName(styles['hello'])[0];
+      let e = document.getElementsByClassName(styles.hello)[0];
       e = e?.children?.[0];
       if (!e) {
         return;

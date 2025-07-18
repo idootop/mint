@@ -1,22 +1,22 @@
 .header {
-  width: 100%;
-  transform: translateZ(0);
-  -webkit-backdrop-filter: saturate(180%) blur(5px);
-  backdrop-filter: saturate(180%) blur(5px);
-  background: hsla(0, 0%, 100%, 0.8);
   position: fixed;
   top: 0;
   z-index: 1000;
+  width: 100%;
+  background: hsla(0, 0%, 100%, 0.8);
+  -webkit-backdrop-filter: saturate(180%) blur(5px);
+  backdrop-filter: saturate(180%) blur(5px);
+  transform: translateZ(0);
 }
 
 .link {
-  color: #000;
-  margin: 0 12px;
   padding: 2px 4px;
+  margin: 0 12px;
+  color: #000;
   border-radius: 6px;
 }
 
 .link:hover {
-  color: rgba(0, 0, 0, 1) !important;
   font-weight: bold;
+  color: rgba(0, 0, 0, 1) !important;
 }

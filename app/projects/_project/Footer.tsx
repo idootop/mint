@@ -27,8 +27,8 @@ export const Footer = ({
   }
   return (
     <Column alignItems="center" className={styles.footer}>
-      {previous && <NavItem label="Previous" project={previous} from={from} />}
-      {next && <NavItem label="Next" project={next} from={from} />}
+      {previous && <NavItem from={from} label="Previous" project={previous} />}
+      {next && <NavItem from={from} label="Next" project={next} />}
     </Column>
   );
 };

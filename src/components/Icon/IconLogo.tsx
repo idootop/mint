@@ -1,4 +1,4 @@
-import { BoxProps } from '@/common/components/Box';
+import type { BoxProps } from '@/common/components/Box';
 
 import { getIconProps } from '.';
 

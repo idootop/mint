@@ -4,7 +4,7 @@ import styles from './styles.module.css';
 
 export const CodeCard = ({ children }) => {
   return (
-    <Column className={styles.card} alignItems="start">
+    <Column alignItems="start" className={styles.card}>
       <Row className={styles.header}>
         <div className={styles.red} />
         <div className={styles.yellow} />

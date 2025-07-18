@@ -64,7 +64,7 @@ function diff(
       // eslint-disable-next-line prefer-spread
       diffs.push.apply(
         diffs,
-        nestedDiffs.map(difference => {
+        nestedDiffs.map((difference) => {
           difference.path.unshift(path);
 
           return difference;

@@ -1,12 +1,12 @@
-import { MakeRequired } from '@/common/utils/types';
+import type { MakeRequired } from '@/common/utils/types';
 import {
   generatePageMetadata,
   getPage,
   getPageContext,
   getPages,
-  PageContext,
-  PageMetadata,
-  PagesWithPinned,
+  type PageContext,
+  type PageMetadata,
+  type PagesWithPinned,
 } from '@/utils/page';
 import { PageFrom } from '@/utils/page/from';
 
@@ -17,7 +17,7 @@ export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
 export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   return getPages<Post>('posts', ctx, {
-    buildMetadata: post => {
+    buildMetadata: (post) => {
       const createAt = post.createAt ?? '2024-01-01';
       return {
         ...post,
@@ -44,9 +44,9 @@ export const getPostsGroupedByYear = async () => {
   if (kPostsGroupedByYear) {
     return kPostsGroupedByYear;
   }
-  let year;
+  let year: string;
   kPostsGroupedByYear = [];
-  (await getPosts()).all.forEach(post => {
+  (await getPosts()).all.forEach((post) => {
     const _year = post.createAt.split('-')[0] as any;
     if (_year !== year) {
       kPostsGroupedByYear.push({ year: _year, posts: [post] });

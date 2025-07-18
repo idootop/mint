@@ -25,7 +25,7 @@ export const isInternalAsset = (url: string | undefined) => {
 /**
  * /public/file -> /file
  */
-export const resolveAssetURL = src => {
+export const resolveAssetURL = (src) => {
   if (src.startsWith('/public')) {
     src = src.substring(7);
   }
@@ -37,7 +37,7 @@ export const resolveAssetURL = src => {
  *   - /_next/static/file -> .next/static/file
  *      - /file -> /public/file
  */
-export const assetURL2LocalPath = src => {
+export const assetURL2LocalPath = (src) => {
   if (isInternalAsset(src)) {
     if (src.startsWith('/public/')) {
       // /public/file -> /public/file
@@ -46,7 +46,7 @@ export const assetURL2LocalPath = src => {
       src = src.replace('/_next/static/', '/.next/static/');
     } else if (src.startsWith('/')) {
       // /file -> /public/file
-      src = '/public' + src;
+      src = `/public${src}`;
     } else {
       // Unknown
       src = undefined;

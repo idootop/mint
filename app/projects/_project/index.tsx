@@ -1,12 +1,12 @@
-import { MakeRequired } from '@/common/utils/types';
+import type { MakeRequired } from '@/common/utils/types';
 import {
   generatePageMetadata,
   getPage,
   getPageContext,
   getPages,
-  PageContext,
-  PageMetadata,
-  PagesWithPinned,
+  type PageContext,
+  type PageMetadata,
+  type PagesWithPinned,
 } from '@/utils/page';
 import { PageFrom } from '@/utils/page/from';
 
@@ -63,7 +63,7 @@ export type Project = MakeRequired<PageMetadata, 'createAt' | 'updateAt'> & {
 export const getProjects = async (): Promise<PagesWithPinned<Project>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   return getPages<Project>('projects', ctx, {
-    buildMetadata: project => {
+    buildMetadata: (project) => {
       const createAt = project.createAt ?? '2024-01-01';
       const category = project.path.split('/')[2] ?? 'other';
       return {
@@ -90,7 +90,7 @@ export interface ProjectsGroupedByCategory {
 const groupProjectsByCategory = (projects: Project[]) => {
   const categoryProjects = {};
   const projectsGroupedByCategory: ProjectsGroupedByCategory[] = [];
-  projects.forEach(project => {
+  projects.forEach((project) => {
     const category = project.category;
     if (!categoryProjects[category]) {
       categoryProjects[category] = [];
@@ -123,8 +123,8 @@ export const getProjectsPinned = async () => {
     return kProjectsPinned;
   }
   const pinned = (await getProjects()).pinned;
-  const middleStart = pinned.findIndex(e => !e.pinnedIndex);
-  const middleEnd = pinned.findLastIndex(e => !e.pinnedIndex);
+  const middleStart = pinned.findIndex((e) => !e.pinnedIndex);
+  const middleEnd = pinned.findLastIndex((e) => !e.pinnedIndex);
   if (middleStart === middleEnd) {
     kProjectsPinned = pinned;
   } else {

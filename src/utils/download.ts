@@ -5,8 +5,8 @@ import { withRetry } from '@/common/utils/base';
 import { kEnvs, writeFile } from '@/common/utils/io';
 
 const kPendingDownloads = {};
-const kHttpProxyAgent = kEnvs['http_proxy']
-  ? new HttpsProxyAgent(kEnvs['http_proxy'])
+const kHttpProxyAgent = kEnvs.http_proxy
+  ? new HttpsProxyAgent(kEnvs.http_proxy)
   : undefined;
 const kGotHttpProxyAgent = kHttpProxyAgent
   ? {
@@ -21,7 +21,7 @@ export const download = async (
 ) => {
   const { savePath } = options ?? {};
   // eslint-disable-next-line no-async-promise-executor
-  kPendingDownloads[url] ??= new Promise(resolve => {
+  kPendingDownloads[url] ??= new Promise((resolve) => {
     console.log(`🔥 开始下载 ${url}`);
     withRetry(() =>
       got(url, {
@@ -35,11 +35,11 @@ export const download = async (
           Referer: new URL(url).origin,
         },
       })
-        .catch(e => {
+        .catch((e) => {
           console.log(`❌ 下载失败 ${url}\n`, e);
         })
-        .then(e => e?.body),
-    ).then(async data => {
+        .then((e) => e?.body),
+    ).then(async (data) => {
       if (data) {
         if (savePath) {
           await writeFile(savePath, data);

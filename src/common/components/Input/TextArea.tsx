@@ -1,7 +1,7 @@
 import { forwardRef, useEffect, useRef } from 'react';
 
 import { clamp } from '../../utils/base';
-import { BoxProps, getBoxProps } from '../Box';
+import { type BoxProps, getBoxProps } from '../Box';
 import styles from './style.module.css';
 
 interface TextAreaProps {
@@ -29,7 +29,7 @@ const TextArea = forwardRef((props: BoxProps & TextAreaProps, ref: any) => {
     ...props,
     style: {
       ...props.style,
-      lineHeight: lineHeight + 'px',
+      lineHeight: `${lineHeight}px`,
     },
     excludes: [
       'rows',
@@ -58,7 +58,7 @@ const TextArea = forwardRef((props: BoxProps & TextAreaProps, ref: any) => {
     }
     inputRef.current.style.height = 'auto';
     const height = inputRef.current.scrollHeight;
-    inputRef.current.style.height = clamp(height, minHeight, maxHeight) + 'px';
+    inputRef.current.style.height = `${clamp(height, minHeight, maxHeight)}px`;
   };
 
   useEffect(() => {
@@ -68,16 +68,19 @@ const TextArea = forwardRef((props: BoxProps & TextAreaProps, ref: any) => {
 
     return clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [updateInputHeight]);
 
   return (
     <textarea
-      rows={1}
       ref={inputRef}
+      rows={1}
       {...boxProps}
       className={styles['text-area']}
-      value={value === '\n' ? '' : value}
-      placeholder={hint}
+      onChange={(event: any) => {
+        updateInputHeight();
+        const str = event.target.value;
+        onChange?.(str);
+      }}
       onKeyDown={(event: any) => {
         if (event.key === 'Enter') {
           updateInputHeight();
@@ -85,11 +88,8 @@ const TextArea = forwardRef((props: BoxProps & TextAreaProps, ref: any) => {
           onSubmit?.(str);
         }
       }}
-      onChange={(event: any) => {
-        updateInputHeight();
-        const str = event.target.value;
-        onChange?.(str);
-      }}
+      placeholder={hint}
+      value={value === '\n' ? '' : value}
     />
   );
 });

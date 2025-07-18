@@ -1,6 +1,10 @@
 import './style.css';
 
-import { BoxProps, getBoxProps, getClassName } from '@/common/components/Box';
+import {
+  type BoxProps,
+  getBoxProps,
+  getClassName,
+} from '@/common/components/Box';
 
 export function Button(
   props: BoxProps & {
@@ -34,7 +38,7 @@ export function Button(
   });
 
   return (
-    <a href={url} download={download} target="_blank" {...boxProps}>
+    <a download={download} href={url} target="_blank" {...boxProps}>
       {children}
     </a>
   );

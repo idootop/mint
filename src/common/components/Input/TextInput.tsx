@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { BoxProps, getBoxProps } from '../Box';
+import { type BoxProps, getBoxProps } from '../Box';
 import styles from './style.module.css';
 
 interface TextInputProps {
@@ -23,18 +23,18 @@ const TextInput = forwardRef((props: BoxProps & TextInputProps, ref: any) => {
       ref={ref}
       {...boxProps}
       className={styles['text-input']}
-      value={value}
-      placeholder={hint}
+      onChange={(event: any) => {
+        const str = event.target.value;
+        onChange?.(str);
+      }}
       onKeyDown={(event: any) => {
         if (event.key === 'Enter') {
           const str = event.target.value;
           onSubmit?.(str);
         }
       }}
-      onChange={(event: any) => {
-        const str = event.target.value;
-        onChange?.(str);
-      }}
+      placeholder={hint}
+      value={value}
     />
   );
 });

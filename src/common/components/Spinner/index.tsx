@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { BoxProps, getBoxProps } from '../Box';
+import { type BoxProps, getBoxProps } from '../Box';
 import styles from './style.module.css';
 
 interface SpinnerProps extends BoxProps {
@@ -38,13 +38,13 @@ export const Spinner = (props?: SpinnerProps) => {
     excludes: ['delay', 'theme', 'thickness'],
   });
 
-  const [initialized, setInitialized] = useState(delay ? false : true);
+  const [initialized, setInitialized] = useState(!delay);
   useEffect(() => {
     setTimeout(() => {
       setInitialized(true);
     }, delay);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [delay]);
 
   return initialized ? <div {...boxProps} /> : <div />;
 };

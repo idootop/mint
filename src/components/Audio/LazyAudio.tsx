@@ -1,6 +1,6 @@
 'use client';
 
-import { AudioProps } from '@/common/components/Audio';
+import type { AudioProps } from '@/common/components/Audio';
 import { useIntersection } from '@/common/hooks/useIntersection';
 
 import { BaseAudio } from './BaseAudio';
@@ -10,8 +10,8 @@ export const LazyAudio = (props: AudioProps) => {
 
   return (
     <BaseAudio
-      ref={intersectionRef}
       playsInline
+      ref={intersectionRef}
       {...props}
       src={isIntersected ? props.src : ''}
     />

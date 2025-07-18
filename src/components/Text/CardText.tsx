@@ -1,4 +1,4 @@
-export const CardText = props => {
+export const CardText = (props) => {
   return (
     <h1
       {...props}

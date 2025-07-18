@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const kMyBirthday = new Date(1999, 7 - 1, 14).getTime();
 const kOneYear = 365 * 24 * 60 * 60 * 1000;
-const myAge = () => (new Date().getTime() - kMyBirthday) / kOneYear;
+const myAge = () => (Date.now() - kMyBirthday) / kOneYear;
 
 export const MyAge = () => {
   const [age, setAge] = useState(Math.floor(myAge()));

@@ -28,22 +28,22 @@ export async function ProjectLayout({ path, children }) {
     !!project.preview && !!project.source ? (
       <>
         <Button
+          color="#fff"
+          height="48px"
           id={styles.button}
           url={project.preview}
           width="100%"
-          height="48px"
-          color="#fff"
         >
-          <IconOpenLink size="20px" color="#fff" />
+          <IconOpenLink color="#fff" size="20px" />
           查看
         </Button>
         <Button
+          color="#000"
+          height="48px"
           id={styles.button}
           secondary
           url={project.source}
           width="100%"
-          height="48px"
-          color="#000"
         >
           <IconGithub size="20px" />
           源码
@@ -51,24 +51,24 @@ export async function ProjectLayout({ path, children }) {
       </>
     ) : project.preview ? (
       <Button
+        color="#000"
+        height="48px"
         id={styles.button}
         secondary
         url={project.preview}
         width="100%"
-        height="48px"
-        color="#000"
       >
         <IconOpenLink size="20px" />
         查看
       </Button>
     ) : project.source ? (
       <Button
+        color="#000"
+        height="48px"
         id={styles.button}
         secondary
         url={project.source}
         width="100%"
-        height="48px"
-        color="#000"
       >
         <IconGithub size="20px" />
         源码
@@ -78,18 +78,16 @@ export async function ProjectLayout({ path, children }) {
   return (
     <main className={styles.page}>
       <MDXBody>
-        <>
-          {project.cover && <BaseImage src={project.cover} marginBottom="0" />}
-          <p className={styles.title}>{project.title}</p>
-          <p className={styles.date}>
-            {project.createAt}｜{category}
-          </p>
-          <blockquote className={styles.description}>
-            {project.description}
-          </blockquote>
-          {buttons}
-          {children}
-        </>
+        {project.cover && <BaseImage marginBottom="0" src={project.cover} />}
+        <p className={styles.title}>{project.title}</p>
+        <p className={styles.date}>
+          {project.createAt}｜{category}
+        </p>
+        <blockquote className={styles.description}>
+          {project.description}
+        </blockquote>
+        {buttons}
+        {children}
       </MDXBody>
       <Suspense>
         <Footer ctx={ctx} />

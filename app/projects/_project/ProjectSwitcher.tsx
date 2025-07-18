@@ -7,8 +7,8 @@ export const ProjectSwitcher = ({ from }: { from: PageFrom }) => {
   return (
     <Row className={styles.switcher}>
       <a
-        href="/projects"
         className={styles.switcherOption}
+        href="/projects"
         style={{
           color: from === PageFrom.pinned ? '#fff' : '#000',
           background: from === PageFrom.pinned ? '#000' : 'transparent',
@@ -17,8 +17,8 @@ export const ProjectSwitcher = ({ from }: { from: PageFrom }) => {
         Pinned
       </a>
       <a
-        href="/projects/all"
         className={styles.switcherOption}
+        href="/projects/all"
         style={{
           color: from === PageFrom.all ? '#fff' : '#000',
           background: from === PageFrom.all ? '#000' : 'transparent',

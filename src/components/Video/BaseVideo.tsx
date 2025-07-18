@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { Video, VideoProps } from '@/common/components/Video';
+import { Video, type VideoProps } from '@/common/components/Video';
 
 const BaseVideo = forwardRef(
   (
@@ -13,7 +13,7 @@ const BaseVideo = forwardRef(
     return (
       <>
         {marginTop && <span style={{ height: marginTop, display: 'block' }} />}
-        <Video ref={ref} className="center-box" {...rest} margin="0 auto" />
+        <Video className="center-box" ref={ref} {...rest} margin="0 auto" />
         {alt && (
           <span className="center-label" style={{ margin: '0 auto' }}>
             {alt}

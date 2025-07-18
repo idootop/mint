@@ -4,19 +4,19 @@
 }
 
 .hello span {
+  padding-right: 8px;
+  overflow: hidden;
   font-size: 48px;
   font-weight: 600;
-  overflow: hidden;
   white-space: nowrap;
-  padding-right: 8px;
 }
 
 .hello > div {
   display: inline-block;
   width: 8px;
   height: 80%;
-  border-radius: 0px;
   background: #64ba5e;
+  border-radius: 0px;
   animation: typing 0.75s step-end infinite;
 }
 

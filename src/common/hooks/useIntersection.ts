@@ -43,6 +43,6 @@ export const useIntersection = (options?: IntersectionObserverInit) => {
         observer.unobserve(intersectionRef.current);
       }
     };
-  }, []);
+  }, [options, rebuildRef.current]);
   return { intersectionRef, ...stateRef.current };
 };

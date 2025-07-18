@@ -1,4 +1,14 @@
 {
   "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
-  "extends": ["@del-wang/config/biome"]
+  "extends": ["@del-wang/config/biome"],
+  "linter": {
+    "rules": {
+      "performance": {
+        "noAccumulatingSpread": "off"
+      }
+    }
+  },
+  "files": {
+    "includes": ["!out/**"]
+  }
 }

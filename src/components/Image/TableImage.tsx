@@ -1,4 +1,4 @@
-import { Image, ImageProps } from '@/common/components/Image';
+import { Image, type ImageProps } from '@/common/components/Image';
 import { isNotEmpty } from '@/common/utils/is';
 import { resolveAssetURL } from '@/utils/assets';
 import { processImage } from '@/utils/image';
@@ -19,10 +19,10 @@ export const TableImage = async (
       <>
         <Image
           {...restProps}
-          src={resolveAssetURL(src)}
           alt={alt}
-          width="auto"
           height="auto"
+          src={resolveAssetURL(src)}
+          width="auto"
         />
         {isNotEmpty(alt) && <span className="center-label">{alt}</span>}
       </>

@@ -1,6 +1,6 @@
 'use client';
 
-import { VideoProps } from '@/common/components/Video';
+import type { VideoProps } from '@/common/components/Video';
 import { useIntersection } from '@/common/hooks/useIntersection';
 
 import { BaseVideo } from './BaseVideo';

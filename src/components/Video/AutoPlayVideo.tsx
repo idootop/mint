@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-import { VideoProps } from '@/common/components/Video';
+import type { VideoProps } from '@/common/components/Video';
 import { useIntersection } from '@/common/hooks/useIntersection';
 
 import { BaseVideo } from './BaseVideo';
@@ -29,11 +29,11 @@ export const AutoPlayVideo = (props: VideoProps & { lazy?: boolean }) => {
 
   return (
     <_Video
-      ref={intersectionRef}
-      muted
       autoPlay
       loop
+      muted
       playsInline
+      ref={intersectionRef}
       {...props}
       src={isIntersected ? props.src : ''}
       style={{

@@ -26,16 +26,15 @@ export function Background({ children }) {
   const bodyHeight = `calc(100% - ${kFooterHeight}px)`;
 
   return (
-    <Stack width="100%" height={bodyHeight} overflow="hidden">
+    <Stack height={bodyHeight} overflow="hidden" width="100%">
       <Box size="100%" />
-      <Position width="100%" height="100%">
+      <Position height="100%" width="100%">
         {children}
       </Position>
       {isReady &&
-        range(30).map(idx => {
+        range(30).map((idx) => {
           return (
             <Rock
-              key={idx}
               config={{
                 idx,
                 minSize: 64,
@@ -45,6 +44,7 @@ export function Background({ children }) {
                 baseSpeed: isMobile ? 1 / 2 : 1 / 2,
                 spacing: 0.5,
               }}
+              key={idx}
             />
           );
         })}
@@ -78,7 +78,7 @@ const Rock = (props: {
   );
 
   useEffectSafely(
-    isDisposed => {
+    (isDisposed) => {
       if (hidden) {
         return;
       }
@@ -87,7 +87,7 @@ const Rock = (props: {
         const y = _y * document.body.clientHeight;
         const otherRocks = Object.entries(kRockStates)
           .filter(([key, _]) => key !== `${idx}`)
-          .map(e => ({
+          .map((e) => ({
             size: e[1].size,
             x: e[1].x * document.body.clientWidth,
             y: e[1].y * document.body.clientHeight,
@@ -109,7 +109,7 @@ const Rock = (props: {
           const left = rock.x - (rock.size + size) / 2;
           const right = rock.x + (rock.size + size) / 2;
 
-          validRanges = validRanges.flatMap(range => {
+          validRanges = validRanges.flatMap((range) => {
             const leftRange = {
               start: range.start,
               end: Math.min(range.end, left),
@@ -148,7 +148,7 @@ const Rock = (props: {
       };
       kRockStates[idx].x = getSafeX(kRockStates[idx].y, kRockStates[idx].size);
 
-      const animateRock = dt => {
+      const animateRock = (dt) => {
         let transition = '0s';
         const speed = kRockStates[idx].speed;
         let { x, y, size } = kRockStates[idx];

@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 import { getOGMetadata } from '../metadata';
 
@@ -56,10 +56,9 @@ export const getPages = async <T extends PageMetadata>(
     return kPages[category];
   }
   // 导入
-  const pages = ctx.keys().map(filePath => {
+  const pages = ctx.keys().map((filePath) => {
     const page = ctx(filePath);
-    const path =
-      `/${category}/` + filePath.substr(2).replace(/\/content\.mdx$/, '');
+    const path = `/${category}/${filePath.slice(2).replace(/\/content\.mdx$/, '')}`;
     return { path, ...page.metadata };
   });
   // 排序
@@ -140,15 +139,15 @@ export const getPage = async <T extends PageMetadata>(
   pages: T[],
   path: string,
 ) => {
-  return pages.find(e => e.path === path);
+  return pages.find((e) => e.path === path);
 };
 
 export const getPageContext = async <T extends PageMetadata>(
   pages: T[],
   path: string,
 ): Promise<PageContext<T>> => {
-  const ctxPages = pages.filter(e => !e.hidden);
-  const ctxIdx = ctxPages.findIndex(e => e.path === path);
+  const ctxPages = pages.filter((e) => !e.hidden);
+  const ctxIdx = ctxPages.findIndex((e) => e.path === path);
   return {
     previous: ctxPages[ctxIdx - 1],
     next: ctxIdx < 0 ? undefined : ctxPages[ctxIdx + 1],

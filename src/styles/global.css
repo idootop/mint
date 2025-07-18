@@ -8,8 +8,9 @@ body {
   background: #fff;
   overflow-x: hidden;
   -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
-    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
 a:focus,
@@ -28,14 +29,14 @@ a {
 }
 
 .center-label {
+  display: inline-block;
   width: 100%;
   margin: 0 auto;
-  display: inline-block;
-  color: #666;
-  font-size: 12px;
-  text-align: center;
   margin-top: 8px;
+  font-size: 12px;
   font-weight: normal;
+  color: #666;
+  text-align: center;
 }
 
 .hide-scrollbar {

@@ -1,5 +1,5 @@
 import { getBoxProps } from '@/common/components/Box';
-import { ImageProps } from '@/common/components/Image';
+import type { ImageProps } from '@/common/components/Image';
 
 import { BaseImage } from './BaseImage';
 

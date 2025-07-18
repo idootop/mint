@@ -14,7 +14,7 @@ export const hashSha256 = async (dataOrString?: string | Buffer) => {
 };
 
 export const checksumFile = async (filePathOrData?: Buffer | string) => {
-  let data;
+  let data: any;
   if (isString(filePathOrData)) {
     data = await readFile(filePathOrData);
   } else {

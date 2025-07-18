@@ -1,6 +1,6 @@
 import { deleteFile, getFiles, readJSON } from '@/common/utils/io';
 import {
-  ImageCache,
+  type ImageCache,
   kCompressionDir,
   kDownloadDir,
   kImageCachePath,
@@ -40,7 +40,7 @@ const deleteUnusedImages = async (dir: string, images: string[]) => {
     if (!imageMap[`/${dir}/${file}`]) {
       const filePath = `${kPublicDir}/${dir}/${file}`;
       deleteFile(filePath);
-      console.log('❌ 已删除: ' + filePath);
+      console.log(`❌ 已删除: ${filePath}`);
     }
   }
 };

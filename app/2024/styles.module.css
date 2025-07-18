@@ -1,6 +1,6 @@
 .page {
-  margin: 0 auto;
   max-width: 640px;
+  margin: 0 auto;
 }
 
 @media (max-width: 640px) {
@@ -13,23 +13,23 @@
   gap: 4px;
   width: 100%;
   padding: 64px 20px 80px 20px;
-  border-bottom: 1px solid #eaeaea;
   color: #000;
   text-align: center;
+  border-bottom: 1px solid #eaeaea;
 }
 
 .itemTitle {
   padding: 0 10px;
+  margin-bottom: 24px;
   font-size: 32px;
   font-weight: bold;
-  margin-bottom: 24px;
 }
 
 .itemDescription {
   padding: 0 10px;
+  margin-bottom: 24px;
   font-size: 14px;
   font-weight: normal;
-  margin-bottom: 24px;
 }
 
 .itemEmoji {
@@ -41,9 +41,9 @@
   .item {
     width: 100%;
     padding: 54px 0 0 0;
-    border-bottom: none;
     color: #000;
     text-align: center;
+    border-bottom: none;
   }
 
   .itemFirst {

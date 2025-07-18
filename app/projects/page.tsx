@@ -6,7 +6,7 @@ import { BannerImage } from '@/components/Image/BannerImage';
 import { getOGMetadata } from '@/utils/metadata';
 import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 
-import { getProjectsPinned, Project } from './_project';
+import { getProjectsPinned, type Project } from './_project';
 import { ProjectSwitcher } from './_project/ProjectSwitcher';
 import styles from './styles.module.css';
 
@@ -19,10 +19,10 @@ export default async function Page() {
   return (
     <Box width="100%">
       {(await getProjectsPinned())
-        .filter(e => !e.hidden)
+        .filter((e) => !e.hidden)
         .map((project, idx) => {
           return (
-            <ProjectItem key={project.title} idx={idx} project={project} />
+            <ProjectItem idx={idx} key={project.title} project={project} />
           );
         })}
       <ProjectSwitcher from={PageFrom.pinned} />
@@ -51,7 +51,7 @@ const ProjectItem = async (props: { project: Project; idx: number }) => {
         </span>
         <span className={styles.projectDescription}>{project.description}</span>
         {project.cover && (
-          <BannerImage src={project.cover} marginBottom="0px" />
+          <BannerImage marginBottom="0px" src={project.cover} />
         )}
       </Column>
     </Link>

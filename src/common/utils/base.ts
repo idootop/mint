@@ -3,12 +3,12 @@ import { Fragment } from 'react';
 import { isEmpty } from './is';
 
 export function timestamp() {
-  return new Date().getTime();
+  return Date.now();
 }
 
 export const nextTick = async (frames = 1) => {
   const _nextTick = async (idx: number) => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       requestAnimationFrame(() => resolve(idx));
     });
   };
@@ -18,7 +18,7 @@ export const nextTick = async (frames = 1) => {
 };
 
 export async function sleep(time: number) {
-  return new Promise<void>(resolve => setTimeout(resolve, time));
+  return new Promise<void>((resolve) => setTimeout(resolve, time));
 }
 
 export function printf(...v: any[]) {
@@ -29,15 +29,15 @@ export function printJson(obj: any) {
   console.log(JSON.stringify(obj, undefined, 4));
 }
 
-export function firstOf<T = any>(datas?: T[]) {
-  return datas ? (datas.length < 1 ? undefined : datas[0]) : undefined;
+export function firstOf<T = any>(items?: T[]) {
+  return items ? (items.length < 1 ? undefined : items[0]) : undefined;
 }
 
-export function lastOf<T = any>(datas?: T[]) {
-  return datas
-    ? datas.length < 1
+export function lastOf<T = any>(items?: T[]) {
+  return items
+    ? items.length < 1
       ? undefined
-      : datas[datas.length - 1]
+      : items[items.length - 1]
     : undefined;
 }
 
@@ -63,8 +63,8 @@ export function randomFloat(min: number, max?: number) {
   return randomInt(min * 1000, max * 1000) / 1000;
 }
 
-export function pickOne<T = any>(datas: T[]) {
-  return datas.length < 1 ? undefined : datas[randomInt(datas.length - 1)];
+export function pickOne<T = any>(items: T[]) {
+  return items.length < 1 ? undefined : items[randomInt(items.length - 1)];
 }
 
 export function range(start: number, end?: number) {
@@ -98,27 +98,27 @@ export function toFixed(n: number, fractionDigits = 2) {
   return s;
 }
 
-export function toSet<T = any>(datas: T[], byKey?: (e: T) => any) {
+export function toSet<T = any>(items: T[], byKey?: (e: T) => any) {
   if (byKey) {
     const keys = {};
-    const newDatas: T[] = [];
-    datas.forEach(e => {
+    const newData: T[] = [];
+    items.forEach((e) => {
       const key = jsonEncode({ key: byKey(e) }) as any;
       if (!keys[key]) {
-        newDatas.push(e);
+        newData.push(e);
         keys[key] = true;
       }
     });
-    return newDatas;
+    return newData;
   }
-  return Array.from(new Set(datas));
+  return Array.from(new Set(items));
 }
 
 export function jsonEncode(obj: any, options?: { prettier?: boolean }) {
   const { prettier } = options ?? {};
   try {
     return prettier ? JSON.stringify(obj, undefined, 4) : JSON.stringify(obj);
-  } catch (error) {
+  } catch {
     return undefined;
   }
 }
@@ -127,7 +127,7 @@ export function jsonDecode(json: string | undefined) {
   if (json == undefined) return undefined;
   try {
     return JSON.parse(json!);
-  } catch (error) {
+  } catch {
     return undefined;
   }
 }
@@ -138,7 +138,7 @@ export function withDefault<T = any>(e: any, defaultValue: T): T {
 
 export function removeEmpty<T = any>(data: T): T {
   if (Array.isArray(data)) {
-    return data.filter(e => e != undefined) as any;
+    return data.filter((e) => e != undefined) as any;
   }
   const res = {} as any;
   for (const key in data) {
@@ -152,7 +152,7 @@ export function removeEmpty<T = any>(data: T): T {
 export const flattenChildren = (children: any) => {
   return Array.isArray(children)
     ? [].concat(
-        ...children.map(c =>
+        ...children.map((c) =>
           c?.type === Fragment
             ? flattenChildren(c.props.children)
             : flattenChildren(c),
@@ -208,7 +208,7 @@ export const deepClone = <T>(obj: T): T => {
   const copy = {} as T;
 
   for (const key in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (Object.hasOwn(obj, key)) {
       (copy as any)[key] = deepClone((obj as any)[key]);
     }
   }
@@ -226,7 +226,7 @@ export const withRetry = async <T = any>(
 ) => {
   const {
     retry = 3,
-    isOK = e => e != null,
+    isOK = (e) => e != null,
     defaultValue = undefined,
   } = options ?? {};
   for (let i = 0; i < retry; i++) {

@@ -19,13 +19,13 @@ export default function ErrorPage({
 
   return (
     <Center
+      cursor="pointer"
+      onClick={() => reset()}
       style={{
         height: kBodyHeight,
         color: '#000',
         textDecoration: 'none',
       }}
-      onClick={() => reset()}
-      cursor="pointer"
     >
       <CardText
         style={{

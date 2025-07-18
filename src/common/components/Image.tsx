@@ -1,10 +1,10 @@
 'use client';
 
 import NextImage from 'next/image';
-import { forwardRef, ReactNode, useRef, useState } from 'react';
+import { forwardRef, type ReactNode, useRef, useState } from 'react';
 
 import { isEmpty, isString } from '../utils/is';
-import { BoxProps, getBoxProps, getBoxStyle } from './Box';
+import { type BoxProps, getBoxProps, getBoxStyle } from './Box';
 
 export interface ImageProps extends BoxProps {
   src: string;
@@ -66,13 +66,14 @@ const Image = forwardRef((props: ImageProps, ref: any) => {
       <NextImage
         ref={__ref}
         {...boxProps}
-        src={src}
         alt={alt}
-        width={isString(width) ? 0 : width}
         height={isString(height) ? 0 : height}
-        unoptimized
-        loading="lazy"
         loader={imgLoader}
+        loading="lazy"
+        onError={() => {
+          setIsLoaded(true);
+          setIsError(true);
+        }}
         onLoad={() => {
           __ref.current.removeAttribute('with');
           __ref.current.removeAttribute('height');
@@ -91,10 +92,9 @@ const Image = forwardRef((props: ImageProps, ref: any) => {
           setIsLoaded(true);
           setIsError(false);
         }}
-        onError={() => {
-          setIsLoaded(true);
-          setIsError(true);
-        }}
+        src={src}
+        unoptimized
+        width={isString(width) ? 0 : width}
       />
       {!isLoaded ? onLoad : undefined}
       {isError ? onError : undefined}

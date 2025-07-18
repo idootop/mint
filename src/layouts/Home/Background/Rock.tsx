@@ -1,6 +1,6 @@
 export const Rock1 = (props: any) => {
   return (
-    <svg width="494" height="513" viewBox="0 0 494 513" {...props}>
+    <svg height="513" viewBox="0 0 494 513" width="494" {...props}>
       <path
         d="M176.091 420.211L0 239.02L139.901 222.261L384.243 403.452L370.156 512.022L176.091 420.211Z"
         fill="#2E2E2E"
@@ -37,7 +37,7 @@ export const Rock1 = (props: any) => {
 
 export const Rock2 = (props: any) => {
   return (
-    <svg width="496" height="512" viewBox="0 0 496 512" {...props}>
+    <svg height="512" viewBox="0 0 496 512" width="496" {...props}>
       <path
         d="M360.052 59.4581L135.432 224.619L44.5935 0L360.052 59.4581Z"
         fill="#545454"
@@ -92,7 +92,7 @@ export const Rock2 = (props: any) => {
 
 export const Rock3 = (props: any) => {
   return (
-    <svg width="499" height="513" viewBox="0 0 499 513" {...props}>
+    <svg height="513" viewBox="0 0 499 513" width="499" {...props}>
       <path
         d="M0 197.693L242.999 0.817993L224.735 169.215L0 197.693Z"
         fill="#363636"

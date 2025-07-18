@@ -20,18 +20,18 @@ export default function Page() {
   return (
     <Box width="100%">
       <Item
+        cover={freedom.src}
         idx={0}
         name="PART 1 #自由"
-        cover={freedom.src}
         path="/posts/2024/freedom"
       />
       <Item
-        name="PART 2 #趋势"
-        cover={trending.src}
-        path="/posts/2024/trending"
         background="#fafbfc"
+        cover={trending.src}
+        name="PART 2 #趋势"
+        path="/posts/2024/trending"
       />
-      <Item name="PART 3 #未来" cover={future.src} path="/posts/2024/future" />
+      <Item cover={future.src} name="PART 3 #未来" path="/posts/2024/future" />
     </Box>
   );
 }
@@ -51,7 +51,7 @@ const Item = (props: {
         className={[styles.item, idx === 0 ? styles.itemFirst : undefined]}
       >
         <span className={styles.itemTitle}>{name}</span>
-        <BannerImage src={cover} marginBottom="0px" />
+        <BannerImage marginBottom="0px" src={cover} />
       </Column>
     </Link>
   );

@@ -1,6 +1,6 @@
 import { forwardRef } from 'react';
 
-import { BoxProps, getBoxProps } from '@/common/components/Box';
+import { type BoxProps, getBoxProps } from '@/common/components/Box';
 
 export type VideoProps = BoxProps &
   React.VideoHTMLAttributes<HTMLVideoElement> &
@@ -32,13 +32,13 @@ const Video = forwardRef((props: VideoProps, ref: any) => {
     <video
       ref={ref}
       {...boxProps}
-      src={src}
-      muted={muted}
       autoPlay={autoPlay}
-      loop={loop}
       controls={controls}
-      preload={preload}
+      loop={loop}
+      muted={muted}
       playsInline={playsInline}
+      preload={preload}
+      src={src}
     />
   );
 });

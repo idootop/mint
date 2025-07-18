@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { lock, unlock } from 'proper-lockfile';
 
 import { jsonDecode, jsonEncode } from './base';
@@ -19,19 +19,19 @@ export const deleteFile = (filePath: string) => {
   }
 };
 
-export const lockFile = async path => {
+export const lockFile = async (path) => {
   return lock(path, {
     realpath: false,
     retries: { retries: 100, minTimeout: 10, maxTimeout: 100 },
   }).catch(() => {});
 };
 
-export const unlockFile = async path => {
+export const unlockFile = async (path) => {
   return unlock(path, { realpath: false }).catch(() => {});
 };
 
 export const withLockFile = async (path: string, fn: VoidFunction) => {
-  let result;
+  let result: any;
   try {
     await lockFile(path);
     result = await fn();
@@ -49,7 +49,7 @@ export const readFile = async <T = any>(
   if (!fs.existsSync(dirname)) {
     return undefined;
   }
-  const result = await new Promise<T | undefined>(resolve => {
+  const result = await new Promise<T | undefined>((resolve) => {
     fs.readFile(filePath, options, (err, data) => {
       resolve(err ? undefined : (data as any));
     });
@@ -69,14 +69,14 @@ export const writeFile = async (
   if (!fs.existsSync(dirname)) {
     fs.mkdirSync(dirname, { recursive: true });
   }
-  const result = await new Promise<boolean>(resolve => {
+  const result = await new Promise<boolean>((resolve) => {
     if (options) {
-      fs.writeFile(filePath, data, options, err => {
-        resolve(err ? false : true);
+      fs.writeFile(filePath, data, options, (err) => {
+        resolve(!err);
       });
     } else {
-      fs.writeFile(filePath, data, err => {
-        resolve(err ? false : true);
+      fs.writeFile(filePath, data, (err) => {
+        resolve(!err);
       });
     }
   });
@@ -96,7 +96,7 @@ export const writeJSON = (filePath: string, content: any) =>
   writeFile(filePath, jsonEncode(content) ?? '', 'utf8');
 
 export const getFiles = (dir: string) => {
-  return new Promise<string[]>(resolve => {
+  return new Promise<string[]>((resolve) => {
     fs.readdir(dir, (err, files) => {
       resolve(err ? [] : files);
     });

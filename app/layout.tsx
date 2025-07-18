@@ -2,7 +2,7 @@ import '@/styles/reset.css';
 import '@/styles/global.css';
 import '@/styles/aspect-ratio.css';
 
-import { Viewport } from 'next';
+import type { Viewport } from 'next';
 
 import { Footer } from '@/layouts/Footer';
 import { Header } from '@/layouts/Header';
