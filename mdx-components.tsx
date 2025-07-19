@@ -14,6 +14,7 @@ import { LazyVideo } from '@/components/Video/LazyVideo';
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
+    ...components,
     BaseAudio,
     LazyAudio,
     BaseVideo,
@@ -24,8 +25,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     BannerImage,
     WrappedImage,
     a: LinkExternal,
-    img: BaseImage as any,
-    pre: CodeCard as any,
-    ...components,
+    img: BaseImage,
+    pre: CodeCard,
   };
 }

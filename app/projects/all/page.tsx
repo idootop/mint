@@ -14,7 +14,7 @@ import styles from './styles.module.css';
 
 // @ts-ignore
 export const metadata = await getOGMetadata({
-  title: '项目（全部）',
+  title: '全部项目',
 });
 
 export default async function Page() {

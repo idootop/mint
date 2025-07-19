@@ -1,6 +1,5 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import { lock, unlock } from 'proper-lockfile';
 
 import { jsonDecode, jsonEncode } from './base';
 
@@ -17,28 +16,6 @@ export const deleteFile = (filePath: string) => {
   } catch {
     return false;
   }
-};
-
-export const lockFile = async (path) => {
-  return lock(path, {
-    realpath: false,
-    retries: { retries: 100, minTimeout: 10, maxTimeout: 100 },
-  }).catch(() => {});
-};
-
-export const unlockFile = async (path) => {
-  return unlock(path, { realpath: false }).catch(() => {});
-};
-
-export const withLockFile = async (path: string, fn: VoidFunction) => {
-  let result: any;
-  try {
-    await lockFile(path);
-    result = await fn();
-  } finally {
-    await unlockFile(path);
-  }
-  return result;
 };
 
 export const readFile = async <T = any>(

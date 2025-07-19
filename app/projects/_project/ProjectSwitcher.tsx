@@ -14,7 +14,7 @@ export const ProjectSwitcher = ({ from }: { from: PageFrom }) => {
           background: from === PageFrom.pinned ? '#000' : 'transparent',
         }}
       >
-        Pinned
+        精选
       </a>
       <a
         className={styles.switcherOption}
@@ -24,7 +24,7 @@ export const ProjectSwitcher = ({ from }: { from: PageFrom }) => {
           background: from === PageFrom.all ? '#000' : 'transparent',
         }}
       >
-        All
+        全部
       </a>
     </Row>
   );

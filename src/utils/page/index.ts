@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { executeSharedTask } from '../../common/utils/task';
 import { getOGMetadata } from '../metadata';
 
 export interface PageMetadata {
@@ -42,19 +43,16 @@ export type PagesWithPinned<T extends PageMetadata> = {
   all: T[];
   pinned: T[];
 };
-const kPages: Record<string, any> = {};
-export const getPages = async <T extends PageMetadata>(
+
+const _getPages = <T extends PageMetadata>(
   category: string,
   ctx: any,
   options?: {
     buildMetadata?: (T) => T;
     sort?: (a: T, b: T) => number;
   },
-): Promise<PagesWithPinned<T>> => {
+): PagesWithPinned<T> => {
   const { sort, buildMetadata } = options ?? {};
-  if (kPages[category]) {
-    return kPages[category];
-  }
   // 导入
   const pages = ctx.keys().map((filePath) => {
     const page = ctx(filePath);
@@ -115,7 +113,8 @@ export const getPages = async <T extends PageMetadata>(
       parseFloat(a.pinnedIndex!.replace('-', '')) -
       parseFloat(b.pinnedIndex!.replace('-', '')),
   );
-  kPages[category] = {
+
+  return {
     all: [
       ...sortedPages.all.top,
       ...sortedPages.all.middle,
@@ -127,7 +126,20 @@ export const getPages = async <T extends PageMetadata>(
       ...sortedPages.pinned.bottom,
     ],
   };
-  return kPages[category];
+};
+
+export const getPages = async <T extends PageMetadata>(
+  category: string,
+  ctx: any,
+  options?: {
+    buildMetadata?: (T) => T;
+    sort?: (a: T, b: T) => number;
+  },
+): Promise<PagesWithPinned<T>> => {
+  return executeSharedTask(
+    `get-${category}-pages`,
+    () => _getPages(category, ctx, options) as any,
+  );
 };
 
 export interface PageContext<T extends PageMetadata> {
@@ -135,17 +147,14 @@ export interface PageContext<T extends PageMetadata> {
   next?: T;
 }
 
-export const getPage = async <T extends PageMetadata>(
-  pages: T[],
-  path: string,
-) => {
+export const getPage = <T extends PageMetadata>(pages: T[], path: string) => {
   return pages.find((e) => e.path === path);
 };
 
-export const getPageContext = async <T extends PageMetadata>(
+export const getPageContext = <T extends PageMetadata>(
   pages: T[],
   path: string,
-): Promise<PageContext<T>> => {
+): PageContext<T> => {
   const ctxPages = pages.filter((e) => !e.hidden);
   const ctxIdx = ctxPages.findIndex((e) => e.path === path);
   return {
@@ -158,7 +167,7 @@ export async function generatePageMetadata<T extends PageMetadata>(
   pages: T[],
   path: string,
 ): Promise<T & Metadata> {
-  const metadata = await getPage<T>(pages, path);
+  const metadata = getPage<T>(pages, path);
   return {
     ...metadata!,
     ...(await getOGMetadata({

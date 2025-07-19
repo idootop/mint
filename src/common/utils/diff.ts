@@ -61,7 +61,6 @@ function diff(
         options,
         options.cyclesFix ? _stack.concat([objKey]) : [],
       );
-      // eslint-disable-next-line prefer-spread
       diffs.push.apply(
         diffs,
         nestedDiffs.map((difference) => {

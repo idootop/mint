@@ -14,9 +14,9 @@ import { PostLayout } from './PostLayout';
 
 export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
 
-export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
+const getPosts = async (): Promise<PagesWithPinned<Post>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
-  return getPages<Post>('posts', ctx, {
+  const posts = await getPages<Post>('posts', ctx, {
     buildMetadata: (post) => {
       const createAt = post.createAt ?? '2024-01-01';
       return {
@@ -32,6 +32,7 @@ export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
       });
     },
   });
+  return posts;
 };
 
 export interface PostsGroupedByYear {
@@ -99,7 +100,7 @@ export const getPostContext = async (
 };
 
 export async function generatePostMetadata(path: string) {
-  return generatePageMetadata<Post>(await getPostSortedByYear(), path);
+  return generatePageMetadata<Post>((await getPosts()).all, path);
 }
 
 export const generatePostPage = async (metaURL: string, Content: any) => {

@@ -18,6 +18,5 @@ export const useEffectSafely = (
       effectRef.current = effectRef.current + 1;
       ret?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 };

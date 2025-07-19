@@ -54,7 +54,7 @@ const Image = forwardRef((props: ImageProps, ref: any) => {
 
   const { width = 0, height = 0 } = boxProps.style;
 
-  const _ref = useRef();
+  const _ref = useRef<HTMLImageElement>(null);
   const __ref = ref ?? _ref;
 
   if (isEmpty(src)) {

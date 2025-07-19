@@ -1,25 +1,22 @@
-import { deleteFile, getFiles, readJSON } from '@/common/utils/io';
+import { deleteFile, getFiles } from '@/common/utils/io';
 import {
-  type ImageCache,
+  getImageCaches,
   kCompressionDir,
   kDownloadDir,
-  kImageCachePath,
   kPublicDir,
 } from '@/utils/image';
 
 async function main() {
-  const { downloads = [], compressions = [] } = await getImageCaches();
+  const { downloads = [], compressions = [] } = await getUnusedImages();
   await deleteUnusedImages(kDownloadDir, downloads);
   await deleteUnusedImages(kCompressionDir, compressions);
-  await deleteFile(kImageCachePath);
 }
 
-const getImageCaches = async () => {
+const getUnusedImages = async () => {
   const downloads: string[] = [];
   const compressions: string[] = [];
-  const caches: Record<string, ImageCache> =
-    (await readJSON(kImageCachePath)) ?? {};
-  for (const cache of Object.values(caches)) {
+  const caches = await getImageCaches();
+  for (const cache of caches) {
     const { downloads: d, compressions: c } = cache.metadata;
     if (d) {
       downloads.push(d.src);

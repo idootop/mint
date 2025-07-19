@@ -42,7 +42,7 @@ const TextArea = forwardRef((props: BoxProps & TextAreaProps, ref: any) => {
     ],
   });
 
-  const _ref = useRef();
+  const _ref = useRef<HTMLTextAreaElement>(null);
   const inputRef = ref ?? _ref;
 
   const updateInputHeight = () => {
@@ -67,7 +67,6 @@ const TextArea = forwardRef((props: BoxProps & TextAreaProps, ref: any) => {
     }, 100);
 
     return clearInterval(timer);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updateInputHeight]);
 
   return (

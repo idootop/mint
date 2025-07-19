@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import {
   type CSSProperties,
   type DOMAttributes,
@@ -73,7 +72,7 @@ export const getBoxProps = (props: BoxProps) => {
   if (boxProps.style.size) {
     boxProps.style.width = boxProps.style.size;
     boxProps.style.height = boxProps.style.size;
-    delete boxProps.style.size;
+    delete boxProps.style['size'];
   }
 
   for (const key of excludes) {

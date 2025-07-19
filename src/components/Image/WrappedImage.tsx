@@ -3,7 +3,7 @@ import type { ImageProps } from '@/common/components/Image';
 
 import { BaseImage } from './BaseImage';
 
-export const WrappedImage = async (
+export const WrappedImage = (
   props: ImageProps & { size?: number; width?: number; height?: number },
 ) => {
   const { src, alt, ...rest } = props;

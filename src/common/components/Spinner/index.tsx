@@ -43,7 +43,6 @@ export const Spinner = (props?: SpinnerProps) => {
     setTimeout(() => {
       setInitialized(true);
     }, delay);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delay]);
 
   return initialized ? <div {...boxProps} /> : <div />;

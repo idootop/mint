@@ -2,13 +2,8 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 import sharp from 'sharp';
 
-import {
-  readFile,
-  readJSON,
-  withLockFile,
-  writeFile,
-  writeJSON,
-} from '@/common/utils/io';
+import { FileBasedCollector } from '@/common/utils/collector';
+import { readFile, writeFile } from '@/common/utils/io';
 import { isEmpty } from '@/common/utils/is';
 
 import { assetURL2LocalPath, isInternalAsset, resolveAssetURL } from './assets';
@@ -55,27 +50,27 @@ export interface ImageCache {
 
 const kRootDir = process.cwd();
 
-export const kImageCachePath = '.imagecache.json';
 export const kPublicDir = 'public';
 export const kDownloadDir = 'downloads';
 export const kCompressionDir = 'compressions';
+export const kImageCachePath = '.next/images-cache.json';
+
+type ImageCacheInfo = ImageCache & { url: string };
+const urlCollector = new FileBasedCollector<ImageCacheInfo>(
+  'urls',
+  (e) => e.url,
+);
+
+export const getImageCaches = () => {
+  return urlCollector.getAllItems();
+};
 
 const getImageCache = async (url = '404'): Promise<ImageCache | undefined> => {
-  return withLockFile(kImageCachePath, async () => {
-    const caches = (await readJSON(kImageCachePath)) ?? {};
-    return caches[url];
-  });
+  return (await getImageCaches()).find((e) => e.url === url);
 };
 
 export const addImageCache = async (url: string, data: ImageCache) => {
-  return withLockFile(kImageCachePath, async () => {
-    const caches = (await readJSON(kImageCachePath)) ?? {};
-    if (caches[url]) {
-      return true;
-    }
-    caches[url] = data;
-    await writeJSON(kImageCachePath, caches);
-  });
+  await urlCollector.addItem({ url, ...data });
 };
 
 export const processImage = async (url: string | undefined) => {

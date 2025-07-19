@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useBoxSize = () => {
-  const boxRef: any = useRef<HTMLElement>();
+  const boxRef = useRef<HTMLElement>(null);
   const [size, setSize] = useState({
     width: 0,
     height: 0,
