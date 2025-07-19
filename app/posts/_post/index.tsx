@@ -14,7 +14,7 @@ import { PostLayout } from './PostLayout';
 
 export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
 
-const getPosts = async (): Promise<PagesWithPinned<Post>> => {
+export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
   const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
   const posts = await getPages<Post>('posts', ctx, {
     buildMetadata: (post) => {
