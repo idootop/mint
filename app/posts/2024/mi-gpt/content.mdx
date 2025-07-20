@@ -1,18 +1,18 @@
 export const metadata = {
-  title: '登顶 GitHub Trending（上）',
-  description: '记一次登顶 GitHub Trending 的经历',
-  createAt: '2024-06-18',
+  title: "登顶 GitHub Trending（上）",
+  description: "记一次登顶 GitHub Trending 的经历",
+  createAt: "2024-06-18",
 };
 
 <iframe
-  src="//player.bilibili.com/player.html?isOutside=true&aid=1555304659&bvid=BV1N1421y7qn&cid=1573774536&p=1"
+  src="//player.bilibili.com/player.html?isOutside=true&aid=1555304659&bvid=BV1N1421y7qn&cid=1573774536&p=1&autoplay=0"
   scrolling="no"
   border="0"
-  frameBorder="no"
+  frameborder="no"
   framespacing="0"
-  allowFullScreen
+  allowfullscreen="true"
   style={{
-    width: '100%',
+    width: "100%",
     aspectRatio: 16 / 9,
   }}
 ></iframe>
@@ -25,9 +25,9 @@ export const metadata = {
 
 于是在 2024 年春节，我花了大概一周的时间，逆向出来了豆包的 TTS 接口。
 
-2024年1月24日，我提交了 `MiGPT` 的第一行代码，命运的齿轮开始转动。
+2024 年 1 月 24 日，我提交了 `MiGPT` 的第一行代码，命运的齿轮开始转动。
 
-import firstCommit from './images/first-commit.jpg';
+import firstCommit from "./images/first-commit.jpg";
 
 <BaseImage src={firstCommit.src} alt="第一次提交代码" />
 
@@ -57,7 +57,7 @@ import firstCommit from './images/first-commit.jpg';
 
 而这段文字便是大名鼎鼎的：`const kAreYouOK = "¿ʞо ∩оʎ ǝɹɐ";` 😂
 
-import areYouOk from './images/are-you-ok.jpg';
+import areYouOk from "./images/are-you-ok.jpg";
 
 <BaseImage src={areYouOk.src} alt="Are You OK?" />
 
@@ -75,7 +75,7 @@ import areYouOk from './images/are-you-ok.jpg';
 
 于是我跑到 XiaoGPT[^1] 项目下面，毛遂自荐了我的项目[^2]。
 
-import xiaoGPT from './images/xiaogpt.jpg';
+import xiaoGPT from "./images/xiaogpt.jpg";
 
 <BaseImage src={xiaoGPT.src} alt="获得了作者的回应" />
 
@@ -103,8 +103,8 @@ import xiaoGPT from './images/xiaogpt.jpg';
 
 后来我把这个消息，告诉了坐在我旁边的同事，然后戏剧性的一幕发生了：
 
-import msg1 from './images/msg1.webp';
-import msg2 from './images/msg2.webp';
+import msg1 from "./images/msg1.webp";
+import msg2 from "./images/msg2.webp";
 
 | <TableImage src={msg1.src} /> | <TableImage src={msg2.src} /> |
 | :---------------------------: | :---------------------------: |
@@ -123,7 +123,7 @@ import msg2 from './images/msg2.webp';
 
 幸运的是在我投稿没多久，阮一峰老师为其打上了 `weekly` 标签，视为入选。
 
-import weekly from './images/weekly.jpg';
+import weekly from "./images/weekly.jpg";
 
 <BaseImage src={weekly.src} />
 
@@ -153,7 +153,7 @@ import weekly from './images/weekly.jpg';
 
 从此，`MiGPT` 便迎来了一段 stars 飞速上升的美好时光 🚀
 
-import lfg from './images/lfg.jpg';
+import lfg from "./images/lfg.jpg";
 
 <BaseImage src={lfg.src} />
 
@@ -165,7 +165,7 @@ import lfg from './images/lfg.jpg';
 
 不过我还是最喜欢在橘子洲骑共享单车，又体验到了 [**像风一样自由**](http://localhost:3000/posts/2023/biking1) 的感觉。
 
-import biking from './videos/biking.mp4';
+import biking from "./videos/biking.mp4";
 
 <LazyVideo src={biking.src} controls />
 
@@ -173,7 +173,7 @@ import biking from './videos/biking.mp4';
 
 惊讶的发现 `MiGPT` 已经登上 Github Trending Daily 榜一了！
 
-import daily from './images/daily.webp';
+import daily from "./images/daily.webp";
 
 <BaseImage src={daily.src} />
 
@@ -220,9 +220,6 @@ import daily from './images/daily.webp';
 > 注意：该网站每天有总计 $5 的免费额度（0 点自动刷新）用完即止。
 
 [^1]: [XiaoGPT](https://github.com/yihong0618/xiaogpt/): 小爱音箱接入 ChatGPT 的 Python 版解决方案，MiGPT 的实现方式主要参考了这个项目。
-
 [^2]: https://github.com/yihong0618/xiaogpt/issues/515
-
 [^3]: https://github.com/ruanyf/weekly/issues/4582
-
 [^4]: https://github.com/idootop/mi-gpt/blob/main/docs/sponsors.md

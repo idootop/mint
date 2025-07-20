@@ -1,0 +1,45 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: "📦",
+  title: "ZenBox",
+  source: "https://github.com/idootop/zenbox",
+  preview: "https://zenbox.del.wang",
+  createAt: "2025-07",
+  description: "Code React like Vue, Manage state like Zustand",
+  cover: cover.src,
+  pinned: true,
+};
+
+## 什么是 ZenBox？
+
+ZenBox 是一个现代化的 React 状态管理库，它将 Zustand 的简洁与 Vue 的响应式写法完美结合。
+
+用起来既简单又符合直觉，**让你写 React 像写 Vue 一样爽！**
+
+**如果你喜欢 Zustand 和 Vue，你一定会喜欢 ZenBox！**
+
+### 🐻 像 Zustand 一样简单
+
+```ts
+const counter = createStore({ count: 0 }); // 自动类型推导，无需手写 interface
+```
+
+### 💚 像 Vue 一样熟悉的写法
+
+```ts
+const doubled = useComputed(() => counter.value.count * 2);
+
+useWatch(
+  () => counter.value.count,
+  (current, prev) => console.log("从", prev, "变为", current)
+);
+```
+
+## 核心特性
+
+- 🚀 **简单** - 像 Vue 一样简单，上手即用
+- ⚡ **高效** - 自动依赖追踪，按需 re-render
+- 💪 **安全** - 自动类型推导，无需手写 interface
+- 🎯 **灵活** - 支持全局和组件级状态隔离，多 Store 联合计算
+- 📦 **轻量** - [100 行核心代码](https://zenbox.del.wang/cn/blog/react-state-management-in-100-lines)，压缩后小于 3KB（不含 Immer）

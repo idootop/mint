@@ -5,6 +5,7 @@ import { LazyAudio } from '@/components/Audio/LazyAudio';
 import { CodeCard } from '@/components/Code/CodeCard';
 import { BannerImage } from '@/components/Image/BannerImage';
 import { BaseImage } from '@/components/Image/BaseImage';
+import { RawImage } from '@/components/Image/RawImage';
 import { TableImage } from '@/components/Image/TableImage';
 import { WrappedImage } from '@/components/Image/WrappedImage';
 import { LinkExternal } from '@/components/MDX/LinkExternal';
@@ -20,6 +21,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     BaseVideo,
     LazyVideo,
     AutoPlayVideo,
+    RawImage,
     BaseImage,
     TableImage,
     BannerImage,

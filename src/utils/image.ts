@@ -77,6 +77,9 @@ export const processImage = async (url: string | undefined) => {
   if (!url) {
     return;
   }
+  if (url.includes('img.shields.io')) {
+    return { src: url };
+  }
   const { props } = (await getImageCache(url)) ?? {};
   if (props) {
     return props;
