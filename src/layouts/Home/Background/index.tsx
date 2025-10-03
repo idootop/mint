@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useCallback, useRef } from 'react';
 
 import { Box } from '@/common/components/Box';
@@ -48,6 +49,12 @@ export function Background({ children }) {
             />
           );
         })}
+      <Position height="100%" width="100%">
+        <Link
+          href="/projects"
+          style={{ width: '100%', height: '100%', display: 'block' }}
+        />
+      </Position>
     </Stack>
   );
 }
