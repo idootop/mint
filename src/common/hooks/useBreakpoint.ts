@@ -1,7 +1,20 @@
-import { useEffect } from 'react';
-import { useXState, XSta } from 'xsta';
+import { useEffect, useRef, useState } from 'react';
 
-const _getBreakpoint = () => {
+interface ScreenSize {
+  isReady: boolean;
+  isMobile: boolean;
+  isPC: boolean;
+  isPad: boolean;
+  isXS: boolean;
+  isSM: boolean;
+  isMD: boolean;
+  isLG: boolean;
+  isXL: boolean;
+  isXXL: boolean;
+  isXXXL: boolean;
+}
+
+const getScreenSize = (): Partial<ScreenSize> => {
   const width = document.body.clientWidth;
   if (width < 576) {
     return { isXS: true, isMobile: true };
@@ -25,39 +38,20 @@ const _getBreakpoint = () => {
   return { isXXXL: true, isPC: true };
 };
 
-interface DeviceSize {
-  isReady: boolean;
-  isMobile: boolean;
-  isPC: boolean;
-  isPad: boolean;
-  isXS: boolean;
-  isSM: boolean;
-  isMD: boolean;
-  isLG: boolean;
-  isXL: boolean;
-  isXXL: boolean;
-  isXXXL: boolean;
-}
+export const useBreakpoint = (): Partial<ScreenSize> => {
+  const [breakpoint, setBreakpoint] = useState<Partial<ScreenSize>>();
+  const updateRef = useRef(setBreakpoint);
+  updateRef.current = setBreakpoint;
 
-const kScreenReSizeListenerKey = 'kScreenReSizeListenerKey';
-let _initScreenReSizeListener = false;
-const initScreenReSizeListener = () => {
-  if (!_initScreenReSizeListener) {
-    XSta.set(kScreenReSizeListenerKey, _getBreakpoint());
-    window.addEventListener('resize', () => {
-      XSta.set(kScreenReSizeListenerKey, _getBreakpoint());
-    });
-    _initScreenReSizeListener = true;
-  }
-};
-
-export const useBreakpoint = (): Partial<DeviceSize> => {
-  // 要先等 useXState 注册 rebuild 回调
-  const [breakpoint] = useXState(kScreenReSizeListenerKey);
   useEffect(() => {
-    // 然后再初始化 store 的值，触发 client 端更新
-    initScreenReSizeListener();
+    const update = () => {
+      updateRef.current(getScreenSize());
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
   }, []);
+
   return breakpoint
     ? { ...breakpoint, isReady: true }
     : { isMobile: true, isReady: false }; // 默认移动端（优先）
