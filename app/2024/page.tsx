@@ -10,7 +10,7 @@ import future from './images/future.png';
 import trending from './images/trending.png';
 import styles from './styles.module.css';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata({
   title: '请回答 2024',
   description: '我的 2024 年度总结',

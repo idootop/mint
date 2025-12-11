@@ -9,6 +9,6 @@
     }
   },
   "files": {
-    "includes": ["!out/**"]
+    "includes": ["!out"]
   }
 }

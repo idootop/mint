@@ -5,7 +5,7 @@ import { CardText } from '@/components/Text/CardText';
 import { kBodyHeight } from '@/layouts/sizes';
 import { getOGMetadata } from '@/utils/metadata';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata({
   title: '404',
 });

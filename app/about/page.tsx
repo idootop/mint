@@ -4,7 +4,7 @@ import { getOGMetadata } from '@/utils/metadata';
 import Content from './content.mdx';
 import styles from './styles.module.css';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata({
   title: '关于',
 });

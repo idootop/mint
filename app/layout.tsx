@@ -8,7 +8,7 @@ import { Footer } from '@/layouts/Footer';
 import { Header } from '@/layouts/Header';
 import { getOGMetadata } from '@/utils/metadata';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata();
 
 export const viewport: Viewport = {

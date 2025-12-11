@@ -3,7 +3,7 @@ import { getOGMetadata } from '@/utils/metadata';
 
 import { Background } from '../src/layouts/Home/Background';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata({
   title: 'Del Wang',
   description: '技术极客，致力于让科技充满爱（AI）',

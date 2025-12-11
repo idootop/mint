@@ -7,7 +7,7 @@ import { getPageLinkWithFrom, PageFrom } from '@/utils/page/from';
 import { getPostsGroupedByYear, getPostsPinned, type Post } from './_post';
 import styles from './styles.module.css';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata({
   title: '博客',
 });

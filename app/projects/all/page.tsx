@@ -12,7 +12,7 @@ import {
 import { ProjectSwitcher } from '../_project/ProjectSwitcher';
 import styles from './styles.module.css';
 
-// @ts-ignore
+// @ts-expect-error
 export const metadata = await getOGMetadata({
   title: '全部项目',
 });
