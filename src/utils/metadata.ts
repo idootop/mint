@@ -8,21 +8,28 @@ export const kSiteMetadata = {
 };
 
 export async function getOGMetadata(props?: {
+  path?: string;
   title?: string;
   description?: string;
   image?: string;
 }) {
   const {
+    path,
     title = kSiteMetadata.title,
     description = kSiteMetadata.description,
     image = kSiteMetadata.image,
   } = props ?? {};
+
   const _title =
     title === kSiteMetadata.title
       ? kSiteMetadata.title
       : `${title}｜${kSiteMetadata.title}`;
-  return {
+
+  const metadata = {
     title: _title,
+    alternates: {
+      canonical: kSiteMetadata.home + path,
+    },
     metadataBase: new URL(kSiteMetadata.home),
     openGraph: {
       type: 'website',
@@ -33,4 +40,11 @@ export async function getOGMetadata(props?: {
       images: image ? [{ url: (await processImage(image))?.src ?? image }] : [],
     },
   };
+
+  if (path) {
+    metadata.alternates = {
+      canonical: kSiteMetadata.home + path,
+    };
+  }
+  return metadata;
 }

@@ -12,6 +12,7 @@ import styles from './styles.module.css';
 
 // @ts-expect-error
 export const metadata = await getOGMetadata({
+  path: '/2024',
   title: '请回答 2024',
   description: '我的 2024 年度总结',
 });

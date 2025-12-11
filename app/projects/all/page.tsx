@@ -14,6 +14,7 @@ import styles from './styles.module.css';
 
 // @ts-expect-error
 export const metadata = await getOGMetadata({
+  path: '/projects/all',
   title: '全部项目',
 });
 

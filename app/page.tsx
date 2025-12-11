@@ -5,8 +5,9 @@ import { Background } from '../src/layouts/Home/Background';
 
 // @ts-expect-error
 export const metadata = await getOGMetadata({
+  path: '/',
   title: 'Del Wang',
-  description: '技术极客，致力于让科技充满爱（AI）',
+  description: '让科技充满爱（AI）',
 });
 
 export default function Index() {

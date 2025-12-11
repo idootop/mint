@@ -9,6 +9,7 @@ import styles from './styles.module.css';
 
 // @ts-expect-error
 export const metadata = await getOGMetadata({
+  path: '/posts',
   title: '博客',
 });
 

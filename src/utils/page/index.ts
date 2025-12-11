@@ -171,6 +171,7 @@ export async function generatePageMetadata<T extends PageMetadata>(
   return {
     ...metadata!,
     ...(await getOGMetadata({
+      path,
       title: metadata!.title,
       description: metadata!.description,
       image: metadata!.cover,

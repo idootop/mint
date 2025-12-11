@@ -6,10 +6,6 @@ import type { Viewport } from 'next';
 
 import { Footer } from '@/layouts/Footer';
 import { Header } from '@/layouts/Header';
-import { getOGMetadata } from '@/utils/metadata';
-
-// @ts-expect-error
-export const metadata = await getOGMetadata();
 
 export const viewport: Viewport = {
   width: 'device-width',
