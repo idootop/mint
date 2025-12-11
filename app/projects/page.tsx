@@ -12,6 +12,7 @@ import styles from './styles.module.css';
 
 // @ts-expect-error
 export const metadata = await getOGMetadata({
+  path: '/projects',
   title: '精选项目',
 });
 

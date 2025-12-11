@@ -1,7 +1,7 @@
-import { generatePostPage } from '../../_post';
+import { generateProjectPage } from '../../_project';
 import Content from './content.mdx';
 
 // @ts-expect-error
-const p = await generatePostPage(import.meta.url, Content);
+const p = await generateProjectPage(import.meta.url, Content);
 export const metadata = p.metadata;
 export default p.Page;

@@ -1,0 +1,61 @@
+import cover from "./cover.png";
+
+export const metadata = {
+  emoji: "👓",
+  title: "MigicCube",
+  preview: "https://idootop.github.io/MigicCube",
+  source: "https://github.com/idootop/MigicCube",
+  createAt: "2025-12",
+  description: "使用小米 AI 眼镜，在 20 步内还原三阶魔方",
+  cover: cover.src,
+  pinned: true,
+};
+
+## 项目简介
+
+本项目通过小米 AI 眼镜识别魔方，并在 1 秒钟内给出最优解法（20 步以内），然后使用 3D 动画演示每一步转动，让解魔方变得前所未有的简单有趣。
+
+## 演示视频
+
+<iframe
+  src="//player.bilibili.com/player.html?isOutside=true&aid=115687477480018&bvid=BV1hx2SBrETy&cid=34606222307&p=1&autoplay=0"
+  scrolling="no"
+  border="0"
+  frameborder="no"
+  framespacing="0"
+  allowfullscreen="true"
+  style={{
+    width: "100%",
+    aspectRatio: 16 / 9,
+    marginBottom: "16px",
+  }}
+></iframe>
+
+## 核心功能
+
+- **📷 智能识别**：自动调用小米 AI 眼镜拍照，利用 Yolo11 + OpenCV 识别魔方状态。
+- **⚡️ 快速还原**：使用 Kociemba 两阶段求解法，在 1 秒内给出最优解法（20 步以内）。
+- **🎲 3D 演示**：在网页上以逼真的 3D 动画形式，逐步演示如何转动魔方的每一个面。
+- **🔊 语音引导**：支持通过语音实时交互，获得每一步的操作提示（小米 AI 眼镜没有屏幕）。
+
+## 幕后花絮
+
+我在想能不能用小米 AI 眼镜，
+
+做一些**更酷、更有意义**的事情呢？
+
+比如：帮助盲人看见眼前的世界。
+
+又或者像 AlphaGo 一样，
+
+让自己成为围棋高手。
+
+甚至你可以带着它，
+
+去跟小区里下象棋的大爷，
+
+一起 battle 一下，让他输到怀疑人生~
+
+而本项目就是我的一些探索，希望对你有用。
+
+Enjoy ;)

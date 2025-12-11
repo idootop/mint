@@ -6,7 +6,7 @@ export const metadata = {
   source: "https://github.com/idootop/zenbox",
   preview: "https://zenbox.del.wang",
   createAt: "2025-07",
-  description: "Code React like Vue, Manage state like Zustand",
+  description: "React state management that feels like Vue vibes in React ",
   cover: cover.src,
   pinned: true,
 };
@@ -43,3 +43,16 @@ useWatch(
 - 💪 **安全** - 自动类型推导，无需手写 interface
 - 🎯 **灵活** - 支持全局和组件级状态隔离，多 Store 联合计算
 - 📦 **轻量** - [100 行核心代码](https://zenbox.del.wang/cn/blog/react-state-management-in-100-lines)，压缩后小于 3KB（不含 Immer）
+
+## Zenbox vs Zustand
+
+| Feature            | ZenBox                            | Zustand                       |
+| ------------------ | --------------------------------- | ----------------------------- |
+| **Learning Curve** | ✅ As easy as Vue                 | ✅ Low                        |
+| **Vue-like Hooks** | ✅ `useComputed` / `useWatch`     | ❌ Not supported              |
+| **TypeScript**     | ✅ Auto-inference                 | ⚠️ Manual interfaces          |
+| **Cross-Store**    | ✅ Auto tracking                  | ❌ Not supported              |
+| **State Access**   | ✅ Unified `store.value`          | ⚠️ Explicit `get()` / `set()` |
+| **Scoping**        | ✅ Built-in Provider              | ❌ Global by default          |
+| **Immer**          | ✅ Built-in                       | ⚠️ Middleware required        |
+| **Bundle Size**    | **< 3KB** gzipped (without Immer) | **< 1KB** gzipped             |
