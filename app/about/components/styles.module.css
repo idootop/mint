@@ -1,0 +1,48 @@
+.header {
+  background: hsla(0, 0%, 100%, 0);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.header a {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.header a:hover,
+.header a[data-active="true"] {
+  color: rgba(255, 255, 255, 1) !important;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.5) !important;
+  transform: translateX(-50%);
+  transition: color 0.3s ease-in;
+}
+
+.footer a {
+  color: rgba(255, 255, 255, 1) !important;
+  transition: color 0.3s ease-in;
+}
+
+.box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+  width: 100%;
+  max-width: 640px;
+  padding: 0 20px;
+  transform: translate(-50%, -50%);
+}
+
+.bg {
+  background: #000;
+}
+
+.box img {
+  filter: none;
+}

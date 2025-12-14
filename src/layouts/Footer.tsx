@@ -5,6 +5,7 @@ import { kFooterHeight, kPageMaxWidth } from './sizes';
 export const Footer = () => {
   return (
     <footer
+      id="footer"
       style={{
         display: 'flex',
         flexDirection: 'row',

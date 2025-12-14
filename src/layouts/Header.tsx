@@ -15,7 +15,7 @@ export const Header = () => {
   const isHome = currentPath === '/';
   return (
     <>
-      <header className={styles.header}>
+      <header className={styles.header} id="header">
         <Row
           style={{
             margin: '0 auto',
@@ -58,10 +58,10 @@ const LinkItem = (props: { href: string; children: any }) => {
   return (
     <Link
       className={styles.link}
+      data-active={active}
       href={href}
       style={{
         fontSize: '16px',
-        color: !active ? 'rgba(0, 0, 0, 0.3)' : undefined,
         fontWeight: active ? 'bold' : undefined,
       }}
     >

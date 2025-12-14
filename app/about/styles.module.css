@@ -3,3 +3,37 @@
   padding: 0 20px;
   margin: 0 auto;
 }
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  user-select: none;
+}
+
+.bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  transition: background 0.3s ease-in;
+}
+
+.box img {
+  filter: invert(100%);
+  transition: filter 0.3s ease-in;
+}
+
+.box :global(#bio) {
+  width: 100%;
+}
+
+.box :global(#del) {
+  width: min(30%, 160px);
+}

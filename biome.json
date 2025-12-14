@@ -8,6 +8,11 @@
       }
     }
   },
+  "css": {
+    "parser": {
+      "cssModules": true
+    }
+  },
   "files": {
     "includes": ["!out"]
   }

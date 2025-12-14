@@ -12,6 +12,10 @@ const withNextFileLoader = createNextFileLoader([
     test: /\.(mp3|wav|flac|ogg|aac|m4a|wma|ape)$/i,
     outputPath: 'static/audios/[name].[hash:8].[ext]',
   },
+  {
+    test: /\.(glb|gltf)$/i,
+    outputPath: 'static/models/[name].[hash:8].[ext]',
+  },
 ]);
 
 const withMDX = configMDX({
