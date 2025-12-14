@@ -8,4 +8,4 @@
 
 ## License
 
-MIT License © 2025-PRESENT [Del Wang](https://del.wang)
+MIT License © 2017-PRESENT [Del Wang](https://del.wang)

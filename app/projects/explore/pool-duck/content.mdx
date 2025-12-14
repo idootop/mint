@@ -1,0 +1,39 @@
+import cover from "./cover.webp";
+
+export const metadata = {
+  emoji: "🧊",
+  title: "池核鸭",
+  source: "https://github.com/idootop/webgl2-water",
+  preview: "https://idootop.github.io/webgl2-water",
+  createAt: "2025-12",
+  description: "一个池核风格的数字艺术网页，基于 WebGL 2.0 实现",
+  cover: cover.src,
+  pinned: true,
+};
+
+## 背景
+
+经常在小红书上刷到一些[池核风格](https://www.xiaohongshu.com/search_result?keyword=池核)的动态壁纸，
+
+觉得很有意思，于是自己模仿着做了一个。
+
+## 特点
+
+- **核美学**：清澈见底的水体、洁净的瓷砖以及明亮空灵的灯光。
+- **高保真渲染**：利用 WebGL 2.0 浮点纹理，实现焦散、折射和柔和阴影效果。
+- **现代技术栈**：使用 TypeScript​ + Three.js​ 实现，配有自定义的物理引擎。
+- **跨平台体验**：针对桌面端和移动端的交互进行了优化（支持触摸和重力感应）
+
+## 预览
+
+这个效果也被用在了「关于」页面上：https://del.wang/about
+
+import demo from "./images/demo.webp";
+
+<BannerImage src={demo.src} />
+
+## 🦄 致谢
+
+本项目基于 [Evan Wallace](http://madebyevan.com) 的 [evanw/webgl-water](https://github.com/evanw/webgl-water)（一个 10 年前的网页）
+
+我将其从 WebGL 1.0 升级到了 WebGL 2.0，并从 Lightgl + JavaScript 迁移到了 Threejs + TypeScript 等现代技术栈，让其能够在现代浏览器中更高效的运行。
