@@ -62,7 +62,7 @@ const PostItem = (props: { post: Post; from: PageFrom }) => {
       ? post.createAt.replaceAll('-', '.')
       : post.createAt.substring(5);
   return (
-    <Link className={styles.item} href={postLink}>
+    <Link className={styles.item} href={postLink} prefetch={false}>
       <Row alignItems="center" width="100%">
         <Expand marginRight="10px">
           <span className={styles.title}>{post.title}</span>

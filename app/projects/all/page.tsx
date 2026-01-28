@@ -59,7 +59,7 @@ const ProjectItem = (props: { project: Project }) => {
   const projectLink = project.path;
   const projectDate = project.createAt.replaceAll('-', '.');
   return (
-    <Link className={styles.item} href={projectLink}>
+    <Link className={styles.item} href={projectLink} prefetch={false}>
       <span>
         <span className={styles.title}>
           {project.emoji} {project.title}
