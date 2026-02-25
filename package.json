@@ -1,7 +1,7 @@
 {
   "name": "mint",
   "description": "薄荷的花语是：永不消逝的爱",
-  "version": "6.1.0",
+  "version": "6.2.0",
   "private": true,
   "type": "module",
   "engines": {
@@ -17,27 +17,27 @@
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."
   },
   "dependencies": {
-    "next": "^15.5.9",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "three": "^0.182.0"
+    "next": "^15.5.12",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "^0.183.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.11",
-    "@del-wang/config": "^1.5.0",
+    "@biomejs/biome": "^2.4.4",
+    "@del-wang/config": "^1.7.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^15.5.9",
+    "@next/mdx": "^15.5.12",
     "@types/mdx": "^2.0.13",
-    "@types/node": "^25.0.9",
-    "@types/react": "^19.2.8",
+    "@types/node": "^25.3.0",
+    "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.182.0",
+    "@types/three": "^0.183.1",
     "got": "^14.6.6",
     "https-proxy-agent": "^7.0.6",
-    "lefthook": "^2.0.15",
+    "lefthook": "^2.1.1",
     "next-file-loader": "^1.0.0",
-    "rehype-prism-plus": "^2.0.1",
+    "rehype-prism-plus": "^2.0.2",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.34.5",
     "tsx": "^4.21.0",
