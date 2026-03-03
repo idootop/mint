@@ -109,9 +109,6 @@ const groupProjectsByCategory = (projects: Project[]) => {
 
 let kProjectsGroupedByCategory: ProjectsGroupedByCategory[];
 export const getProjectsGroupedByCategory = async () => {
-  if (kProjectsGroupedByCategory) {
-    return kProjectsGroupedByCategory;
-  }
   kProjectsGroupedByCategory = groupProjectsByCategory(
     (await getProjects()).all,
   );
@@ -120,9 +117,6 @@ export const getProjectsGroupedByCategory = async () => {
 
 let kProjectsPinned: Project[];
 export const getProjectsPinned = async () => {
-  if (kProjectsPinned) {
-    return kProjectsPinned;
-  }
   const pinned = (await getProjects()).pinned;
   const middleStart = pinned.findIndex((e) => !e.pinnedIndex);
   const middleEnd = pinned.findLastIndex((e) => !e.pinnedIndex);
@@ -144,9 +138,6 @@ export const getProjectsPinned = async () => {
 
 let kProjectSortedByCategory: Project[];
 export const getProjectsSortedByCategory = async () => {
-  if (kProjectSortedByCategory) {
-    return kProjectSortedByCategory;
-  }
   kProjectSortedByCategory = (await getProjectsGroupedByCategory()).reduce(
     (pre, v) => [...pre, ...v.projects],
     [] as Project[],

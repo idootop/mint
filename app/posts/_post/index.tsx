@@ -42,9 +42,6 @@ export interface PostsGroupedByYear {
 
 let kPostsGroupedByYear: PostsGroupedByYear[];
 export const getPostsGroupedByYear = async () => {
-  if (kPostsGroupedByYear) {
-    return kPostsGroupedByYear;
-  }
   let year: string;
   kPostsGroupedByYear = [];
   (await getPosts()).all.forEach((post) => {
@@ -61,18 +58,12 @@ export const getPostsGroupedByYear = async () => {
 
 let kPostsPinned: Post[];
 export const getPostsPinned = async () => {
-  if (kPostsPinned) {
-    return kPostsPinned;
-  }
   kPostsPinned = (await getPosts()).pinned;
   return kPostsPinned;
 };
 
 let kPostSortedByYear: Post[];
 export const getPostSortedByYear = async () => {
-  if (kPostSortedByYear) {
-    return kPostSortedByYear;
-  }
   kPostSortedByYear = (await getPostsGroupedByYear()).reduce(
     (pre, v) => [...pre, ...v.posts],
     [] as Post[],
