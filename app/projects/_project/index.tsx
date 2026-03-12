@@ -27,7 +27,7 @@ const kProjectCategories = [
 ];
 
 export const kProjectCategoryNames = {
-  work: '商业项目',
+  work: '企业项目',
   product: '个人项目',
   ai: 'AI',
   game: '游戏',

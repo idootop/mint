@@ -1,0 +1,81 @@
+import cover from "./cover.png";
+
+export const metadata = {
+  emoji: "🍞",
+  title: "TensorArt",
+  createAt: "2024-09",
+  description: "AI 内容创作平台与分享社区",
+  cover: cover.src,
+  preview: "https://tensor.art",
+  pinned: false,
+};
+
+# 项目简介
+
+TensorArt 是一个免费的 AI 生图/视频平台和模型分享社区。
+
+我们由一群热爱 AI 技术的小伙伴组成，致力于打造全球最大的 AI 模型分享社区。
+
+我们希望每个人能体验到 AI 创作的乐趣，AI 并不会代替创作，而是会大幅度提升创作的效率，降低创作表达的门槛。 
+
+我们搭建了大规模云端 GPU 计算集群，把所有模型都放在云端，让每个人只需通过网页就能使用最先进的 AI 生图/视频模型。
+
+# 主要贡献
+
+我主要负责前端的日常维护和新功能迭代，并对构建过程进行了深度优化：
+
+- 构建速度：构建时长从 10 多分钟降至 3 分钟 **⬇️ 60%**
+- 产物体积：Docker 镜像体积从 2 GB 缩减至 200 MB **⬇️ 90%**
+
+大幅提升了开发与部署效率。
+
+## 优化背景与原理
+
+这是一个经典的 Nuxt 3 + Vite + Nitro 项目，构建流程分为两阶段：
+
+- Vite 将 Server 端源码打包成中间产物（CommonJS 模块），并进行基础优化
+- Nitro 对 Server 产物进一步优化，并适配不同的部署环境（主要是 Node.js）
+
+在第一阶段 Vite 构建时，底层 Rollup 默认开启 `output.hoistTransitiveImports` 优化策略，会将所有依赖提升至顶层作用域。
+该策略在浏览器环境中可避免瀑布式加载、提升解析速度。
+
+但在 Nitro 构建阶段，被提升的依赖会被重复包含在每个入口模块中，导致循环依赖解析复杂度上升，显著增加构建耗时。
+
+```javascript
+// input
+// main.js
+import value from './other-entry.js';
+console.log(value);
+
+// other-entry.js
+import externalValue from 'external';
+export default 2 * externalValue;
+
+// output
+// main.js
+import 'external'; // this import has been hoisted from other-entry.js
+import value from './other-entry.js';
+console.log(value);
+
+// other-entry.js
+import externalValue from 'external';
+var value = 2 * externalValue;
+export default value;
+```
+
+## 解决方案
+
+关闭 Server 端首次 Vite 构建时的 `output.hoistTransitiveImports` 优化策略，让模块依赖保留在原始作用域中。
+因为 Server 端 Node 环境的模块加载/解析方式与浏览器不同，无需考虑瀑布式加载问题，
+关闭该策略可避免依赖重复提升，从而在第二阶段 Nitro 构建时，降低依赖解析复杂度，减少构建时长。
+
+import docker from "./images/docker.png";
+
+<BaseImage src={docker.src} />
+
+除了构建策略上的优化之外，我还进行了 Docker 镜像构建方面的优化：
+
+- **使用多阶段构建**：在第一阶段安装所有依赖项并构建产物；在第二阶段使用更小的基础镜像，仅复制构建产物和必要的运行时依赖项，从而大幅减少最终镜像体积。
+- **Docker 层缓存 + PNPM 依赖缓存**：利用 Docker 的层缓存机制，将依赖安装步骤单独成一层，并使用 PNPM 的全局缓存目录，避免每次构建都重新安装依赖，从而加快构建速度。
+
+通过上述优化措施，成功将项目构建时长从 10 多分钟缩短到 3 分钟，同时将 Docker 镜像体积从 2 GB 压缩到 200 MB，显著提升了开发与部署效率。
