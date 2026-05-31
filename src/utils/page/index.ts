@@ -46,7 +46,7 @@ export type PagesWithPinned<T extends PageMetadata> = {
 const _getPages = <T extends PageMetadata>(
   pages: T[],
   options?: {
-    buildMetadata?: (T) => T;
+    buildMetadata?: (page: T) => T;
     sort?: (a: T, b: T) => number;
   },
 ): PagesWithPinned<T> => {
@@ -127,7 +127,7 @@ export const getPages = async <T extends PageMetadata>(
   category: string,
   pages: T[],
   options?: {
-    buildMetadata?: (T) => T;
+    buildMetadata?: (page: T) => T;
     sort?: (a: T, b: T) => number;
   },
 ): Promise<PagesWithPinned<T>> => {
