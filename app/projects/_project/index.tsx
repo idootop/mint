@@ -10,7 +10,6 @@ import {
 } from '@/utils/page';
 import { PageFrom } from '@/utils/page/from';
 
-import { ProjectLayout } from './ProjectLayout';
 import { pages } from './pages.gen';
 
 const kProjectCategories = [
@@ -167,26 +166,3 @@ export const getProjectContext = async (
 export async function generateProjectMetadata(path: string) {
   return generatePageMetadata<Project>((await getProjects()).all, path);
 }
-
-export const generateProjectPage = async (
-  metaURL: string,
-  meta: Project,
-  Content: any,
-) => {
-  const path = getProjectPagePath(metaURL);
-  const metadata = await generatePageMetadata<Project>(
-    [{ ...meta, path }],
-    path,
-  );
-  return {
-    metadata,
-    Page: () => (
-      <ProjectLayout path={metadata.path}>
-        <Content />
-      </ProjectLayout>
-    ),
-  };
-};
-
-export const getProjectPagePath = (metaURL: string) =>
-  metaURL.match(/app(\/projects\/.*?)\/page.tsx$/)![1];

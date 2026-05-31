@@ -10,7 +10,6 @@ import {
 } from '@/utils/page';
 import { PageFrom } from '@/utils/page/from';
 
-import { PostLayout } from './PostLayout';
 import { pages } from './pages.gen';
 
 export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
@@ -93,23 +92,3 @@ export const getPostContext = async (
 export async function generatePostMetadata(path: string) {
   return generatePageMetadata<Post>((await getPosts()).all, path);
 }
-
-export const generatePostPage = async (
-  metaURL: string,
-  meta: Post,
-  Content: any,
-) => {
-  const path = getPostPagePath(metaURL);
-  const metadata = await generatePageMetadata<Post>([{ ...meta, path }], path);
-  return {
-    metadata,
-    Page: () => (
-      <PostLayout path={metadata.path}>
-        <Content />
-      </PostLayout>
-    ),
-  };
-};
-
-export const getPostPagePath = (metaURL: string) =>
-  metaURL.match(/app(\/posts\/.*?)\/page.tsx$/)![1];
