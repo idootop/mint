@@ -10,16 +10,13 @@
   "packageManager": "pnpm@11.5.0",
   "scripts": {
     "dev": "tsx scripts/collect.ts && next dev",
-    "dev:turbo": "tsx scripts/collect.ts && next dev --turbopack",
     "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
-    "build:turbo": "tsx scripts/collect.ts && next build --turbopack && tsx scripts/cleanup.ts",
     "preview": "serve out",
-    "update-deps": "pnpm update -i --latest",
     "postinstall": "[ -n \"$CI\" ] || lefthook install",
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."
   },
   "dependencies": {
-    "next": "^15.5.18",
+    "next": "^16.2.6",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "three": "^0.184.0"
@@ -29,18 +26,18 @@
     "@del-wang/config": "^1.7.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^15.5.18",
+    "@next/mdx": "^16.2.6",
     "@types/mdx": "^2.0.13",
     "@types/node": "^25.9.1",
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.184.1",
     "lefthook": "^2.1.9",
-    "next-file-loader": "^1.0.0",
+    "next-file-loader": "^2.0.0",
     "rehype-prism-plus": "^2.0.2",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.34.5",
-    "tsx": "^4.22.3",
+    "tsx": "^4.22.4",
     "typescript": "^6.0.3"
   }
 }

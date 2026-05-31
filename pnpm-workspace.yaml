@@ -2,3 +2,6 @@ allowBuilds:
   esbuild: true
   lefthook: true
   sharp: true
+minimumReleaseAgeExclude:
+  - next-file-loader@2.0.0
+  - tsx@4.22.4
