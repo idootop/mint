@@ -33,8 +33,6 @@
     "@types/react": "^19.2.15",
     "@types/react-dom": "^19.2.3",
     "@types/three": "^0.184.1",
-    "got": "^15.0.5",
-    "https-proxy-agent": "^9.0.0",
     "lefthook": "^2.1.9",
     "next-file-loader": "^1.0.0",
     "rehype-prism-plus": "^2.0.2",

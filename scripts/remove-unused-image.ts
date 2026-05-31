@@ -1,40 +1,31 @@
 import { deleteFile, getFiles } from '@/common/utils/io';
-import {
-  getImageCaches,
-  kCompressionDir,
-  kDownloadDir,
-  kPublicDir,
-} from '@/utils/image';
+import { getImageCaches, kCompressionDir, kPublicDir } from '@/utils/image';
 
 async function main() {
-  const { downloads = [], compressions = [] } = await getUnusedImages();
-  await deleteUnusedImages(kDownloadDir, downloads);
+  const compressions = await getUsedCompressions();
   await deleteUnusedImages(kCompressionDir, compressions);
 }
 
-const getUnusedImages = async () => {
-  const downloads: string[] = [];
+const getUsedCompressions = async () => {
   const compressions: string[] = [];
   const caches = await getImageCaches();
   for (const cache of caches) {
-    const { downloads: d, compressions: c } = cache.metadata;
-    if (d) {
-      downloads.push(d.src);
-    }
+    const { compressions: c } = cache.metadata;
     if (c) {
       compressions.push(c.src);
     }
   }
-  return { downloads, compressions };
+  return compressions;
 };
 
-const deleteUnusedImages = async (dir: string, images: string[]) => {
-  const imageMap = images.reduce((pre, v) => {
+const deleteUnusedImages = async (dir: string, usedImages: string[]) => {
+  const usedImageMap = usedImages.reduce((pre, v) => {
     pre[v] = true;
     return pre;
   }, {} as any);
-  for (const file of await getFiles(`${kPublicDir}/${dir}`)) {
-    if (!imageMap[`/${dir}/${file}`]) {
+  const files = await getFiles(`${kPublicDir}/${dir}`);
+  for (const file of files) {
+    if (!usedImageMap[`/${dir}/${file}`]) {
       const filePath = `${kPublicDir}/${dir}/${file}`;
       deleteFile(filePath);
       console.log(`❌ 已删除: ${filePath}`);

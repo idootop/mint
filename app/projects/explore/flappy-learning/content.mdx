@@ -47,7 +47,9 @@ import demo from './images/demo.gif';
 
 下图是一个典型的人工神经网络示意图。
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/26b8bf134c804517ae26590fe12e4494~tplv-k3u1fbpfcp-zoom-1.image)
+import neuralNetwork from './images/neural-network.png';
+
+<BaseImage src={neuralNetwork.src} alt="人工神经网络示意图" />
 
 ## 网络结构
 
@@ -141,7 +143,9 @@ class Bird {
 
 ### 第一阶段：无头苍蝇
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9843ff9647b04ab5819bd6270d90e146~tplv-k3u1fbpfcp-zoom-1.image)
+import stage1Random from './images/stage-1-random.gif';
+
+<BaseImage src={stage1Random.src} alt="无头苍蝇，到处乱闯" />
 
 在最开始时，我们随机初始化了神经网络中，各神经元的输入参数权重，
 
@@ -151,7 +155,9 @@ class Bird {
 
 ### 第二阶段：稳定飞行
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/dc3948aa4429433a85245d042b9eb709~tplv-k3u1fbpfcp-zoom-1.image)
+import stage2Stable from './images/stage-2-stable.gif';
+
+<BaseImage src={stage2Stable.src} alt="学会稳定飞行" />
 
 剩下的一小批鸟，误打误撞，随机生成的权重刚好使其可以维持飞行稳定，一直向前飞去，所以比那些乱飞的鸟活得更久一些。
 
@@ -159,7 +165,9 @@ class Bird {
 
 ### 第三阶段：自由穿梭
 
-![](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e3fc0d5a1b7d48288ca0c6597e433d34~tplv-k3u1fbpfcp-zoom-1.image)
+import stage3Free from './images/stage-3-free.gif';
+
+<BaseImage src={stage3Free.src} alt="在管道间自由穿梭" />
 
 幸运的是，随着每代小鸟的不断学习和变异，有的小鸟误打误撞，学会了根据自己当前位置和障碍物缺口位置，去“转向”躲避障碍物，于是它们成了鸟群中的佼佼者，活得更久，由它们繁衍而来的后代，也幸运的继承了这些经验。
 

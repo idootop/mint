@@ -6,9 +6,13 @@ import { FileBasedCollector } from '@/common/utils/collector';
 import { readFile, writeFile } from '@/common/utils/io';
 import { isEmpty } from '@/common/utils/is';
 
-import { assetURL2LocalPath, isInternalAsset, resolveAssetURL } from './assets';
-import { download } from './download';
-import { checksumFile, hashSha256 } from './hash';
+import {
+  assetURL2LocalPath,
+  isExternalAsset,
+  isInternalAsset,
+  resolveAssetURL,
+} from './assets';
+import { checksumFile } from './hash';
 
 interface ImageWithData {
   src: string;
@@ -43,7 +47,6 @@ export interface ImageCache {
   props?: ImageProps;
   metadata: {
     local?: Omit<ImageWithMetadata, 'data' | 'sharpImage'>;
-    [kDownloadDir]?: Omit<ImageWithMetadata, 'data' | 'sharpImage'>;
     [kCompressionDir]?: Omit<ImageWithMetadata, 'data' | 'sharpImage'>;
   };
 }
@@ -51,9 +54,7 @@ export interface ImageCache {
 const kRootDir = process.cwd();
 
 export const kPublicDir = 'public';
-export const kDownloadDir = 'downloads';
 export const kCompressionDir = 'compressions';
-export const kImageCachePath = '.next/images-cache.json';
 
 type ImageCacheInfo = ImageCache & { url: string };
 const urlCollector = new FileBasedCollector<ImageCacheInfo>(
@@ -77,14 +78,15 @@ export const processImage = async (url: string | undefined) => {
   if (!url) {
     return;
   }
-  if (url.includes('img.shields.io')) {
+  if (isExternalAsset(url)) {
+    // 网络图片（如徽章）直接使用原始链接，不做下载与压缩处理
     return { src: url };
   }
   const { props } = (await getImageCache(url)) ?? {};
   if (props) {
     return props;
   }
-  const image = await downloadImage(url);
+  const image = await loadImage(url);
   if (!image) {
     return;
   }
@@ -98,15 +100,10 @@ export const processImage = async (url: string | undefined) => {
     return isEmpty(metadata) ? undefined : metadata;
   };
   if (result) {
-    const local = getMetadata(image);
-    const downloaded = local?.src?.startsWith(`/${kDownloadDir}/`)
-      ? local
-      : undefined;
     await addImageCache(url, {
       props: result,
       metadata: {
-        local,
-        [kDownloadDir]: downloaded,
+        local: getMetadata(image),
         [kCompressionDir]: getMetadata(compressedImage),
       },
     });
@@ -142,35 +139,16 @@ const getImageMetadata = async (
   };
 };
 
-const downloadImage = async (
+const loadImage = async (
   url: string,
 ): Promise<ImageWithMetadata | undefined> => {
-  let src: string;
-  let filePath: string;
-  let data: Buffer | undefined;
-  let checksum: string | undefined;
-  if (isInternalAsset(url)) {
-    // 本地图片
-    src = resolveAssetURL(url);
-    filePath = assetURL2LocalPath(src);
-    data = await readFile(filePath);
-    checksum = await checksumFile(data);
-  } else {
-    // 网络图片
-    checksum = await hashSha256(url);
-    src = path.join('/', kDownloadDir, `${checksum}.webp`);
-    filePath = path.join(kRootDir, kPublicDir, src);
-    if (!existsSync(filePath)) {
-      // 下载图片到本地
-      data = await download(url);
-      const saved = await writeFile(filePath, data);
-      if (!saved) {
-        return;
-      }
-    } else {
-      data = await readFile(filePath);
-    }
+  if (!isInternalAsset(url)) {
+    return;
   }
+  const src = resolveAssetURL(url);
+  const filePath = assetURL2LocalPath(src);
+  const data = await readFile(filePath);
+  const checksum = await checksumFile(data);
   if (!data || !checksum) {
     return;
   }
