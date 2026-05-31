@@ -32,10 +32,10 @@
 }
 
 .shake {
-  animation: shake 1s infinite;
   transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
   perspective: 1000px;
+  backface-visibility: hidden;
+  animation: shake 1s infinite;
 }
 
 @keyframes breathe {

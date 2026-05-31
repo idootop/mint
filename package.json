@@ -9,9 +9,11 @@
   },
   "packageManager": "pnpm@11.5.0",
   "scripts": {
-    "dev": "next dev",
+    "dev": "tsx scripts/collect.ts && next dev",
+    "dev:turbo": "tsx scripts/collect.ts && next dev --turbopack",
+    "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
+    "build:turbo": "tsx scripts/collect.ts && next build --turbopack && tsx scripts/cleanup.ts",
     "preview": "serve out",
-    "build": "next build && tsx scripts/cleanup.ts",
     "update-deps": "pnpm update -i --latest",
     "postinstall": "[ -n \"$CI\" ] || lefthook install",
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."

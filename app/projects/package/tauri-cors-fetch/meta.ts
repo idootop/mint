@@ -1,0 +1,11 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🦀',
+  title: 'Tauri Plugin CORS Fetch',
+  source: 'https://github.com/idootop/tauri-plugin-cors-fetch',
+  preview: 'https://crates.io/crates/tauri-plugin-cors-fetch',
+  createAt: '2024-03',
+  description: 'Enabling CORS for fetch requests within Tauri App',
+  cover: cover.src,
+};

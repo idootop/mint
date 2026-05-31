@@ -1,0 +1,13 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '✨',
+  title: 'Crypto Me',
+  source: 'https://github.com/idootop/crypto-me',
+  preview: 'https://crypto-me-sand.vercel.app/',
+  createAt: '2023-05',
+  description:
+    'Your Web3 profile on one page - ENS, Tokens, POAPs, NFTs and love',
+  cover: cover.src,
+  pinned: true,
+};

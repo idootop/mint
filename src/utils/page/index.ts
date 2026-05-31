@@ -44,20 +44,13 @@ export type PagesWithPinned<T extends PageMetadata> = {
 };
 
 const _getPages = <T extends PageMetadata>(
-  category: string,
-  ctx: any,
+  pages: T[],
   options?: {
     buildMetadata?: (T) => T;
     sort?: (a: T, b: T) => number;
   },
 ): PagesWithPinned<T> => {
   const { sort, buildMetadata } = options ?? {};
-  // 导入
-  const pages = ctx.keys().map((filePath) => {
-    const page = ctx(filePath);
-    const path = `/${category}/${filePath.slice(2).replace(/\/content\.mdx$/, '')}`;
-    return { path, ...page.metadata };
-  });
   // 排序
   const sortedPages: { all: SortedPages<T>; pinned: SortedPages<T> } = {
     all: { top: [], middle: [], bottom: [] },
@@ -132,14 +125,14 @@ const kPagesCache = new Map<string, PagesWithPinned<any>>();
 
 export const getPages = async <T extends PageMetadata>(
   category: string,
-  ctx: any,
+  pages: T[],
   options?: {
     buildMetadata?: (T) => T;
     sort?: (a: T, b: T) => number;
   },
 ): Promise<PagesWithPinned<T>> => {
   if (!kPagesCache.has(category)) {
-    kPagesCache.set(category, _getPages(category, ctx, options));
+    kPagesCache.set(category, _getPages(pages, options));
   }
   return kPagesCache.get(category)!;
 };

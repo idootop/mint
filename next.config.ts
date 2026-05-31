@@ -1,7 +1,5 @@
 import configMDX from '@next/mdx';
 import createNextFileLoader from 'next-file-loader';
-import rehypePrism from 'rehype-prism-plus';
-import remarkGfm from 'remark-gfm';
 
 const withNextFileLoader = createNextFileLoader([
   {
@@ -21,8 +19,8 @@ const withNextFileLoader = createNextFileLoader([
 const withMDX = configMDX({
   extension: /\.mdx?$/,
   options: {
-    remarkPlugins: [remarkGfm],
-    rehypePlugins: [rehypePrism],
+    remarkPlugins: [['remark-gfm']],
+    rehypePlugins: [['rehype-prism-plus']],
     remarkRehypeOptions: { footnoteLabel: '备注' },
   },
 });

@@ -41,6 +41,9 @@ next-env.d.ts
 .DS_Store
 .*cache
 
+# generated page index (scripts/collect.ts)
+*.gen.ts
+
 # cos
 .cos.yaml
 coscli.log

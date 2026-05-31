@@ -11,12 +11,12 @@ import {
 import { PageFrom } from '@/utils/page/from';
 
 import { PostLayout } from './PostLayout';
+import { pages } from './pages.gen';
 
 export type Post = MakeRequired<PageMetadata, 'createAt' | 'updateAt'>;
 
 export const getPosts = async (): Promise<PagesWithPinned<Post>> => {
-  const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
-  const posts = await getPages<Post>('posts', ctx, {
+  const posts = await getPages<Post>('posts', pages as Post[], {
     buildMetadata: (post) => {
       const createAt = post.createAt ?? '2024-01-01';
       return {
@@ -94,9 +94,13 @@ export async function generatePostMetadata(path: string) {
   return generatePageMetadata<Post>((await getPosts()).all, path);
 }
 
-export const generatePostPage = async (metaURL: string, Content: any) => {
+export const generatePostPage = async (
+  metaURL: string,
+  meta: Post,
+  Content: any,
+) => {
   const path = getPostPagePath(metaURL);
-  const metadata = await generatePostMetadata(path);
+  const metadata = await generatePageMetadata<Post>([{ ...meta, path }], path);
   return {
     metadata,
     Page: () => (

@@ -11,6 +11,7 @@ import {
 import { PageFrom } from '@/utils/page/from';
 
 import { ProjectLayout } from './ProjectLayout';
+import { pages } from './pages.gen';
 
 const kProjectCategories = [
   'work',
@@ -61,8 +62,7 @@ export type Project = MakeRequired<PageMetadata, 'createAt' | 'updateAt'> & {
 };
 
 export const getProjects = async (): Promise<PagesWithPinned<Project>> => {
-  const ctx = (require as any).context('../', true, /^\.\/.*\/content\.mdx$/);
-  const projects = await getPages<Project>('projects', ctx, {
+  const projects = await getPages<Project>('projects', pages as Project[], {
     buildMetadata: (project) => {
       const createAt = project.createAt ?? '2024-01-01';
       const category = project.path.split('/')[2] ?? 'other';
@@ -168,9 +168,16 @@ export async function generateProjectMetadata(path: string) {
   return generatePageMetadata<Project>((await getProjects()).all, path);
 }
 
-export const generateProjectPage = async (metaURL: string, Content: any) => {
+export const generateProjectPage = async (
+  metaURL: string,
+  meta: Project,
+  Content: any,
+) => {
   const path = getProjectPagePath(metaURL);
-  const metadata = await generateProjectMetadata(path);
+  const metadata = await generatePageMetadata<Project>(
+    [{ ...meta, path }],
+    path,
+  );
   return {
     metadata,
     Page: () => (

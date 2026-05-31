@@ -1,0 +1,8 @@
+export const metadata = {
+  emoji: '📦',
+  title: 'Next File Loader',
+  source: 'https://github.com/idootop/next-file-loader',
+  preview: 'https://www.npmjs.com/package/next-file-loader',
+  createAt: '2024-05',
+  description: 'Webpack loader streamlining assets import for Next.js',
+};

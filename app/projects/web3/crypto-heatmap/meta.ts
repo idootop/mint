@@ -1,0 +1,11 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🔥',
+  title: 'Crypto Heatmap',
+  source: 'https://github.com/idootop/crypto-heatmap',
+  preview: 'https://crypto-heatmap.vercel.app',
+  createAt: '2023-04',
+  description: 'A simple crypto heatmap widget',
+  cover: cover.src,
+};

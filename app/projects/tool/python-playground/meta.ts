@@ -1,0 +1,11 @@
+import cover from './cover.png';
+
+export const metadata = {
+  emoji: '🐍',
+  title: 'Python Playground',
+  source: 'https://github.com/idootop/react-python-playground',
+  preview: 'https://react-python-playground.vercel.app',
+  createAt: '2023-05',
+  description: 'A python playground running locally on browser',
+  cover: cover.src,
+};
