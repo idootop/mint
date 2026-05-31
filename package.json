@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "next dev",
     "preview": "serve out",
-    "build": "next build && tsx scripts/remove-unused-image.ts",
+    "build": "next build && tsx scripts/cleanup.ts",
     "update-deps": "pnpm update -i --latest",
     "postinstall": "[ -n \"$CI\" ] || lefthook install",
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."

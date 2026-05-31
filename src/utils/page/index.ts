@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 
-import { executeSharedTask } from '../../common/utils/task';
 import { getOGMetadata } from '../metadata';
 
 export interface PageMetadata {
@@ -128,6 +127,9 @@ const _getPages = <T extends PageMetadata>(
   };
 };
 
+// 进程内缓存：同一构建进程中复用各分类的页面列表，避免重复计算
+const kPagesCache = new Map<string, PagesWithPinned<any>>();
+
 export const getPages = async <T extends PageMetadata>(
   category: string,
   ctx: any,
@@ -136,10 +138,10 @@ export const getPages = async <T extends PageMetadata>(
     sort?: (a: T, b: T) => number;
   },
 ): Promise<PagesWithPinned<T>> => {
-  return executeSharedTask(
-    `get-${category}-pages`,
-    () => _getPages(category, ctx, options) as any,
-  );
+  if (!kPagesCache.has(category)) {
+    kPagesCache.set(category, _getPages(category, ctx, options));
+  }
+  return kPagesCache.get(category)!;
 };
 
 export interface PageContext<T extends PageMetadata> {
