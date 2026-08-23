@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import sharp from 'sharp';
+import sharp, { type Sharp } from 'sharp';
 
 import { readFile, writeFile } from '@/common/utils/io';
 
@@ -30,7 +30,7 @@ interface ImageWithMetadata extends ImageWithData {
   size: number;
   width: number;
   height: number;
-  sharpImage: sharp.Sharp;
+  sharpImage: Sharp;
 }
 
 interface ImageProps {

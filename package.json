@@ -4,10 +4,7 @@
   "version": "7.0.0",
   "private": true,
   "type": "module",
-  "engines": {
-    "node": ">=20"
-  },
-  "packageManager": "pnpm@11.5.0",
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "tsx scripts/collect.ts && next dev",
     "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
@@ -16,28 +13,28 @@
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."
   },
   "dependencies": {
-    "next": "^16.2.6",
-    "react": "^19.2.6",
-    "react-dom": "^19.2.6",
-    "three": "^0.184.0"
+    "next": "^16.3.2",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.4",
+    "@biomejs/biome": "^2.5.10",
     "@del-wang/config": "^1.7.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^16.2.6",
-    "@types/mdx": "^2.0.13",
-    "@types/node": "^25.9.1",
-    "@types/react": "^19.2.15",
-    "@types/react-dom": "^19.2.3",
-    "@types/three": "^0.184.1",
-    "lefthook": "^2.1.9",
+    "@next/mdx": "^16.3.2",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@types/three": "^0.185.4",
+    "lefthook": "^2.1.10",
     "next-file-loader": "^2.0.0",
     "rehype-prism-plus": "^2.0.2",
     "remark-gfm": "^4.0.1",
-    "sharp": "^0.34.5",
-    "tsx": "^4.22.4",
-    "typescript": "^6.0.3"
+    "sharp": "^0.35.3",
+    "tsx": "^4.23.12",
+    "typescript": "^7.0.2"
   }
 }
