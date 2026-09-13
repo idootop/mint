@@ -1,0 +1,139 @@
+# 幕后花絮
+
+这是一个基于 JSON-RPC 2.0 + WebSocket 的双向 RPC 通信框架。
+
+起因是我经常遇到一些项目需要在 Python + Node.js 后端和 Web 前端之间通信，
+
+为了实现在不同语言和平台之间进行高效的远程过程调用，我创造了 EchoRPC。
+
+这个包的 DX（开发者体验）非常优雅，可以让你像调用本地的 async 异步函数一样，非常方便地调用远端方法，十分简单直观，提升开发效率。
+
+# Features
+
+- **Bidirectional RPC** — server and client can call each other's methods
+- **Pub/Sub** — fire-and-forget notifications via `publish` / `subscribe`
+- **Batch requests** — multiple calls per frame, results returned in order
+- **Auth** — token validated during HTTP upgrade
+- **Heartbeat** — ping/pong with auto-disconnect on timeout
+- **Auto-reconnect** — exponential backoff, handlers and subscriptions preserved
+- **Broadcast** — send to all connections, filter by role, or exclude specific peers
+
+# Example
+
+## Python
+
+### Server
+
+```python
+from echorpc import EchoServer
+
+server = EchoServer(port=9100)
+
+# Define a command that clients can call
+@server.command("add")
+def add(params):
+    return {"sum": params["a"] + params["b"]}
+
+# Listen for events from clients
+@server.event("chat")
+async def on_chat(data):
+    print("on_chat", data)
+
+await server.start()
+```
+
+### Client
+
+```python
+from echorpc import EchoClient
+
+client = EchoClient("ws://localhost:9100")
+
+# Let the server call you back
+client.register("double", lambda p: p["x"] * 2)
+
+# Subscribe to events
+client.subscribe("chat", lambda data: print(data))
+
+await client.connect()
+
+# Call a server command
+result = await client.request("add", {"a": 1, "b": 2})
+
+# Publish event to the server
+await client.publish("chat", {"text": "hello"})
+
+# Send multiple calls at once
+results = await client.batch_request([
+    ("add", {"a": 1, "b": 2}),
+    ("add", {"a": 3, "b": 4}),
+])
+```
+
+## TypeScript
+
+### Server
+
+```ts
+import { EchoServer } from "echorpc";
+
+const server = new EchoServer({
+  port: 9100,
+  authHandler: (p) => p.token === "secret",
+});
+
+// Define a command that clients can call
+server.register("add", (p: { a: number; b: number }) => ({
+  sum: p.a + p.b,
+}));
+
+// Listen for events from clients
+server.subscribe("chat", async (data) => {
+  console.log("chat", data);
+});
+
+await server.start();
+```
+
+### Client (Node.js)
+
+```ts
+import WebSocket from "ws";
+import { EchoClient } from "echorpc";
+
+const client = new EchoClient("ws://localhost:9100", {
+  token: "secret",
+  WebSocket,
+});
+
+// Let the server call you back
+client.register("double", (p) => p.x * 2);
+
+// Subscribe to events
+client.subscribe("chat", (data) => console.log(data));
+
+await client.connect();
+
+// Call a server command
+const result = await client.request("add", { a: 1, b: 2 });
+
+// Publish event to the server
+client.publish("chat", { text: "hello" });
+
+// Send multiple calls at once
+const results = await client.batchRequest([
+  ["add", { a: 1, b: 2 }],
+  ["add", { a: 3, b: 4 }],
+]);
+```
+
+### Client (Browser)
+
+No `WebSocket` import needed — uses the native one.
+
+```ts
+import { EchoClient } from "echorpc";
+
+const client = new EchoClient("ws://localhost:9100", { token: "secret" });
+await client.connect();
+```
