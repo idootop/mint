@@ -1,0 +1,32 @@
+# 项目简介
+
+在保持画质损失肉眼不可见的前提下，将视频压缩到原来的 1/5，照片 1/10。
+
+import compare from "./images/compare.jpg";
+
+<BaseImage src={compare.src} alt="压缩前后对比" />
+
+import scan from "./images/scan.png";
+
+<BaseImage src={scan.src} alt="压缩预览" />
+
+import settings from "./images/settings.png";
+
+<BaseImage src={settings.src} alt="压缩参数设置" />
+
+# 幕后花絮
+
+有段时间我的移动硬盘备份满了，里面有很多图片和视频文件，占了绝大多数空间。
+
+其中最离谱的是小米 AI 眼镜拍摄的视频和图片，明明只有 1080p 的清晰度，却非得使用 4k 格式存储，甚至在手机上会同时在相册和 APP 目录存两份，十分离谱～
+
+我开始重新思考图片和视频的存储格式，最终选择了比较激进但有效的编码方案：
+
+- 图片使用 [AVIF](https://zh.wikipedia.org/zh-hans/AVIF) 格式，最短边上限 1080px
+- 视频使用 [H.265](https://zh.wikipedia.org/zh-hans/H.265) 格式，最短边上限 1080px，CRF 24，帧率上限 30 FPS
+
+原因很简单，1080P 清晰度 + 30 FPS 帧率对我来说已经足够记录日常点滴了[^1]，
+
+追求 4K 画质 + 60 FPS 高帧率只会徒增不必要的存储压力和处理负担。
+
+[^1]: 实则是最近存储涨价过于疯狂，鄙人缺少“钞“能力哈哈～
