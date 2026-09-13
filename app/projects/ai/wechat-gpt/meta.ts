@@ -1,7 +1,7 @@
 import cover from './cover.png';
 
 export const metadata = {
-  emoji: '🤖️',
+  emoji: '💬',
   title: 'WeChat GPT',
   source: 'https://github.com/idootop/wechat-gpt-web',
   preview: 'https://wechat.xbox.work',

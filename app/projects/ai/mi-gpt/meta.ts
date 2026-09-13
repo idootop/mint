@@ -1,7 +1,7 @@
 import cover from './cover.png';
 
 export const metadata = {
-  emoji: '🏠',
+  emoji: '🤖',
   title: 'MiGPT',
   source: 'https://github.com/idootop/mi-gpt',
   createAt: '2024-01',

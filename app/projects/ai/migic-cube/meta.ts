@@ -1,7 +1,7 @@
 import cover from './cover.png';
 
 export const metadata = {
-  emoji: '👓',
+  emoji: '🎲',
   title: 'MigicCube',
   preview: 'https://idootop.github.io/MigicCube',
   source: 'https://github.com/idootop/MigicCube',
