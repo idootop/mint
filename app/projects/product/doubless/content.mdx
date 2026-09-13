@@ -1,0 +1,37 @@
+# 项目简介
+
+照片、视频、文档存了一份又一份，硬盘越用越满。
+
+Doubless 帮你找出真正重复的文件与文件夹，一键移进废纸篓。
+
+- **准** —— blake3 内容指纹，不认文件名，改了名照样揪出来
+- **快** —— 指纹带缓存，没变过的文件下次扫描直接复用
+- **全** —— 重复文件、整个重复的文件夹、部分文件重复的文件夹，都能找出来
+- **稳** —— 删什么留什么由你决定，删除前二次确认，删完在废纸篓里还可以找回
+
+import home from './images/home.png';
+
+<BaseImage src={home.src} alt="首页" />
+
+import scan from './images/scan.png';
+
+<BaseImage src={scan.src} alt="重复文件扫描" />
+
+import select from './images/select.png';
+
+<BaseImage src={select.src} alt="重复文件选择" />
+
+
+# 幕后花絮
+
+有段时间我的移动硬盘备份满了，里面有许多重复的文件和目录，我想找一个趁手的工具来帮我快速扫描和整理重复的文件，还有文件夹。
+
+但遗憾的是，大部分的重复文件扫描软件都只支持重复文件的识别，并不支持重复文件夹或有重叠文件夹的识别。
+
+所以我就顺手做了 Doubless 这个应用，期间也调整了很多版本和细节，让其能够更加稳定、顺手地使用起来。
+
+整个项目最让我满意的是，它的图标 + 名称 **Doubless**，非常简单直观。
+
+import logo from './images/logo.png';
+
+<BaseImage src={logo.src} alt="Doubless Logo" size={120} />
