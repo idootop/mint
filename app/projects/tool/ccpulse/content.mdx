@@ -1,0 +1,19 @@
+# 项目预览
+
+我们项目组使用了 Claude Code 的代理 API，无法像官方订阅服务那样查看用量，于是便有了这个命令行 Status Line 小插件，用来直观展示剩余额度和刷新倒计时。
+
+import demo from "./images/demo.gif";
+
+<BaseImage src={demo.src} alt="预览动画"/>
+
+import style from "./images/styles.png";
+
+<BaseImage src={style.src} alt="多种样式" />
+
+# Features
+
+- **Single line** — dir · git branch · model · `ctx%` · 5h/7d usage bars.
+- **Color‑coded** with a live reset countdown (`↻`).
+- **Works on any plan** — uses the built‑in `rate_limits` JSON for Pro/Max subscribers, otherwise probes the endpoint's rate‑limit headers.
+- **Non‑blocking** — the probe runs in the background and is cached, so rendering stays instant (~60ms).
+- **6 styles**, and **no secrets stored** — your account is read from the environment at runtime.
