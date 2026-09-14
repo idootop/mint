@@ -6,7 +6,7 @@ export const metadata = {
   preview: 'https://idootop.github.io/MigicCube',
   source: 'https://github.com/idootop/MigicCube',
   createAt: '2025-12',
-  description: '使用小米 AI 眼镜，在 20 步内还原三阶魔方',
+  description: '使用小米 AI 眼镜，在 21 步内还原三阶魔方',
   cover: cover.src,
   pinned: true,
 };
