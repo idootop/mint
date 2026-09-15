@@ -4,7 +4,7 @@
   "version": "7.0.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@11.27.0",
+  "packageManager": "pnpm@12.4.1",
   "scripts": {
     "dev": "tsx scripts/collect.ts && next dev",
     "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
