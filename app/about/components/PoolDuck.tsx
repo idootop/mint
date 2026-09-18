@@ -2,62 +2,67 @@
 
 import { useEffect, useRef } from 'react';
 
-import { Application } from './app';
 // @ts-expect-error
 import duck from './assets/duck.glb';
-import sky from './assets/sky.jpg';
-import tiles from './assets/tiles.jpg';
-import styles from './styles.module.css';
-
-function initStyles() {
-  document.getElementById('header')!.classList.add(styles.header);
-  document.getElementById('footer')!.classList.add(styles.footer);
-  document.getElementById('about-box')!.classList.add(styles.box);
-  document.getElementById('about-bg')!.classList.add(styles.bg);
-}
-
-function removeStyles() {
-  document.getElementById('header')!.classList.remove(styles.header);
-  document.getElementById('footer')!.classList.remove(styles.footer);
-}
+import sky from './assets/sky.webp';
+import tiles from './assets/tiles.webp';
+import { Application } from './gl/app';
 
 export default function PoolDuck() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    initStyles();
-    return () => {
-      removeStyles();
-    };
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  useEffect(() => {
-    const app = new Application({
-      duckModel: duck.src,
-      canvas: canvasRef.current!,
-    });
-    app.start();
+    let app: Application | null = null;
+    let cancelled = false;
+
+    const run = async () => {
+      try {
+        const instance = new Application({
+          duckModel: duck.src,
+          tiles: tiles.src,
+          sky: sky.src,
+          canvas,
+        });
+        app = instance;
+
+        // init() 返回 false 表示环境不支持（例如缺少可渲染的浮点纹理），
+        // 此时页面保留 CSS 的纯色背景即可，不当作错误。
+        const ready = await instance.init();
+        if (cancelled || !ready) {
+          instance.stop();
+          return;
+        }
+        instance.start();
+      } catch (error) {
+        // 兜底：任何意外都不应该让整页崩掉，降级为纯色背景
+        console.error('[PoolDuck] 初始化失败:', error);
+      }
+    };
+
+    run();
+
     return () => {
-      app.stop();
+      cancelled = true;
+      app?.stop();
+      app = null;
     };
   }, []);
 
   return (
-    <>
-      <canvas
-        id="canvas"
-        ref={canvasRef}
-        style={{
-          width: '100%',
-          height: '100%',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          zIndex: 0,
-        }}
-      />
-      <img id="tiles" src={tiles.src} style={{ display: 'none' }} />
-      <img id="sky" src={sky.src} style={{ display: 'none' }} />
-    </>
+    <canvas
+      id="canvas"
+      ref={canvasRef}
+      style={{
+        width: '100%',
+        height: '100%',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: 0,
+      }}
+    />
   );
 }

@@ -25,7 +25,7 @@ export async function ProjectLayout({ path, children }) {
   const category = getProjectCategoryName(project.category);
 
   const buttons =
-    !!project.preview && !!project.source ? (
+    project.preview && project.source ? (
       <>
         <Button
           color="#fff"

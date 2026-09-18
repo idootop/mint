@@ -15,5 +15,17 @@
   },
   "files": {
     "includes": ["!out"]
-  }
+  },
+  "overrides": [
+    {
+      "includes": ["app/about/components/gl/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "useHookAtTopLevel": "off"
+          }
+        }
+      }
+    }
+  ]
 }

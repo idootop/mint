@@ -1,41 +1,38 @@
-import * as THREE from 'three';
+import { Vec3 } from './math';
+import type { WaterSimulation } from './water';
 
-import { type InputManager, MODE_MOVE_SPHERE } from './InputManager';
-import type { Water } from './Water';
+const MODE_MOVE_SPHERE = 1;
 
+export interface InputState {
+  mode: number;
+  mousePoint: Vec3 | null;
+}
+
+/**
+ * 鸭子（球体）的浮力与碰撞。
+ * 对应 three.js 时期的 core/Physics.ts。
+ */
 export class PhysicsEngine {
-  center: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
-  oldCenter: THREE.Vector3 = new THREE.Vector3(0, 0, 0);
-  velocity: THREE.Vector3 = new THREE.Vector3();
-  gravity: THREE.Vector3 = new THREE.Vector3(0, -4, 0);
+  center = new Vec3(0, 0, 0);
+  oldCenter = new Vec3(0, 0, 0);
+  velocity = new Vec3();
+  gravity = new Vec3(0, -4, 0);
 
-  radius: number = 0.25;
+  radius = 0.25;
 
-  // Environment dimensions
-  poolWidth: number = 2;
-  poolLength: number = 2;
-  poolDepth: number = 0;
+  poolWidth = 2;
+  poolLength = 2;
+  poolDepth = 0;
 
-  // Physics parameters
-  sphereFloatRatio: number = 0.7;
-  sphereImpactStrength: number = 0.04;
-  useSpherePhysics: boolean = true;
+  sphereFloatRatio = 0.7;
+  sphereImpactStrength = 0.04;
+  useSpherePhysics = true;
 
-  update(
-    seconds: number,
-    water: Water,
-    inputManager: InputManager,
-    renderer: THREE.WebGLRenderer,
-  ) {
-    if (inputManager.mode === MODE_MOVE_SPHERE) {
+  update(seconds: number, water: WaterSimulation, input: InputState) {
+    if (input.mode === MODE_MOVE_SPHERE) {
       this.velocity.set(0, 0, 0);
     } else if (this.useSpherePhysics) {
-      // Get water info at current position for buoyancy
-      const waterInfo = water.getWaterAt(
-        renderer,
-        this.center.x,
-        this.center.z,
-      );
+      const waterInfo = water.getWaterAt(this.center.x, this.center.z);
       const waterHeight = waterInfo.height;
 
       const percentUnderWater = Math.max(
@@ -48,22 +45,21 @@ export class PhysicsEngine {
 
       const buoyancyFactor = 1.0 / (1.0 - this.sphereFloatRatio);
 
-      // Gravity and Buoyancy (Vertical)
+      // 重力与浮力（垂直方向）
       const gTerm = this.gravity
         .clone()
         .multiplyScalar(seconds - buoyancyFactor * seconds * percentUnderWater);
       this.velocity.add(gTerm);
 
-      // Mouse Interaction (Repulsion)
-      if (inputManager.mousePoint) {
-        const distVec = this.center.clone().sub(inputManager.mousePoint);
-        distVec.y = 0; // Horizontal only
+      // 鼠标排斥
+      if (input.mousePoint) {
+        const distVec = this.center.clone().sub(input.mousePoint);
+        distVec.y = 0;
         const dist = distVec.length();
         const influenceRadius = 1;
 
         if (dist < influenceRadius) {
           const pushStrength = 2.0;
-          // Closer = stronger push
           const force = distVec
             .normalize()
             .multiplyScalar(
@@ -85,7 +81,7 @@ export class PhysicsEngine {
 
       this.center.add(this.velocity.clone().multiplyScalar(seconds));
 
-      // Wall collision (X)
+      // 池壁碰撞（X）
       if (this.center.x < this.radius - this.poolWidth / 2) {
         this.center.x = this.radius - this.poolWidth / 2;
         this.velocity.x = Math.abs(this.velocity.x) * 0.5;
@@ -94,7 +90,7 @@ export class PhysicsEngine {
         this.velocity.x = -Math.abs(this.velocity.x) * 0.5;
       }
 
-      // Wall collision (Z)
+      // 池壁碰撞（Z）
       if (this.center.z < this.radius - this.poolLength / 2) {
         this.center.z = this.radius - this.poolLength / 2;
         this.velocity.z = Math.abs(this.velocity.z) * 0.5;
@@ -103,16 +99,15 @@ export class PhysicsEngine {
         this.velocity.z = -Math.abs(this.velocity.z) * 0.5;
       }
 
-      // Floor collision
+      // 池底碰撞
       if (this.center.y < this.radius - this.poolDepth) {
         this.center.y = this.radius - this.poolDepth;
         this.velocity.y = Math.abs(this.velocity.y) * 0.7;
       }
     }
 
-    // Water Interaction
+    // 与水面的相互作用
     water.moveSphere(
-      renderer,
       this.oldCenter,
       this.center,
       this.radius,
