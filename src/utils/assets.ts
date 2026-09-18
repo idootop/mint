@@ -1,3 +1,6 @@
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+
 /**
  * - https://example.com/file
  * - data:text/plain;base64,SGVsbG8sIFdvcmxkIQ==
@@ -33,29 +36,50 @@ export const resolveAssetURL = (src) => {
 };
 
 /**
+ * Next.js 静态资源的磁盘产物目录（相对项目根目录）：
+ *
+ * - `next dev`（Turbopack）输出到 `.next/dev/static`
+ * - `next build` 输出到 `.next/static`
+ *
+ * 开发环境优先命中前者，否则 `/_next/static/xxx` 会被解析到一个不存在的路径，
+ * 导致图片预处理（读取宽高、生成模糊占位图、压缩）失败，图片在 dev 下无法显示。
+ */
+const kDevStaticDir = '.next/dev/static';
+const kBuildStaticDir = '.next/static';
+const kNextStaticDirs =
+  process.env.NODE_ENV === 'development'
+    ? [kDevStaticDir, kBuildStaticDir]
+    : [kBuildStaticDir, kDevStaticDir];
+
+/**
+ * /_next/static/file -> .next/dev/static/file（dev）或 .next/static/file（build）
+ */
+const nextStaticAsset2LocalPath = (url: string) => {
+  const root = process.cwd();
+  const asset = url.replace('/_next/static/', '');
+  const dir =
+    kNextStaticDirs.find((dir) => existsSync(path.join(root, dir, asset))) ??
+    kNextStaticDirs[0];
+  return path.join(root, dir, asset);
+};
+
+/**
  * - /public/file -> /public/file
- *   - /_next/static/file -> .next/static/file
+ *   - /_next/static/file -> .next/(dev/)static/file
  *      - /file -> /public/file
  */
-export const assetURL2LocalPath = (src) => {
-  if (isInternalAsset(src)) {
-    if (src.startsWith('/public/')) {
-      // /public/file -> /public/file
-    } else if (src.startsWith('/_next/static/')) {
-      // /_next/static/file -> .next/static/file
-      src = src.replace('/_next/static/', '/.next/static/');
-    } else if (src.startsWith('/')) {
-      // /file -> /public/file
-      src = `/public${src}`;
-    } else {
-      // Unknown
-      src = undefined;
-    }
-  } else {
-    src = undefined;
+export const assetURL2LocalPath = (src: string | undefined) => {
+  if (!isInternalAsset(src)) {
+    return undefined;
   }
-  if (src) {
-    src = process.cwd() + src;
+  const url = src as string;
+  if (url.startsWith('/_next/static/')) {
+    return nextStaticAsset2LocalPath(url);
   }
-  return src;
+  if (url.startsWith('/public/')) {
+    // /public/file -> /public/file
+    return path.join(process.cwd(), url);
+  }
+  // /file -> /public/file
+  return path.join(process.cwd(), 'public', url);
 };

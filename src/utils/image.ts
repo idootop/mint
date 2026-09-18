@@ -113,6 +113,9 @@ const loadImage = async (
   }
   const src = resolveAssetURL(url);
   const filePath = assetURL2LocalPath(src);
+  if (!filePath) {
+    return;
+  }
   const data = await readFile(filePath);
   const checksum = await checksumFile(data);
   if (!data || !checksum) {

@@ -18,7 +18,7 @@ export interface ImageProps extends BoxProps {
 const imgLoader = (p: { src: string }) => p.src;
 
 const Image = forwardRef((props: ImageProps, ref: any) => {
-  const [isLoaded, setIsLoaded] = useState(!!props.placeholder);
+  const [isLoaded, setIsLoaded] = useState(true);
   const [isError, setIsError] = useState(false);
 
   const display = getBoxStyle(props, 'display', 'block');
