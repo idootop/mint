@@ -1,3 +1,4 @@
+// biome-ignore-all lint/correctness/useHookAtTopLevel: gl.useProgram 是 WebGL API，与 React Hook 无关
 import {
   dropFragmentShader,
   normalFragmentShader,

@@ -4,7 +4,7 @@
   "version": "7.2.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.4.1",
+  "packageManager": "pnpm@12.4.2",
   "scripts": {
     "dev": "tsx scripts/collect.ts && next dev",
     "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
@@ -18,16 +18,16 @@
     "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.13",
+    "@biomejs/biome": "^2.5.14",
     "@del-wang/config": "^1.7.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.3.5",
     "@types/mdx": "^2.0.14",
-    "@types/node": "^26.5.1",
+    "@types/node": "^26.6.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "lefthook": "^2.1.12",
+    "lefthook": "^2.1.14",
     "next-file-loader": "^2.0.0",
     "rehype-prism-plus": "^2.0.2",
     "remark-gfm": "^4.0.1",

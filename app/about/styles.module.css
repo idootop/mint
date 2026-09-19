@@ -44,24 +44,22 @@
   width: min(30%, 160px);
 }
 
-/* 顶栏：透明化 + 白字（覆盖 layouts/styles.module.css 的浅色主题） */
-:global(#header) {
+body:has(.page) :global(#header) {
   background: hsla(0, 0%, 100%, 0);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
-:global(#header a) {
+body:has(.page) :global(#header a) {
   color: rgba(255, 255, 255, 0.5) !important;
 }
 
-:global(#header a:hover),
-:global(#header a[data-active="true"]) {
+body:has(.page) :global(#header a:hover),
+body:has(.page) :global(#header a[data-active="true"]) {
   color: rgba(255, 255, 255, 1) !important;
 }
 
-/* 底栏：固定居中 + 白字（Footer 用的是内联色值，必须 !important 覆盖） */
-:global(#footer) {
+body:has(.page) :global(#footer) {
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -70,6 +68,6 @@
   transform: translateX(-50%);
 }
 
-:global(#footer a) {
+body:has(.page) :global(#footer a) {
   color: rgba(255, 255, 255, 1) !important;
 }
