@@ -1,10 +1,10 @@
 {
   "name": "mint",
   "description": "薄荷的花语是：永不消逝的爱",
-  "version": "7.3.1",
+  "version": "7.4.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.4.2",
+  "packageManager": "pnpm@12.6.0",
   "scripts": {
     "dev": "tsx scripts/collect.ts && next dev",
     "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
@@ -13,7 +13,7 @@
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."
   },
   "dependencies": {
-    "next": "^16.3.5",
+    "next": "^16.3.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0"
   },
@@ -22,9 +22,9 @@
     "@del-wang/config": "^1.7.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
-    "@next/mdx": "^16.3.5",
+    "@next/mdx": "^16.3.6",
     "@types/mdx": "^2.0.14",
-    "@types/node": "^26.6.1",
+    "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "lefthook": "^2.1.14",
@@ -32,7 +32,7 @@
     "rehype-prism-plus": "^2.0.2",
     "remark-gfm": "^4.0.1",
     "sharp": "^0.35.4",
-    "tsx": "^4.23.13",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }
