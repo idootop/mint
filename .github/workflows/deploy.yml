@@ -27,6 +27,49 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: 构建网站
         run: pnpm build
+      - name: 打包静态产物
+        run: |
+          set -euo pipefail
+          # 把 out/ 的内容放在压缩包根目录，解压后即为站点根目录。
+          #
+          # 必须排除 __next.*.$c$slug.__PAGE__.txt：这是 Next.js 为动态路由生成的
+          # RSC payload，文件名含 "$"，而部署平台的路径安全校验白名单
+          # [\w/. :[\]\+@~(),=%-] 不含 "$"，会被误判为「路径穿越」导致整包上传
+          # 失败（HTTP 500）。这些文件在产物中零引用，剔除不影响站点。
+          cd out
+          zip -q -r -X "$RUNNER_TEMP/mint-out.zip" . \
+            -x './.DS_Store' \
+               '*/__next.*.$c$*.txt'
+
+          # 兜底：白名单之外的字符一律会被拒，提前发现并给出明确报错
+          # （例如新增了中文/emoji 命名的图片：请在仓库里改成 ASCII 文件名）
+          if ! python3 - "$RUNNER_TEMP/mint-out.zip" <<'PY'
+          import re, sys, zipfile
+          # 与部署平台的路径校验逻辑保持一致
+          pat = re.compile(r'^[\w/. :\[\]+@~(),=%-]{1,500}$')
+          bad = [
+              n for n in zipfile.ZipFile(sys.argv[1]).namelist()
+              if not pat.match(n.rstrip('/'))
+          ]
+          if bad:
+              print(f"❌ 压缩包中有 {len(bad)} 个不被接受的文件名：", file=sys.stderr)
+              for n in bad[:20]:
+                  print("   ", n, file=sys.stderr)
+              sys.exit(1)
+          PY
+          then
+            echo "请把上述文件重命名为 ASCII 名称（或调整打包排除规则）后重试。"
+            exit 1
+          fi
+
+          # 站点由自定义 Dockerfile + nginx.conf 提供服务：
+          # Next.js 静态导出是扁平 .html 结构，需要 try_files $uri.html 规则，
+          # 否则 /posts 会被 301 到 /posts/ 而返回 403。
+          # 部署平台以 buildType=dockerfile 构建时，构建上下文就是解压根目录。
+          cp ../deploy/Dockerfile ../deploy/nginx.conf .
+          zip -q -X "$RUNNER_TEMP/mint-out.zip" Dockerfile nginx.conf
+
+          ls -lh "$RUNNER_TEMP/mint-out.zip"
       - name: 上传更新
         env:
           HOST: ${{ secrets.HOST }}
@@ -45,3 +88,27 @@ jobs:
           curl -k "$WEBHOOK"
           sleep 3
           echo "✅ 网站更新完毕!"
+      - name: 部署到 Dokploy
+        env:
+          DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
+          DOKPLOY_APP_ID: ${{ secrets.DOKPLOY_APP_ID }}
+          DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
+        run: |
+          set -euo pipefail
+          echo "🔥 上传静态产物到 Dokploy..."
+          # 该接口会「清空代码目录 -> 解压 -> 入队构建」，请求成功即代表部署已受理。
+          # 大文件走公网可能较慢，失败自动重试。
+          curl \
+            --fail-with-body \
+            --retry 3 \
+            --retry-delay 10 \
+            --retry-all-errors \
+            --connect-timeout 30 \
+            --max-time 3000 \
+            --progress-bar \
+            -X POST "$DOKPLOY_URL/api/application.dropDeployment" \
+            -H "x-api-key: $DOKPLOY_API_KEY" \
+            -F "applicationId=$DOKPLOY_APP_ID" \
+            -F "zip=@$RUNNER_TEMP/mint-out.zip"
+          echo ""
+          echo "✅ 已提交部署任务"
