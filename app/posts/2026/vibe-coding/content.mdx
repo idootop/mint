@@ -1,0 +1,79 @@
+> 本文是 [BitSay](/projects/product/bitsay) 项目的 Vibe Coding 方法论。
+
+2026 年，开发范式发生了天翻地覆的变化。
+
+从前端到后端，从算法到架构，整个开发流程都发生了根本性的改变。
+
+[BitSay](/projects/product/bitsay) 正是在此背景下，完全由 AI 开发出来的 ——
+
+准确的说，所有代码都是由 [DeepSeek-v4.1-flash](https://www.deepseek.com/news/deepseek-v4-1-flash/) 生成的。
+
+我只负责描述需求，然后在 [DeepSeek Harness](https://www.deepseek.com/harness/) 里一轮轮打磨细节。
+
+当然你也可以使用 Claude Code、Codex 等 AI 工具和模型，
+
+我选择 deepseek 纯粹是因为其**速度更快，价格更便宜，效果勉强够用**。
+
+现在，让我来带领大家了解一下 BitSay 的开发过程（Vibe Coding）。
+
+## 1. AGENTS.md
+
+首先，我会将初始的需求整理到 `AGENTS.md` 作为全局上下文。
+
+import agent from "./images/agent.png";
+
+<BaseImage src={agent.src} alt="AGENTS.md" />
+
+这里的核心是交代清楚：
+
+- 要做什么东西
+- 它有哪些功能
+- 需要注意什么
+- 怎么调试验收
+- 有没有参考资料
+
+## 2. PROGRESS.md
+
+我个人习惯在最后交代一句：
+
+> 请把你的设计方案、任务列表和实现进展及时记录到 PROGERSS.md，方便随时交接给其他 Agent 接手继续后续的任务。
+
+import progress from "./images/progress.png";
+
+<BaseImage src={progress.src} alt="PROGRESS.md" />
+
+这样做有 3 个好处：
+
+1. 方便查看 Agent 的方案设计和开发进展
+2. 方便随时将任务交接给其他模型和 Agent 工具继续后续任务
+3. 单一事实来源（SSOT, Single Source of Truth）方便维护和更新上下文
+
+## 3. TASKS.md
+
+我个人习惯把一些待办和调整过程记录到 `TASKS.md` 中。
+
+剩下的就是和 Agent 对话，一轮轮的调整打磨细节了。
+
+这是整个开发过程中最耗时间和精力的地方，
+
+也是对个人审美品味和品质要求的集中反映。
+
+import task from "./images/task.png";
+
+<BaseImage src={task.src} alt="TASKS.md" />
+
+当然，如果模型本身能力够强的话，这一步可能会轻松很多。
+
+但是显然 DeepSeek-v4.1-flash 还是离不开人的监督。
+
+## 4. Web UI/UX Design
+
+最后，对于原生应用的开发，尤其是缺少 hot reload 热更新功能的开发框架时，
+
+因为真机打包调试往往很耗时，所以我习惯让 AI 维护一份 Web UI 的映射界面，
+
+方便在 Web 上直接查看和调整界面和交互设计，这样会大大提升开发效率。
+
+import design from "./images/design.webp";
+
+<BaseImage src={design.src} alt="Web UI/UX Design" />
