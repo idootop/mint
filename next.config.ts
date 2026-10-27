@@ -1,4 +1,5 @@
 import configMDX from '@next/mdx';
+import type { NextConfig } from 'next';
 import createNextFileLoader from 'next-file-loader';
 
 const withNextFileLoader = createNextFileLoader(
@@ -28,8 +29,7 @@ const withMDX = configMDX({
   },
 });
 
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+const nextConfig: NextConfig = {
   output: 'export',
   images: { unoptimized: true },
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
