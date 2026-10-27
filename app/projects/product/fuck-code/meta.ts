@@ -7,5 +7,5 @@ export const metadata = {
   createAt: '2025-12',
   description: '去他妈的算法题',
   cover: cover.src,
-  pinned: true,
+  pinned: false,
 };

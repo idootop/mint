@@ -8,5 +8,5 @@ export const metadata = {
   createAt: '2026-08',
   description: '一款面向本地归档的多媒体批量压缩工具',
   cover: cover.src,
-  pinned: true,
+  pinned: false,
 };
