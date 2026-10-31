@@ -4,7 +4,7 @@
   "version": "7.6.0",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@12.15.0",
+  "packageManager": "pnpm@12.16.1",
   "scripts": {
     "dev": "tsx scripts/collect.ts && next dev",
     "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.6.3",
-    "@del-wang/config": "^1.7.0",
+    "@del-wang/config": "^1.8.0",
     "@mdx-js/loader": "^3.1.1",
     "@mdx-js/react": "^3.1.1",
     "@next/mdx": "^16.4.3",

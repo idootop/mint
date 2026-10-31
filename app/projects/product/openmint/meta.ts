@@ -7,5 +7,5 @@ export const metadata = {
   createAt: '2026-07',
   description: 'A task board that runs itself.',
   cover: cover.src,
-  pinned: true,
+  pinned: false,
 };

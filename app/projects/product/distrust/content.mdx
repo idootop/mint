@@ -1,0 +1,53 @@
+# 预览
+
+import adminOverview from "./images/admin-overview.png";
+
+<TableImage src={adminOverview.src} />
+
+<br />
+
+- **💻 目标设备无感**：目标设备上什么都不用配置，旧应用 HTTPS 请求完全裸奔。
+- **✏️ 响应实时改写**：不仅支持查看 HTTPS 请求内容，还能构造替换任意响应内容。
+- **💬 飞书消息监听**：支持查看私聊/群聊的所有历史消息，也能向任意会话发消息。
+
+# 简介
+
+2026 年 10 月，有人发现印度 CA eMudhra 旗下 emSign 的 8 张中间证书私钥，在生成时随机性严重不足，导致拿公开证书就能直接算出来。各大浏览器第一时间封禁了这些证书，Go、Python、Rust 也很快发了新版。
+
+但更新需要时间，大部分人的软件还是旧的：macOS 自带的 `curl`、`git` 根本不检查证书是否被吊销；Go、`certifi` 这类自带信任库的客户端得重新编译才行；Electron 应用要等上游发版。
+
+**Distrust** 就诞生在这个背景下：它能监控并篡改那些尚未更新的旧应用发出的 HTTPS 请求，其中就包括飞书这类即时通信软件。
+
+换句话说，和你连同一个 WiFi 的人，现在可以随意查看你的飞书消息。
+
+这个事件给我们的启示是：
+
+**一定要保持系统和应用经常更新，不要随便连接陌生的 WiFi 热点。**
+
+# 预览
+
+import adminChats from "./images/admin-chats.png";
+import adminDevices from "./images/admin-devices.png";
+import adminFlows from "./images/admin-flows.png";
+import adminLogs from "./images/admin-logs.png";
+import adminRulesRewrite from "./images/admin-rules-rewrite.png";
+import adminRules from "./images/admin-rules.png";
+import feishuChat from "./images/feishu-chat.png";
+
+|                  总览                  |              请求抓包               |
+| :------------------------------------: | :---------------------------------: |
+| <TableImage src={adminOverview.src} /> | <TableImage src={adminFlows.src} /> |
+
+|               设备发现                |              实时日志              |
+| :-----------------------------------: | :--------------------------------: |
+| <TableImage src={adminDevices.src} /> | <TableImage src={adminLogs.src} /> |
+
+|           规则 · 拦截策略           |              规则 · 规则列表               |
+| :---------------------------------: | :----------------------------------------: |
+| <TableImage src={adminRules.src} /> | <TableImage src={adminRulesRewrite.src} /> |
+
+|              飞书消息               |             飞书客户端              |
+| :---------------------------------: | :---------------------------------: |
+| <TableImage src={adminChats.src} /> | <TableImage src={feishuChat.src} /> |
+
+> 图中 IP、域名、会话均为虚构，仅用于功能演示。
