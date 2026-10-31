@@ -1,0 +1,119 @@
+> “没有人比我更懂 HTTPS，除了那个在监控我电脑的家伙“ —— Del Wang
+
+# 0x01
+
+2026 年 10 月，全球互联网的根基在不经意间轰然塌陷了一角。
+
+有人在研究中发现，印度 CA 机构 eMudhra 旗下的 emSign 发行的 8 张中间证书，在生成私钥时存在致命缺陷——**随机性严重不足**。
+
+在现代密码学中，随机性就是数字世界的“护城河”。当熵值跌落谷底，这套原本需要暴力破解上亿年的加密算法，在数学意义上瞬间变成了窗户纸：**攻击者只需要拿到公开证书，就能直接反向推算出私钥。**
+
+import random from "./images/random.png";
+
+<BaseImage src={random.src} />
+
+这意味着任何人只要掌握了这个私钥，就能在网络传输中完美伪装成目标服务器。
+
+import mimt from "./images/mimt.jpg";
+
+<BaseImage src={mimt.src} />
+
+# 0x02
+
+各方反应不可谓不迅速。各大浏览器厂商第一时间连夜封禁了这 8 张证书；Go、Python、Rust 官方社区也迅速响应，紧急发布了包含新信任库的安全更新。
+
+import ban from "./images/ban.png";
+
+<BaseImage src={ban.src} />
+
+大家跑到 https://emudhra.we-have-a-problem.com 检测，看到浏览器网址旁依然亮着代表安全的绿锁，终于松了一口气：“**我们安全了！**”
+
+import test from "./images/test.webp";
+
+<BaseImage src={test.src} />
+
+# 0x03
+
+现在距离 10 月 20 号漏洞公开披露已经过去 2 周时间，
+
+**我们真的安全了吗？**
+
+import stack from "./images/stack.webp";
+
+<BaseImage src={stack.src} />
+
+互联网的安全防护从来不是一扇固若金汤的门，而是一条长长的供应链链条。
+
+浏览器换了锁，但你系统里无数的窗户还大开着：
+
+1. **系统自带工具的盲区**：系统自带的 `curl` 和 `git` 等命令行工具，默认根本不检查 CRL证书吊销列表。只要证书链表面合规，它们就会一路放行；
+2. **工具链运行时的滞后**：Go (`crypto/x509`)、Python (`certifi`) 以及 Rust 自带的信任库，**不会因为系统升级而自动生效**。任何没有重新编译的项目、没有更新依赖包的 CLI 工具，依然在坚定地信任那几张已经被破解的私钥；
+3. **Electron 与桌面生态的“安全黑洞”**：大量办公软件、即时通讯工具（包括飞书）、桌面 AI 客户端，底层都打包着旧版 Chromium 框架。在上游应用未完成全面打包发版前，它们就是天然的免疫检测死角。
+
+**此刻，数以亿计的应用正在局域网里毫无防御地裸奔。**
+
+# 0x04
+
+很多人可能还没意识到，**究竟发生了多么可怕的事情 🚨🚨🚨**
+
+为此我制作了一个PoC 验证软件：[**❌ Distrust — Don't trust anyone**](/projects/product/distrust)
+
+**Distrust** 专门监控并改写那些未更新的旧应用发出的 HTTPS 请求[^1]：
+
+import adminFlows from "./images/admin-flows.png";
+
+<BaseImage src={adminFlows.src} alt="监听和篡改任意 HTTPS 请求" />
+
+在针对飞书等常用办公软件的实测中，呈现出的破坏力令人脊背发凉：
+
+import feishuChat from "./images/admin-chats.png";
+
+<BaseImage src={feishuChat.src} alt="实时监听飞书聊天记录" />
+
+- 💻 **目标设备完全无感**：旧应用的 HTTPS 请求在局域网中完全透明，目标设备不需要做任何配置，甚至不需要安装任何根证书；
+- 📩 **飞书消息实时监听**：不仅能在控制台实时查看明文聊天记录、敏感截图和历史对话，还能做到拦截与替换；
+- ✏️ **响应实时改写与身份冒充**：不仅能看，还能构造并替换任意响应内容，甚至**以别人的身份向任何人（比如你老板）发送一条 ta 从未发过的消息**。
+
+**这还仅仅只是飞书，仅仅只是聊天记录。**
+
+# 0x05
+
+放到真实的办公和生活场景中，它的杀伤力远比你想的更恶劣：
+
+import msg from "./images/msg.jpg";
+
+<BaseImage src={msg.src} alt="有内鬼终止交易" />
+
+- 🚨 **Vibe Coding 变成噩梦**：当你享受着 AI 编码助手或终端 Agent 的全自动操作时，局域网中间人可以在 Tool Call 返回时注入一条恶意 Shell 命令，删库跑路、植入后门、盗取 API Key 仅在瞬间；
+- ✈️ **网络通道全面沦陷**：你每天连接的代理、机场节点，一旦遇到恶意的中间人节点，所有加密流量被瞬间解密，隐私凭证彻底开盒；
+- 💳 **资金与交易彻底失守**：银行校验、交易所 API、Auth Token……在未更新的客户端面前，全变成了透明的提款机。
+
+安全的残酷之处在于：**哪怕你的防线建立了 99%，只要有 1% 的旧组件没有更新，整体安全性就等于 0。** 那些静静躺在你电脑里的旧版命令行、旧版依赖包和旧版桌面客户端，就是黑客眼里最完美的突破口。
+
+**你以为的安全，只是因为还没人对你出手。**
+
+# 0x06
+
+☠️ 这注定是一场惨烈的网络安全黑天鹅事件。
+
+我想现在你应该已经明白了，我们的处境究竟有多糟糕～
+
+import fine from "./images/fine.jpg";
+
+<BaseImage src={fine.src} alt="This is fine." />
+
+**我们能做什么：**
+
+- **立刻更新系统到最新版本**
+  - 注意最新的 [macOS 27.2](https://emudhra.we-have-a-problem.com/apple.html) 系统依旧没有更新 curl 等组件[^2]
+  - 手动更新教程 https://emudhra.we-have-a-problem.com/#macos-curl
+- **强制清查并升级旧版应用**：
+  - 检查飞书、钉钉、各类 Electron 客户端及 AI Agent 工具
+  - 立刻手动点击「检查更新」升级到最新官方版本
+- **彻底切断不安全的网络连接**：
+  - 绝不在公共场所连接任何陌生的 WiFi 热点
+  - 在不可信的网络环境下，警惕局域网 ARP/DNS 劫持
+
+[^1]: Distrust 的目的不是破坏，而是为了演示在没有更新所有组件前，我们究竟有多脆弱。
+
+[^2]: 最新发布的 [macOS 27.2](https://emudhra.we-have-a-problem.com/apple.html) 仍然没有更新 curl、git 和 /etc/ssl/cert.pem
