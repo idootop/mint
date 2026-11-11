@@ -6,8 +6,8 @@
   "type": "module",
   "packageManager": "pnpm@12.18.0",
   "scripts": {
-    "dev": "tsx scripts/collect.ts && next dev",
-    "build": "tsx scripts/collect.ts && next build && tsx scripts/cleanup.ts",
+    "dev": "tsx scripts/prebuild.ts && next dev",
+    "build": "tsx scripts/prebuild.ts && next build && tsx scripts/postbuild.ts",
     "preview": "serve out",
     "postinstall": "[ -n \"$CI\" ] || lefthook install",
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."

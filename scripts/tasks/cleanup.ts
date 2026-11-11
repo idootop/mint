@@ -5,6 +5,8 @@ import path from 'node:path';
 import { deleteFile, getFiles, kRoot } from '@/common/utils/io';
 import { kCompressionDir, kPublicDir } from '@/utils/image';
 
+import type { BuildTask } from './run-tasks';
+
 const kOutDir = 'out';
 
 /**
@@ -15,7 +17,7 @@ const kOutDir = 'out';
  * 据此删除集合之外的文件——既清理产物 out/compressions，也清理源 public/
  * compressions，从而在源码删除图片引用（但未删原图）后也能正确回收压缩图。
  */
-const cleanupUnusedCompressions = async () => {
+const cleanup = async () => {
   const outDir = path.join(kRoot, kOutDir);
   if (!existsSync(outDir)) {
     return;
@@ -64,4 +66,7 @@ const cleanupUnusedCompressions = async () => {
   }
 };
 
-cleanupUnusedCompressions();
+export const cleanupTask: BuildTask = {
+  name: '清理无用压缩图',
+  run: cleanup,
+};
