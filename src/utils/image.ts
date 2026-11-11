@@ -48,6 +48,7 @@ export const kCompressionDir = 'compressions';
 
 // 进程内缓存：同一构建进程中复用图片处理结果，并合并并发的相同请求
 const kProcessedImages = new Map<string, Promise<ImageProps | undefined>>();
+let kImageQueue: Promise<void> = Promise.resolve();
 
 export const processImage = async (url: string | undefined) => {
   if (!url) {
@@ -58,7 +59,15 @@ export const processImage = async (url: string | undefined) => {
     return { src: url };
   }
   if (!kProcessedImages.has(url)) {
-    kProcessedImages.set(url, processLocalImage(url));
+    // 串行处理：并发处理会让各个 async 组件以不确定的顺序完成，
+    // React 流式渲染据此输出，导致同一份源码每次构建的 HTML 顺序不同。
+    // 排队后处理顺序稳定，产物才能做到可复现（增量部署依赖这一点）。
+    const task = kImageQueue.then(() => processLocalImage(url));
+    kImageQueue = task.then(
+      () => undefined,
+      () => undefined,
+    );
+    kProcessedImages.set(url, task);
   }
   return kProcessedImages.get(url);
 };

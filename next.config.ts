@@ -31,6 +31,10 @@ const withMDX = configMDX({
 
 const nextConfig: NextConfig = {
   output: 'export',
+  // buildId 会内联进每个 HTML/RSC 产物。Next 默认每次构建都用随机值，
+  // 会让全站文件内容变化、增量部署失效。固定后产物可复现；
+  // 缓存是否失效由各文件自身内容决定（HTML 走 no-cache，_next/static 走内容哈希）。
+  generateBuildId: () => 'mint',
   images: { unoptimized: true },
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 };
