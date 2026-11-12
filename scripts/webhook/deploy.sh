@@ -42,11 +42,29 @@ die() {
   exit 1
 }
 
-# ── 解析 $1（宝塔的 param）：分号分隔的 key=value ────────────────────
-PARAM="${1:-}"
+# ── 解析 $1（宝塔的 param）──────────────────────────────────────────
+# 宝塔对 param 有路径安全过滤，值是 base64url 编码（只含 A-Za-z0-9-_），
+# 解码后是分号分隔的 key=value，例如：
+#   download_url=https://xxx.myqcloud.com;site_dir=/www/wwwroot/del.wang
+PARAM_RAW="${1:-}"
 
-# 宝塔把 param 传给 $1 时已经做过 URL 解码，这里直接用原值。
-# 如果站点目录带空格等特殊字符，建议不要用空格。
+# base64url → 标准 base64，再补齐 = 填充
+decode_param() {
+  local v="$1" pad
+  [ -n "$v" ] || return 0
+  v="$(printf '%s' "$v" | tr -d '\n')"
+  v="$(printf '%s' "$v" | tr -- '-_' '+/')"
+  case $((${#v} % 4)) in
+    2) pad='==' ;;
+    3) pad='=' ;;
+    *) pad='' ;;
+  esac
+  printf '%s' "$v$pad" | base64 -d 2>/dev/null
+}
+
+PARAM="$(decode_param "$PARAM_RAW")"
+[ -n "$PARAM" ] || die 'param 为空或解码失败'
+
 parse_param() {
   local key="$1" pair="" rest
   local IFS=';'

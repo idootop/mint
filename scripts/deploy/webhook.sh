@@ -32,16 +32,15 @@ WEBHOOK_DOWNLOAD_URL="${WEBHOOK_DOWNLOAD_URL:-}"
 MANIFEST="manifest.json"
 [ -f "$OUT_DIR/$MANIFEST" ] || die "缺少 ${OUT_DIR}/${MANIFEST}，请先执行 pnpm build"
 
-# param 里携带本次部署目标，服务器端从 $1 解析（分号分隔的 key=value）
+# param 里携带本次部署目标，服务器端从 $1 解析。
+# 格式先用分号分隔的 key=value，再做 base64url 编码：
+# 宝塔对 param 有路径安全过滤，出现 / . : ; , 等字符会直接 404，
+# base64url 只用 A-Za-z0-9-_ 这套字符，可以安全通过。
 PARAM="download_url=${WEBHOOK_DOWNLOAD_URL%;*};site_dir=${WEBHOOK_SITE_DIR%;*}"
-
-# 只编码会破坏查询串的字符（& = # + 空格 %）
-PARAM_ESCAPED="${PARAM//%/%25}"
-PARAM_ESCAPED="${PARAM_ESCAPED// /%20}"
-PARAM_ESCAPED="${PARAM_ESCAPED//&/%26}"
-PARAM_ESCAPED="${PARAM_ESCAPED//=/%3D}"
-PARAM_ESCAPED="${PARAM_ESCAPED//#/%23}"
-PARAM_ESCAPED="${PARAM_ESCAPED//+/%2B}"
+PARAM_ESCAPED="$(printf '%s' "$PARAM" | base64 | tr -d '\n' | tr '+/' '-_' | tr -d '=')"
+case "$PARAM_ESCAPED" in
+  *[!A-Za-z0-9_-]*) die "param 编码异常：${PARAM_ESCAPED}" ;;
+esac
 
 SEP='?'
 case "$WEBHOOK_URL" in
