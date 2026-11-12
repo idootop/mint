@@ -9,6 +9,10 @@
     "dev": "tsx scripts/prebuild.ts && next dev",
     "build": "tsx scripts/prebuild.ts && next build && tsx scripts/postbuild.ts",
     "preview": "serve out",
+    "deploy": "bash scripts/deploy/local.sh all",
+    "deploy:ftp": "bash scripts/deploy/local.sh ftp",
+    "deploy:cos": "bash scripts/deploy/local.sh cos",
+    "deploy:dokploy": "bash scripts/deploy/local.sh dokploy",
     "postinstall": "[ -n \"$CI\" ] || lefthook install",
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."
   },
