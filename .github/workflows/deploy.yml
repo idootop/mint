@@ -61,8 +61,8 @@ jobs:
       - name: 触发 Webhook 部署
         env:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-          WEBHOOK_SITE_DIR: ${{ vars.WEBHOOK_SITE_DIR }}
-          WEBHOOK_DOWNLOAD_URL: ${{ vars.WEBHOOK_DOWNLOAD_URL }}
+          WEBHOOK_SITE_DIR: ${{ secrets.WEBHOOK_SITE_DIR }}
+          WEBHOOK_DOWNLOAD_URL: ${{ secrets.WEBHOOK_DOWNLOAD_URL }}
         run: bash scripts/deploy/webhook.sh
 
   deploy-dokploy:
