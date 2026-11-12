@@ -5,6 +5,7 @@
  * 然后把它加进下面的列表。数组顺序就是执行顺序。
  */
 import { cleanupTask } from './tasks/cleanup';
+import { junkCleanupTask } from './tasks/junk-cleanup';
 import { manifestTask } from './tasks/manifest';
 import { mediaCleanupTask } from './tasks/media-cleanup';
 import { runTasks } from './tasks/run-tasks';
@@ -12,5 +13,6 @@ import { runTasks } from './tasks/run-tasks';
 runTasks('postbuild', [
   cleanupTask,
   mediaCleanupTask, // 图片清理要在生成清单之前
+  junkCleanupTask, // 垃圾文件要在生成清单之前
   manifestTask, // 清单记录的是最终产物
 ]);
