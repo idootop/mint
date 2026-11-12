@@ -7,10 +7,9 @@
 # 部署目标固定为 FTP 登录后的根目录（也就是网站根目录），不提供配置项。
 #
 # 环境变量：
-#   FTP_HOST        FTP 主机（必填）
+#   FTP_URL         FTP 地址，带协议和端口，如 ftp://xxx.xxx.xxx.xxx:21（必填）
 #   FTP_USER        FTP 用户（必填）
 #   FTP_PASSWORD    FTP 密码
-#   FTP_PORT        端口，默认 21
 #
 # shellcheck source=common.sh
 . "$(dirname "$0")/common.sh"
@@ -18,16 +17,19 @@
 need curl
 check_out
 
-FTP_HOST="${FTP_HOST:-}"
+FTP_URL="${FTP_URL:-}"
 FTP_USER="${FTP_USER:-}"
 FTP_PASSWORD="${FTP_PASSWORD:-}"
-FTP_PORT="${FTP_PORT:-21}"
 
-[ -n "$FTP_HOST" ] || die '缺少 FTP_HOST'
+[ -n "$FTP_URL" ] || die '缺少 FTP_URL，例如 ftp://192.0.2.1:21'
 [ -n "$FTP_USER" ] || die '缺少 FTP_USER'
+case "$FTP_URL" in
+  ftp://* | ftps://*) ;;
+  *) die 'FTP_URL 必须以 ftp:// 或 ftps:// 开头' ;;
+esac
 
 AUTH="$FTP_USER:$FTP_PASSWORD"
-BASE="ftp://$FTP_HOST:$FTP_PORT"
+BASE="${FTP_URL}"
 # 并发上传数。FTP 每个文件都要重新建连（约 8ms），是主要开销。
 CONCURRENCY="${FTP_CONCURRENCY:-16}"
 

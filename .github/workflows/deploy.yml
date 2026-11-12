@@ -46,7 +46,7 @@ jobs:
           path: out
       - name: 部署到 FTP
         env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_URL: ${{ secrets.FTP_URL }}
           FTP_USER: ${{ secrets.FTP_USER }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: bash scripts/deploy/ftp.sh
