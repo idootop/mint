@@ -36,17 +36,18 @@ CONCURRENCY="${FTP_CONCURRENCY:-16}"
 # URL 编码路径（兼容中文与空格），保留 / 分隔。
 # 用 bash 内置字符串处理，避免每个文件都启动一个 python 进程。
 url_encode() {
-  local str="$1" out="" ch i
-  # 先用 curl 的 --data-urlencode 之外的办法：直接按字节转义
-  for ((i = 0; i < ${#str}; i++)); do
-    ch="${str:i:1}"
-    case "$ch" in
-      [a-zA-Z0-9._~/-]) out+="$ch" ;;
-      *) out+="$(printf '%%%02X' "'$ch")" ;;
-    esac
-  done
-  printf '%s' "$out"
+  # 只处理会破坏 URL 的字符：空格与百分号。
+  # 像 $ ( ) [ ] 在 RFC 3986 的 path 段里本来就合法，保持原样即可。
+  # Next 的产物里有 __next.posts.$c$slug.__PAGE__.txt 这种名字，
+  # 错误地编码成 %24 后部分 FTP 服务端会拒绝写入（curl rc=123）。
+  #
+  # 中文等非 ASCII 由 curl 自己处理，这里不动（产物里目前也没有）。
+  local path="$1"
+  path="${path//%/%25}"
+  path="${path// /%20}"
+  printf '%s' "$path"
 }
+
 
 # ── 传输原语 ─────────────────────────────────────────────────────────
 
@@ -74,9 +75,11 @@ remote_push() {
   local dir="$1" prefix="$2" meta="$3" pattern="$4" invert="$5"
   [ -d "$dir" ] || return 0
 
+  # 一行一个任务：本地路径 \0 目标 URL \0
   local jobs="$TMP_DIR/.push-jobs-$$"
   : >"$jobs"
-  local rel
+
+  local rel total=0
   while IFS= read -r rel; do
     [ -n "$rel" ] || continue
     if [ -n "$pattern" ]; then
@@ -86,26 +89,46 @@ remote_push() {
         [ "$invert" = true ] || continue
       fi
     fi
-    local key="$rel"
-    [ -z "$prefix" ] || key="$prefix/$rel"
-    printf '%s\0%s%s\0' "$dir/$rel" "$BASE" "$(url_encode "/$key")" >>"$jobs"
+    local target="$rel"
+    [ -z "$prefix" ] || target="$prefix/$rel"
+    printf '%s\0%s%s\0%s\0' "$dir/$rel" "$BASE" "$(url_encode "/$target")" "$target" >>"$jobs"
+    total=$((total + 1))
   done < <(cd "$dir" && find . -type f -print | sed 's|^\./||')
 
-  local rc=0
-  if [ -s "$jobs" ]; then
-    # NUL 分隔：每次取「本地路径 + URL」两个参数交给 curl
-    xargs -0 -r -n 2 -P "$CONCURRENCY" \
-      sh -c 'exec curl -sS --fail -u "$0" --ftp-create-dirs -T "$1" "$2"' \
-      "$AUTH" <"$jobs" 2>/dev/null || rc=$?
+  if [ "$total" -eq 0 ]; then
+    rm -f "$jobs"
+    return 0
   fi
-  rm -f "$jobs"
 
-  if [ "$rc" -ne 0 ]; then
-    warn "部分文件上传失败（curl rc=${rc}）"
+  # 并行上传，每成功一个就往 stderr 打一行路径（>> /dev/stderr 保证不被吞）
+  local failed_file="$TMP_DIR/.push-failed-$$"
+  : >"$failed_file"
+  # sh -c 的 $0 是 AUTH，$1 是失败记录文件；xargs 传入的两个参数从 $2 开始。
+  # 成功时打印远端相对路径（和 COS 侧保持一致），失败记到文件里统一汇报。
+  # sh -c 的 $0=AUTH、$1=失败记录文件，xargs 传入的三个参数从 $2 开始
+  xargs -0 -r -n 3 -P "$CONCURRENCY" sh -c '
+    if curl -sS --fail -u "$0" --ftp-create-dirs -T "$2" "$3" >/dev/null 2>&1; then
+      printf "  ↑ %s\n" "$4" >&2
+    else
+      printf "%s\n" "$4" >>"$1"
+    fi
+  ' "$AUTH" "$failed_file" <"$jobs" || true
+
+  local failed
+  failed="$(wc -l <"$failed_file" | tr -d ' ')"
+  rm -f "$jobs"
+  if [ "$failed" -gt 0 ]; then
+    warn "有 ${failed}/${total} 个文件上传失败："
+    head -3 "$failed_file" | sed 's/^/    /' >&2
+    [ "$failed" -le 3 ] || echo "    …（共 ${failed} 个）" >&2
+    rm -f "$failed_file"
     return 1
   fi
+  rm -f "$failed_file"
   return 0
 }
+
+
 
 # 批量删除；同一个会话里依次执行 DELE，每批最多 200 条
 remote_purge() {

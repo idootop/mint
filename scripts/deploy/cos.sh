@@ -193,7 +193,8 @@ remote_put() {
   local file="$1" key="$2" meta="$3"
   local args=()
   [ -z "$meta" ] || args=(--meta "$meta")
-  cos cp "$file" "cos://$BUCKET/${key#/}" "${args[@]}" >/dev/null
+  cos cp "$file" "cos://$BUCKET/${key#/}" "${args[@]}" >/dev/null || return 1
+  printf '  ↑ %s\n' "${key#/}"
 }
 
 # 递归上传目录内容并写入缓存头。
@@ -201,6 +202,7 @@ remote_put() {
 remote_push() {
   local dir="$1" prefix="$2" meta="$3" pattern="$4" invert="$5"
   [ -d "$dir" ] || return 0
+
   local dest="cos://$BUCKET"
   [ -z "$prefix" ] || dest="cos://$BUCKET/${prefix}"
   dest="$dest/"
@@ -215,8 +217,26 @@ remote_push() {
       args+=(--include "$pattern")
     fi
   fi
+
+  # 先把本次要传的路径打出来：sync 是批量操作，拿不到可靠的逐文件回调，
+  # 用同一套过滤条件在本地算一遍，日志里就能看到传了哪些文件。
+  # （清单比对已经决定了哪些文件需要上传，这里处理的正好是那些）
+  local rel
+  while IFS= read -r rel; do
+    [ -n "$rel" ] || continue
+    if [ -n "$pattern" ]; then
+      if printf '%s' "$rel" | grep -qE "$pattern"; then
+        [ "$invert" = true ] && continue
+      else
+        [ "$invert" = true ] || continue
+      fi
+    fi
+    printf '  ↑ %s\n' "${prefix:+$prefix/}$rel"
+  done < <(cd "$dir" && find . -type f -print | sed 's|^\./||')
+
   cos sync "$dir/" "$dest" -r "${args[@]}" >/dev/null
 }
+
 
 # 批量删除；列表文件每行一个 key
 remote_purge() {
