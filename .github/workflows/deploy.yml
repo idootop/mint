@@ -6,14 +6,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - name: 初始化 PNPM / Node 并安装依赖
-        uses: pnpm/setup@v2
+        uses: pnpm/setup@v3
         with:
-          runtime: node@24
+          runtime: node@26
           cache: true
       - name: 初始化 Next.js 缓存
         uses: actions/cache@v6
@@ -27,73 +27,67 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/pnpm-lock.yaml') }}-
       - name: 构建网站
         run: pnpm build
-      - name: 部署到 FTP 服务器
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v7
+        with:
+          name: out
+          path: out
+          retention-days: 3
+
+  # 三个部署目标相互独立、并行执行：任一目标失败，其它目标仍继续。
+  deploy-ftp:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: out
+          path: out
+      - name: 部署到 FTP
         env:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USER }}
           PASSWD: ${{ secrets.PASSWD }}
-          WEBHOOK: ${{ secrets.WEBHOOK }}
-        run: |
-          set -euo pipefail
-          tar -czvf out.tar.gz out
-          echo "🔥 网站上传中..."
-          curl -u "$USER:$PASSWD" -T out.tar.gz ftp://$HOST/temp/
-          echo "🔥 网站更新中..."
-          curl -k "$WEBHOOK"
-          echo "✅ 网站更新完毕!"
-      - name: 部署到 Dokploy 服务器
+        run: bash scripts/deploy/ftp.sh
+
+  deploy-cos:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: out
+          path: out
+      - name: 缓存 coscli
+        uses: actions/cache@v6
+        with:
+          # scripts/deploy/cos.sh 把 coscli 装到 $HOME/.local/bin（可缓存目录）
+          path: ~/.local/bin
+          # key 带版本号：版本不变直接命中，版本升级自动失效并重新下载
+          key: coscli-${{ runner.os }}-${{ runner.arch }}-${{ vars.COSCLI_VERSION || '1.0.9' }}
+      - name: 部署到腾讯云 COS
+        env:
+          COS_SECRET_ID: ${{ secrets.COS_SECRET_ID }}
+          COS_SECRET_KEY: ${{ secrets.COS_SECRET_KEY }}
+          COS_BUCKET: ${{ secrets.COS_BUCKET }}
+          COS_REGION: ${{ secrets.COS_REGION }}
+        run: bash scripts/deploy/cos.sh
+
+  deploy-dokploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: out
+          path: out
+      - name: 部署到 Dokploy
         env:
           DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
           DOKPLOY_APP_ID: ${{ secrets.DOKPLOY_APP_ID }}
           DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
-        run: |
-          set -euo pipefail
+        run: bash scripts/deploy/dokploy.sh
 
-          # 打包静态网站
-          cd out
-          zip -q -r -X "$RUNNER_TEMP/mint-out.zip" . \
-            -x '*/__next.*.$c$*.txt' # 排除非 ASCII 文件名文件
-
-          # 校验非 ASCII 文件名文件
-          if ! python3 - "$RUNNER_TEMP/mint-out.zip" <<'PY'
-          import re, sys, zipfile
-
-          # 与 Dokploy 路径校验逻辑保持一致
-          pat = re.compile(r'^[\w/. :\[\]+@~(),=%-]{1,500}$')
-          bad = [
-              n for n in zipfile.ZipFile(sys.argv[1]).namelist()
-              if not pat.match(n.rstrip('/'))
-          ]
-          if bad:
-              print(f"❌ 压缩包中有 {len(bad)} 个不被接受的文件名：", file=sys.stderr)
-              for n in bad[:20]:
-                  print("   ", n, file=sys.stderr)
-              sys.exit(1)
-          PY
-          then
-            echo "请把上述文件重命名为 ASCII 名称（或调整打包排除规则）后重试。"
-            exit 1
-          fi
-
-          # 使用自定义 Dockerfile + nginx.conf 设置 Nextjs 路由规则
-          cp ../deploy/Dockerfile ../deploy/nginx.conf .
-          zip -q -X "$RUNNER_TEMP/mint-out.zip" Dockerfile nginx.conf
-
-          # 查看产物体积
-          ls -lh "$RUNNER_TEMP/mint-out.zip"
-
-          echo "🔥 上传静态产物到 Dokploy..."
-          curl \
-            --fail-with-body \
-            --retry 3 \
-            --retry-delay 10 \
-            --retry-all-errors \
-            --connect-timeout 30 \
-            --max-time 3000 \
-            --progress-bar \
-            -X POST "$DOKPLOY_URL/api/application.dropDeployment" \
-            -H "x-api-key: $DOKPLOY_API_KEY" \
-            -F "applicationId=$DOKPLOY_APP_ID" \
-            -F "zip=@$RUNNER_TEMP/mint-out.zip"
-          echo ""
-          echo "✅ 已提交部署任务"
