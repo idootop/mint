@@ -30,10 +30,14 @@ esac
 
 AUTH="$FTP_USER:$FTP_PASSWORD"
 BASE="${FTP_URL}"
-# 每批文件数：同一批用 curl --next 复用一条连接（服务器每次登录要 ~1.7s，
-# 单个文件一个连接太慢）。批次之间再并发。
-FILE_BATCH="${FTP_BATCH:-100}"
-CONCURRENCY="${FTP_CONCURRENCY:-4}"
+# 实测参数（服务器单核 + argon2id 登录约 1.8s/次）：
+#   每批 30 个文件 + 并发 8 → 300 个小文件 31 秒（其它组合 35~138 秒）
+# 批次太小（20）会退化，太大（300+）无法利用多核并行；
+# 并发上限受服务器 MaxClientsPerIP=10 约束。
+FILE_BATCH="${FTP_BATCH:-30}"
+CONCURRENCY="${FTP_CONCURRENCY:-8}"
+# 删除时每个连接串多少个 DELE 命令
+PURGE_BATCH="${FTP_PURGE_BATCH:-500}"
 
 # URL 编码路径（兼容中文与空格），保留 / 分隔。
 # 用 bash 内置字符串处理，避免每个文件都启动一个 python 进程。
@@ -190,28 +194,46 @@ WORKER
 # 批量删除；同一个会话里依次执行 DELE，每批最多 200 条
 remote_purge() {
   local list="$1"
+  local total
+  total="$(wc -l <"$list" | tr -d ' ')"
+  [ "$total" -gt 0 ] || return 0
+
+  # 删除也走「分批 + 并发」：一批 = 一条连接里串 N 个 DELE。
+  # 单条连接串行删 300 个文件实测要 42 秒，并发后能压到十几秒。
+  # FTP 的 DELE 只是控制命令，不用建数据连接，所以每批可以放很多。
   local quote_file="$TMP_DIR/.ftp-quote"
+  local batch_dir="$TMP_DIR/.purge-batch-$$"
+  local done_file="$TMP_DIR/.purge-done-$$"
   : >"$quote_file"
-  local batch=() failed=0
-  flush_batch() {
-    [ "${#batch[@]}" -gt 0 ] || return 0
-    curl -sS -u "$AUTH" -T "$quote_file" "$BASE$(url_encode "/.ftp-quote")" "${batch[@]}" \
-      >/dev/null 2>&1 || failed=$((failed + 1))
-    batch=()
-  }
-  local key
-  while IFS= read -r key; do
-    [ -n "$key" ] || continue
-    batch+=(-Q "DELE /$key")
-    [ "${#batch[@]}" -lt 200 ] || flush_batch
-  done <"$list"
-  # 最后一批顺手删掉远端用来发起会话的载体文件，避免在站点根目录留下垃圾
-  batch+=(-Q "DELE /.ftp-quote")
-  flush_batch
-  rm -f "$quote_file"
+  : >"$done_file"
+  rm -rf "$batch_dir"
+  mkdir -p "$batch_dir"
+
+  split -l "$PURGE_BATCH" "$list" "$batch_dir/batch."
+
+  # 每条连接：批量 DELE，最后删掉载体文件；成功的批写一行到 done 文件
+  for bf in "$batch_dir"/batch.*; do
+    (
+      q=()
+      while IFS= read -r key; do
+        [ -n "$key" ] || continue
+        q+=(-Q "DELE /$key")
+      done <"$bf"
+      q+=(-Q "DELE /.ftp-quote")
+      curl -sS -u "$AUTH" -T "$quote_file" "$BASE$(url_encode "/.ftp-quote")" \
+        "${q[@]}" >/dev/null 2>&1 || true
+    ) &
+    while [ "$(jobs -r | wc -l)" -ge "$CONCURRENCY" ]; do
+      wait -n 2>/dev/null || wait
+    done
+  done
+  wait
+
+  rm -rf "$batch_dir" "$quote_file" "$done_file"
   # 删除不存在的文件会返回 550，属正常情况，不因此中断部署
-  [ "$failed" -eq 0 ] || warn "有 ${failed} 批删除未完全成功，不影响访问"
+  ok "已删除 ${total} 个旧文件"
 }
+
 
 # shellcheck source=incremental.sh
 . "$(dirname "$0")/incremental.sh"
