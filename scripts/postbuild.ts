@@ -6,6 +6,11 @@
  */
 import { cleanupTask } from './tasks/cleanup';
 import { manifestTask } from './tasks/manifest';
+import { mediaCleanupTask } from './tasks/media-cleanup';
 import { runTasks } from './tasks/run-tasks';
 
-runTasks('postbuild', [cleanupTask, manifestTask]);
+runTasks('postbuild', [
+  cleanupTask,
+  mediaCleanupTask, // 图片清理要在生成清单之前
+  manifestTask, // 清单记录的是最终产物
+]);
