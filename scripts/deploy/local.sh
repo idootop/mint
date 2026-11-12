@@ -96,13 +96,13 @@ fi
 # ── 选择部署目标 ─────────────────────────────────────────────────────
 TARGET="${1:-}"
 case "$TARGET" in
-  ftp | cos | dokploy | all) ;;
+  ftp | cos | dokploy | webhook | all) ;;
   '' | -h | --help)
     echo "用法: bash scripts/deploy/local.sh <ftp|cos|dokploy|all>"
     exit 0
     ;;
   *)
-    echo "❌ 未知目标：${TARGET}（可选：ftp / cos / dokploy / all）" >&2
+    echo "❌ 未知目标：${TARGET}（可选：ftp / cos / dokploy / webhook / all）" >&2
     exit 1
     ;;
 esac
@@ -138,8 +138,14 @@ case "$TARGET" in
     need_var DOKPLOY_API_KEY
     echo "🌐 目标：Dokploy ${DOKPLOY_URL:-（未设置）}"
     ;;
+  webhook)
+    need_var WEBHOOK_URL
+    need_var WEBHOOK_SITE_DIR
+    need_var WEBHOOK_DOWNLOAD_URL
+    echo "🌐 目标：Webhook → ${WEBHOOK_SITE_DIR:-（未设置）}"
+    ;;
   all)
-    echo "🌐 目标：FTP / COS / Dokploy 全部"
+    echo "🌐 目标：全部（FTP / COS / Dokploy / Webhook）"
     ;;
 esac
 if [ "${#missing[@]}" -gt 0 ]; then

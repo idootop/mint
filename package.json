@@ -12,6 +12,7 @@
     "deploy": "bash scripts/deploy/local.sh all",
     "deploy:ftp": "bash scripts/deploy/local.sh ftp",
     "deploy:cos": "bash scripts/deploy/local.sh cos",
+    "deploy:webhook": "bash scripts/deploy/local.sh webhook",
     "deploy:dokploy": "bash scripts/deploy/local.sh dokploy",
     "postinstall": "[ -n \"$CI\" ] || lefthook install",
     "lint": "biome check --write --no-errors-on-unmatched --diagnostic-level=error ."

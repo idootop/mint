@@ -35,22 +35,6 @@ jobs:
           retention-days: 3
 
   # 三个部署目标相互独立、并行执行：任一目标失败，其它目标仍继续。
-  deploy-ftp:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/download-artifact@v8
-        with:
-          name: out
-          path: out
-      - name: 部署到 FTP
-        env:
-          FTP_URL: ${{ secrets.FTP_URL }}
-          FTP_USER: ${{ secrets.FTP_USER }}
-          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        run: bash scripts/deploy/ftp.sh
-
   deploy-cos:
     needs: build
     runs-on: ubuntu-latest
@@ -74,6 +58,12 @@ jobs:
           COS_BUCKET: ${{ secrets.COS_BUCKET }}
           COS_REGION: ${{ secrets.COS_REGION }}
         run: bash scripts/deploy/cos.sh
+      - name: 触发 Webhook 部署
+        env:
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+          WEBHOOK_SITE_DIR: ${{ vars.WEBHOOK_SITE_DIR }}
+          WEBHOOK_DOWNLOAD_URL: ${{ vars.WEBHOOK_DOWNLOAD_URL }}
+        run: bash scripts/deploy/webhook.sh
 
   deploy-dokploy:
     needs: build
@@ -91,3 +81,18 @@ jobs:
           DOKPLOY_API_KEY: ${{ secrets.DOKPLOY_API_KEY }}
         run: bash scripts/deploy/dokploy.sh
 
+  # deploy-ftp:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v7
+  #     - uses: actions/download-artifact@v8
+  #       with:
+  #         name: out
+  #         path: out
+  #     - name: 部署到 FTP
+  #       env:
+  #         FTP_URL: ${{ secrets.FTP_URL }}
+  #         FTP_USER: ${{ secrets.FTP_USER }}
+  #         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+  #       run: bash scripts/deploy/ftp.sh
