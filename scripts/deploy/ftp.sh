@@ -7,10 +7,10 @@
 # 部署目标固定为 FTP 登录后的根目录（也就是网站根目录），不提供配置项。
 #
 # 环境变量：
-#   HOST / FTP_HOST        FTP 主机（必填）
-#   USER / FTP_USER        FTP 用户（必填）
-#   PASSWD / FTP_PASSWORD  FTP 密码
-#   FTP_PORT               端口，默认 21
+#   FTP_HOST        FTP 主机（必填）
+#   FTP_USER        FTP 用户（必填）
+#   FTP_PASSWORD    FTP 密码
+#   FTP_PORT        端口，默认 21
 #
 # shellcheck source=common.sh
 . "$(dirname "$0")/common.sh"
@@ -18,16 +18,16 @@
 need curl
 check_out
 
-HOST="${HOST:-${FTP_HOST:-}}"
-USER="${USER:-${FTP_USER:-}}"
-PASSWD="${PASSWD:-${FTP_PASSWORD:-}}"
+FTP_HOST="${FTP_HOST:-}"
+FTP_USER="${FTP_USER:-}"
+FTP_PASSWORD="${FTP_PASSWORD:-}"
 FTP_PORT="${FTP_PORT:-21}"
 
-[ -n "$HOST" ] || die "缺少 FTP 主机：请设置 HOST 或 FTP_HOST"
-[ -n "$USER" ] || die "缺少 FTP 用户：请设置 USER 或 FTP_USER"
+[ -n "$FTP_HOST" ] || die '缺少 FTP_HOST'
+[ -n "$FTP_USER" ] || die '缺少 FTP_USER'
 
-AUTH="$USER:$PASSWD"
-BASE="ftp://$HOST:$FTP_PORT"
+AUTH="$FTP_USER:$FTP_PASSWORD"
+BASE="ftp://$FTP_HOST:$FTP_PORT"
 # 并发上传数。FTP 每个文件都要重新建连（约 8ms），是主要开销。
 CONCURRENCY="${FTP_CONCURRENCY:-16}"
 
