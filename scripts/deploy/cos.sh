@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 腾讯云 COS 部署：按清单增量上传（非 HTML → HTML）→ 清理旧文件。
 #
-# 构建产物里的 out/.manifest.json 记录每个文件的 sha256；云端保存同一份清单。
+# 构建产物里的 out/manifest.json 记录每个文件的 sha256；云端保存同一份清单。
 # 部署时先读云端清单，只上传"云端没有"或"内容变了"的文件，再清理旧对象。
 #
 # 依赖 coscli v1.0.9+（https://github.com/tencentyun/coscli/releases）

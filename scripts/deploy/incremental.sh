@@ -14,7 +14,7 @@
 #
 # shellcheck shell=bash
 
-MANIFEST=".manifest.json"
+MANIFEST="manifest.json"
 
 # ── 读取远端清单：成功时打印文件数，失败返回非零 ──────────────────────
 incremental_load_manifest() {

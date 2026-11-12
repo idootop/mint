@@ -20,7 +20,7 @@ const kMediaDir = path.join(kOutDir, '_next', 'static', 'media');
 const kScanDirs = ['', '_next'];
 const kScanExt = ['.html', '.txt', '.js', '.css', '.xml'];
 /** 产物清单记录的是全部文件名，不能当作"引用" */
-const kManifestName = '.manifest.json';
+const kManifestName = 'manifest.json';
 
 /** 递归收集需要扫描引用的文件 */
 const listScanFiles = async (): Promise<string[]> => {

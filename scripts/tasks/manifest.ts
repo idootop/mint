@@ -5,7 +5,7 @@
  * 的文件——文件名带 hash 的静态资源本来就不会重复，但图片、RSC 载荷这类
  * 同名文件每次全量覆盖很浪费，靠清单可以跳过。
  *
- * 产物：out/.manifest.json
+ * 产物：out/manifest.json
  *   {
  *     "version": 1,
  *     "generatedAt": "2026-11-11T14:00:00.000Z",
@@ -22,7 +22,7 @@ import path from 'node:path';
 import type { BuildTask } from './run-tasks';
 
 const kOutDir = 'out';
-const kManifestName = '.manifest.json';
+const kManifestName = 'manifest.json';
 /** 清单里记录的文件在 COS 上的 key 前缀，部署脚本据此定位 */
 const kManifestVersion = 1;
 
@@ -99,6 +99,6 @@ const manifest = async () => {
 };
 
 export const manifestTask: BuildTask = {
-  name: '生成产物 hash 清单（.manifest.json）',
+  name: '生成产物 hash 清单（manifest.json）',
   run: manifest,
 };
