@@ -20,7 +20,7 @@
 # 本脚本直接执行，不再重复校验。
 #
 # 可选环境变量：
-#   CONCURRENCY     并发下载数，默认 8
+#   CONCURRENCY     并发下载数，默认 16
 #
 # 流程（与本地 FTP/COS 部署保持一致的顺序，保证切换期间线上可访问）：
 #   0. 下载远端 manifest.json
@@ -33,7 +33,7 @@
 
 set -uo pipefail
 
-CONCURRENCY="${CONCURRENCY:-8}"
+CONCURRENCY="${CONCURRENCY:-16}"
 MANIFEST="manifest.json"
 
 log() { printf '[%s] %s\n' "$(date '+%F %T')" "$*"; }
