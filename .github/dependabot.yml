@@ -6,22 +6,29 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "10:00"
-      timezone: UTC+8
+      timezone: "Asia/Shanghai"
     commit-message:
-      prefix: 'chore(deps): '
+      prefix: "chore(deps): "
     open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: "weekly"
       day: "monday"
       time: "10:00"
-      timezone: UTC+8
+      timezone: "Asia/Shanghai"
     commit-message:
-      prefix: 'chore(deps): '
+      prefix: "chore(deps): "
     open-pull-requests-limit: 3
     groups:
       minor-and-patch:
+        patterns:
+          - "*"
         update-types:
-          - minor
-          - patch
+          - "minor"
+          - "patch"
