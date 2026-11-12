@@ -48,20 +48,27 @@ case "$WEBHOOK_URL" in
 esac
 TARGET="${WEBHOOK_URL}${SEP}param=${PARAM_ESCAPED}"
 
-# 不让密钥出现在日志里
-SAFE_URL="$(printf '%s' "$WEBHOOK_URL" | sed -E 's/(access_key|secret|token)=[^&]*/\1=***/g')"
-info "触发 Webhook：${SAFE_URL}"
+# 只打印主机和端口，不打印路径和 access_key。
+# 整个 URL 不能进日志：GitHub 的自动脱敏只认完整的 secret 值，
+# 一旦我们把 access_key 换成 *** 再打印，脱敏就匹配不上，
+# 主机、端口、hook 路径会原样留在 CI 日志里。
+WEBHOOK_SHOW="$(printf '%s' "$WEBHOOK_URL" | sed -E 's|^[a-z]+://([^/?]+).*|\1|')"
+info "触发 Webhook：${WEBHOOK_SHOW}"
 info "目标站点：${WEBHOOK_SITE_DIR}"
 
 # 触发即返回：服务器收到请求就会开始部署，具体成败由服务器自己负责，
 # 这里只确认请求已经发出（--max-time 限制的是握手/发送，不等待部署完成）。
 # -o /dev/null 丢弃响应体；宝塔的 webhook 通常立刻返回，不会阻塞。
 # -k 跳过证书校验：宝塔的 webhook 一般是 https + 自签证书。
-if curl -sSk --fail -o /dev/null --connect-timeout 10 --max-time 15 "$TARGET"; then
-  ok "已触发，服务器将开始从 COS 同步到 ${WEBHOOK_SITE_DIR}"
-else
-  case $? in
-    28) die '连接 Webhook 超时，请检查 WEBHOOK_URL 是否可达' ;;
-    *) die 'Webhook 调用失败，请检查 WEBHOOK_URL 是否正确' ;;
-  esac
-fi
+# curl 的报错里可能带完整 URL，所以先收进变量，过滤掉地址再输出。
+CURL_RC=0
+CURL_ERR="$(curl -sSk --fail -o /dev/null --connect-timeout 10 --max-time 15 "$TARGET" 2>&1)" || CURL_RC=$?
+case $CURL_RC in
+  0) ok "已触发，服务器将开始从 COS 同步到 ${WEBHOOK_SITE_DIR}" ;;
+  28) die '连接 Webhook 超时，请检查 WEBHOOK_URL 是否可达' ;;
+  *)
+    # 只保留 curl 的错误码描述，去掉可能出现的 URL
+    detail="$(printf '%s' "$CURL_ERR" | sed -E 's|https?://[^ ]*||g; s|^curl: ||' | head -1)"
+    die "Webhook 调用失败${detail:+（${detail}）}，请检查 WEBHOOK_URL 是否正确"
+    ;;
+esac
