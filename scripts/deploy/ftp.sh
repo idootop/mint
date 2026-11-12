@@ -30,8 +30,10 @@ esac
 
 AUTH="$FTP_USER:$FTP_PASSWORD"
 BASE="${FTP_URL}"
-# 并发上传数。FTP 每个文件都要重新建连（约 8ms），是主要开销。
-CONCURRENCY="${FTP_CONCURRENCY:-16}"
+# 每批文件数：同一批用 curl --next 复用一条连接（服务器每次登录要 ~1.7s，
+# 单个文件一个连接太慢）。批次之间再并发。
+FILE_BATCH="${FTP_BATCH:-100}"
+CONCURRENCY="${FTP_CONCURRENCY:-4}"
 
 # URL 编码路径（兼容中文与空格），保留 / 分隔。
 # 用 bash 内置字符串处理，避免每个文件都启动一个 python 进程。
@@ -75,9 +77,9 @@ remote_push() {
   local dir="$1" prefix="$2" meta="$3" pattern="$4" invert="$5"
   [ -d "$dir" ] || return 0
 
-  # 一行一个任务：本地路径 \0 目标 URL \0
-  local jobs="$TMP_DIR/.push-jobs-$$"
-  : >"$jobs"
+  # 待传清单：本地路径 \0 远端相对路径
+  local list="$TMP_DIR/.push-list-$$"
+  : >"$list"
 
   local rel total=0
   while IFS= read -r rel; do
@@ -91,42 +93,97 @@ remote_push() {
     fi
     local target="$rel"
     [ -z "$prefix" ] || target="$prefix/$rel"
-    printf '%s\0%s%s\0%s\0' "$dir/$rel" "$BASE" "$(url_encode "/$target")" "$target" >>"$jobs"
+    printf '%s\0%s\0' "$dir/$rel" "$target" >>"$list"
     total=$((total + 1))
   done < <(cd "$dir" && find . -type f -print | sed 's|^\./||')
 
   if [ "$total" -eq 0 ]; then
-    rm -f "$jobs"
+    rm -f "$list"
     return 0
   fi
 
-  # 并行上传，每成功一个就往 stderr 打一行路径（>> /dev/stderr 保证不被吞）
-  local failed_file="$TMP_DIR/.push-failed-$$"
-  : >"$failed_file"
-  # sh -c 的 $0 是 AUTH，$1 是失败记录文件；xargs 传入的两个参数从 $2 开始。
-  # 成功时打印远端相对路径（和 COS 侧保持一致），失败记到文件里统一汇报。
-  # sh -c 的 $0=AUTH、$1=失败记录文件，xargs 传入的三个参数从 $2 开始
-  xargs -0 -r -n 3 -P "$CONCURRENCY" sh -c '
-    if curl -sS --fail -u "$0" --ftp-create-dirs -T "$2" "$3" >/dev/null 2>&1; then
-      printf "  ↑ %s\n" "$4" >&2
-    else
-      printf "%s\n" "$4" >>"$1"
+  # 这台 FTP 服务器每次登录要 ~1.7s，一个文件一个连接的话 846 个文件要几十分钟，
+  # 并发又会因为登录排队大面积超时。所以把每 FILE_BATCH 个文件用 --next 串在
+  # 同一个连接里，登录只做一次；批次之间再并发。
+  local err_file="$TMP_DIR/.push-err-$$"
+  local batch_dir="$TMP_DIR/.push-batch-$$"
+  local batch_file="" target
+  : >"$err_file"
+  rm -rf "$batch_dir"
+  mkdir -p "$batch_dir"
+
+  # 切批：每行读两个字段（本地路径、远端路径），攒满 FILE_BATCH 个换下一个文件
+  local idx=0 count=0 local_file=""
+  while IFS= read -r -d '' local_file && IFS= read -r -d '' target; do
+    if [ "$count" -eq 0 ]; then
+      idx=$((idx + 1))
+      batch_file="$(printf '%s/batch.%05d' "$batch_dir" "$idx")"
     fi
-  ' "$AUTH" "$failed_file" <"$jobs" || true
+    printf '%s\t%s\n' "$local_file" "$target" >>"$batch_file"
+    count=$((count + 1))
+    [ "$count" -lt "$FILE_BATCH" ] || count=0
+  done <"$list"
+  rm -f "$list"
+
+  local batches
+  batches="$(find "$batch_dir" -type f | wc -l | tr -d ' ')"
+  info "分 ${batches} 批上传（每批最多 ${FILE_BATCH} 个，并发 ${CONCURRENCY}）"
+
+  # 批处理脚本写进临时文件，交给 xargs 并发执行
+  local worker="$TMP_DIR/.push-worker-$$"
+  cat >"$worker" <<'WORKER'
+#!/usr/bin/env bash
+set -uo pipefail
+auth="$1" base="$2" err_file="$3" batch="$4"
+
+args=()
+count=0
+while IFS=$'\t' read -r local_file remote_key; do
+  [ -n "$local_file" ] || continue
+  [ "$count" -eq 0 ] || args+=(--next)
+  args+=(-u "$auth" --ftp-create-dirs -T "$local_file" "$base/$remote_key")
+  count=$((count + 1))
+done <"$batch"
+[ "$count" -gt 0 ] || exit 0
+
+if curl -sS --fail "${args[@]}" -o /dev/null 2>&1; then
+  while IFS=$'\t' read -r local_file remote_key; do
+    [ -n "$local_file" ] || continue
+    printf '  ↑ %s\n' "$remote_key" >&2
+  done <"$batch"
+  exit 0
+fi
+
+# 整批失败时逐个重试，定位到具体哪个文件出错
+while IFS=$'\t' read -r local_file remote_key; do
+  [ -n "$local_file" ] || continue
+  if e=$(curl -sS --fail -u "$auth" --ftp-create-dirs -T "$local_file" "$base/$remote_key" -o /dev/null 2>&1); then
+    printf '  ↑ %s\n' "$remote_key" >&2
+  else
+    printf '%s\t%s\n' "$remote_key" "${e:-批内失败}" >>"$err_file"
+  fi
+done <"$batch"
+WORKER
+  chmod +x "$worker"
+
+  find "$batch_dir" -type f -print0 | xargs -0 -r -n 1 -P "$CONCURRENCY" \
+    "$worker" "$AUTH" "$BASE" "$err_file"
 
   local failed
-  failed="$(wc -l <"$failed_file" | tr -d ' ')"
-  rm -f "$jobs"
+  failed="$(wc -l <"$err_file" | tr -d ' ')"
+  rm -rf "$batch_dir" "$worker"
   if [ "$failed" -gt 0 ]; then
     warn "有 ${failed}/${total} 个文件上传失败："
-    head -3 "$failed_file" | sed 's/^/    /' >&2
+    head -3 "$err_file" | sed 's/^/    /' >&2
     [ "$failed" -le 3 ] || echo "    …（共 ${failed} 个）" >&2
-    rm -f "$failed_file"
+    rm -f "$err_file"
     return 1
   fi
-  rm -f "$failed_file"
+  rm -f "$err_file"
   return 0
 }
+
+
 
 
 
