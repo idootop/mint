@@ -164,14 +164,22 @@ ensure_coscli() {
 need curl
 ensure_coscli
 
-# 凭据通过命令行参数传递（v1.0.9 支持 -i/-k），不写配置文件、不读环境变量
-COS_ARGS=(-i "$SECRET_ID" -k "$SECRET_KEY" --init-skip)
+# 凭据通过命令行参数传递（v1.0.9 支持 -i/-k），不写配置文件、不读环境变量。
+# 必须同时用 -e 指定 endpoint：coscli 不会从 cos://bucket 推断出桶所在的区域，
+# CI 里又没有 ~/.cos.yaml 可读，不传 -e 就会连接失败。
+ENDPOINT="cos.$REGION.myqcloud.com"
+COS_ARGS=(-i "$SECRET_ID" -k "$SECRET_KEY" -e "$ENDPOINT" --init-skip)
 
 # 所有 coscli 调用的统一入口；输出存进日志，避免刷屏
 cos() { coscli "$@" "${COS_ARGS[@]}" --disable-log; }
 
 info "检查存储桶 ${BUCKET}（${REGION}）…"
-cos ls "cos://$BUCKET/" >/dev/null || die '无法访问存储桶，请检查密钥、桶名与区域'
+# 失败时把 coscli 的原始报错打出来，否则只能看到一句笼统的提示
+if ! check_output="$(cos ls "cos://$BUCKET/" 2>&1)"; then
+  warn 'coscli 输出：'
+  printf '%s\n' "$check_output" >&2
+  die "无法访问存储桶 ${BUCKET}（${ENDPOINT}），请检查密钥、桶名与区域"
+fi
 
 # ── 传输原语：cos.sh / ftp.sh 只需各自实现这些，流程在 incremental.sh 里 ──
 

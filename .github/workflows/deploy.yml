@@ -43,7 +43,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: out
-          path: out
+          path: .
       - name: 部署到 FTP
         env:
           FTP_URL: ${{ secrets.FTP_URL }}
@@ -59,7 +59,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: out
-          path: out
+          path: .
       - name: 缓存 coscli
         uses: actions/cache@v6
         with:
@@ -83,7 +83,7 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: out
-          path: out
+          path: .
       - name: 部署到 Dokploy
         env:
           DOKPLOY_URL: ${{ secrets.DOKPLOY_URL }}
